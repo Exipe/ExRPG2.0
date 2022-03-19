@@ -1,6 +1,6 @@
-src/
 node_modules/
 .env
 .gitignore
-tsconfig.json
-dist/*.map
+.dockerignore
+Dockerfile
+dist/
