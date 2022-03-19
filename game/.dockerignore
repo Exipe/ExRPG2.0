@@ -1,8 +1,0 @@
-node_modules/
-.gitignore
-.dockerignore
-Dockerfile
-app/dev.html
-app/script.js
-app/script.js.map
-webpack.dev.js

@@ -4,6 +4,7 @@ RUN npm install -g http-server
 WORKDIR /engine
 COPY ./engine .
 RUN npm install
+RUN npm run build
 RUN npm link
 WORKDIR /game
 COPY ./game .

@@ -1,0 +1,10 @@
+*/node_modules/
+*/.gitignore
+*/.dockerignore
+*/Dockerfile
+game/app/dev.html
+game/app/script.js
+game/app/script.js.map
+game/webpack.dev.js
+engine/dist/
+editor/webpack.config.js
