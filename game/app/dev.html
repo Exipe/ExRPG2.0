@@ -1,0 +1,29 @@
+
+<!doctype html>
+<html>
+    <head>
+        <title>ExRPG - Development</title>
+        <link href="main.css" rel="stylesheet" />
+        <link href="menu.css" rel="stylesheet" />
+        <link href="favicon.png" rel="icon" type="image/png" />
+
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Slab:wght@300&display=swap" rel="stylesheet">
+
+        <meta content="width=device-width" name="viewport" />
+    </head>
+
+    <body>
+        <script src="./react.development.js"></script>
+        <script src="./react-dom.development.js"></script>
+
+        <div id="container"></div>
+
+        <script>
+            window.protocol = "ws";
+            window.address = "localhost";
+            window.port = 80;
+        </script>
+
+        <script src="./script.js"></script>
+    </body>
+</html>

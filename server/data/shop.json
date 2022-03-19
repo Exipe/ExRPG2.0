@@ -1,0 +1,23 @@
+
+[
+    {
+        "name": "Tony's Tools for Aspiring Adventurers",
+
+        "items": [
+            "dagger_crude",
+            "sword_copper",
+            "axe_crude",
+            "pickaxe_crude",
+            "fishing_rod",
+            "potion_health_weak"
+        ]
+    },
+
+    {
+        "name": "Carl's Armor",
+
+        "items": [
+            "helm_copper", "plate_copper", "legs_copper", "shield_copper"
+        ]
+    }
+]

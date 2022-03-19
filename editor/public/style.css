@@ -1,0 +1,279 @@
+
+:root {
+    --bg-color: rgba(30, 30, 45, 0.75);
+    --bg-selected: rgba(40, 40, 60, 0.9);
+    --fg-color: rgb(128, 128, 160);
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    user-select: none;
+    font-family: sans-serif;
+    background-color: black;
+    color: white;
+}
+
+canvas {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+
+    image-rendering: pixelated;
+    width: 100%;
+    height: 100%;
+}
+
+#ui {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+
+    pointer-events: none;
+    user-select: none;
+    overflow: hidden;
+    white-space: nowrap;
+
+    width: 100%;
+    height: 100%;
+}
+
+#header {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+
+
+.button {
+    border: 1px solid var(--fg-color);
+    background-color: var(--bg-color);
+    box-sizing: border-box;
+
+    text-align: center;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+.button.toggleOn {
+    background-color: var(--bg-selected);
+    border-width: 2px;
+    font-weight: bold;
+}
+
+.button.disabled {
+    color: var(--fg-color);
+    cursor: default
+}
+
+
+
+.windowElement {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: fit-content;
+}
+
+.windowElementTitle {
+    background-color: var(--bg-selected);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border: 1px solid var(--fg-color);
+    padding: 4px;
+}
+
+.windowElementTitle:hover {
+    cursor: pointer;
+}
+
+.windowElementBody {
+    overflow: auto; /* prevent border collapsing -.- */
+
+    background-color: var(--bg-color);
+    padding: 16px;
+
+    border: 1px solid var(--fg-color);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top: none;
+}
+
+
+
+.widgets {
+    position: absolute;
+    top: 8px;
+
+    display: flex;
+}
+
+#toolWidgets {
+    flex-direction: column;
+    right: 8px;
+}
+
+#optionWidgets {
+    flex-direction: row;
+    left: 8px;
+}
+
+#toolWidgets > * {
+    margin-bottom: 4px;
+}
+
+#optionWidgets > * {
+    margin-right: 8px;
+}
+
+
+
+.separate {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.optionsGrid {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    row-gap: 4px;
+    column-gap: 8px;
+}
+
+
+
+#mapSize {
+    border-top: 1px solid var(--fg-color);
+    margin-top: 8px;
+    padding-top: 8px;
+}
+
+#mapSize > * {
+    margin-top: 8px;
+}
+
+#anchorGrid {
+    width: fit-content;
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+}
+
+#anchorGrid > * {
+    cursor: pointer;
+    border-radius: 2px;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--fg-color);
+}
+
+#anchorGrid > *.selected {
+    background-color: var(--fg-color);
+}
+
+
+
+.tileRow {
+    display: flex;
+}
+
+.tileTexture {
+    image-rendering: pixelated;
+}
+
+.tileTexture.selected {
+    background-origin: border-box;
+    box-sizing: border-box;
+
+    border-style: solid;
+    border-color: red;
+    cursor: default;
+}
+
+
+
+#toolModes {
+    padding-top: 8px;
+    border-top: 1px solid var(--fg-color);
+}
+
+#toolSelectionButtons, #toolModes {
+    margin-top: 8px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+}
+
+
+
+.search-input {
+    font-size: 16px;
+}
+
+.search-list {
+    position: absolute;
+    list-style: none;
+
+    width: fit-content;
+    margin: 0;
+    padding: 0;
+}
+
+.search-list > li {
+    background-color: var(--bg-color);
+    border: 1px solid var(--fg-color);
+    color: white;
+    padding: 4px;
+}
+
+.search-list > li:last-of-type {
+    border-radius: 4px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.search-list > li:hover {
+    background-color: var(--bg-selected);
+    cursor: pointer;
+}
+
+
+
+.entityWindow > * {
+    margin: 0;
+    margin-top: 8px;
+}
+
+.entityWindow > *:first-child {
+    margin-top: 0;
+}
+
+.entityPreview {
+    background-position: center;
+    background-repeat: no-repeat;
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 100px;
+    height: 100px;
+
+    border: 1px solid var(--fg-color);
+    border-radius: 4px
+}
+
+
+
+.warpOptions > * {
+    margin-bottom: 8px;
+}

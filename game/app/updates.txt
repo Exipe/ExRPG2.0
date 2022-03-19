@@ -1,0 +1,13 @@
+Alpha 1.0.1 (2021-10-14)
+- New monsters to train on in the desert
+- New BIS Gold armor (tier 40)
+- Bug fixes
+
+Alpha Test
+---
+The alpha test is now live.
+The alpha exists to discover as many bugs as possible, before a public release.
+Any early feedback you give is also very much appreciated.
+Please reports bugs and give suggestions in the appropriate channels in the Discord server.
+Do note that any progress you make during alpha will be wiped.
+Anyway, have fun!

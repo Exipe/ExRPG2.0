@@ -1,0 +1,341 @@
+[
+    {
+        "id": "door_closed",
+        "name": "Door",
+        "sprite": "door/closed",
+
+        "offsetY": 2,
+        "door": true,
+
+        "options": [
+            "Open"
+        ]
+    },
+
+    {
+        "id": "door_open",
+        "name": "Door",
+        "sprite": "door/open",
+
+        "offsetX": 6,
+        "offsetY": 2,
+        "door": true,
+        "block": false,
+
+        "options": [
+            "Close"
+        ]
+    },
+
+    {
+        "id": "door_skeleton_boss",
+        "name": "Door",
+        "sprite": "door/locked",
+
+        "offsetY": 2,
+
+        "options": [
+            "/sprite(res/item/key) Unlock"
+        ]
+    },
+
+    {
+        "id": "ladder_dungeon",
+        "name": "Ladder",
+        "sprite": "ladder",
+
+        "shadow": true,
+
+        "options": [
+            "Climb up"
+        ]
+    },
+
+    {
+        "id": "ladder_maze",
+        "name": "Ladder",
+        "sprite": "ladder",
+
+        "shadow": true,
+
+        "options": [
+            "Exit"
+        ]
+    },
+
+    {
+        "id": "rock_pointy",
+        "name": "Rock",
+        "sprite": "rocks"
+    },
+
+    {
+        "id": "tree_common",
+        "name": "Tree",
+        "sprite": "tree/tree",
+
+        "shadow": {
+            "offsetX": -2,
+            "offsetY": -2
+        },
+
+        "options": [
+            "Chop down"
+        ]
+    },
+
+    {
+        "id": "fishing_spot",
+        "name": "Water",
+        "sprite": "fishing_spot",
+
+        "options": [
+            "Fish in"
+        ]
+    },
+
+    {
+        "id": "fishing_spot_up",
+        "name": "Water",
+        "sprite": "fishing_spot",
+
+        "offsetY": -8,
+
+        "options": [
+            "Fish in"
+        ]
+    },
+
+    {
+        "id": "fishing_spot_right",
+        "name": "Water",
+        "sprite": "fishing_spot",
+
+        "offsetX": 8,
+
+        "options": [
+            "Fish in"
+        ]
+    },
+
+    {
+        "id": "fishing_spot_down",
+        "name": "Water",
+        "sprite": "fishing_spot",
+
+        "offsetY": 8,
+
+        "options": [
+            "Fish in"
+        ]
+    },
+
+    {
+        "id": "fishing_spot_left",
+        "name": "Water",
+        "sprite": "fishing_spot",
+
+        "offsetX": -8,
+
+        "options": [
+            "Fish in"
+        ]
+    },
+
+    {
+        "id": "fountain",
+        "name": "Fountain",
+        "sprite": "fountain",
+
+        "offsetY": -6,
+
+        "width": 4,
+        "depth": 3,
+
+        "options": [
+            "Drink from"
+        ]
+    },
+
+    {
+        "id": "tree_apple",
+        "name": "Apple tree",
+        "sprite": "tree/apple_tree",
+
+        "shadow": {
+            "offsetX": -2,
+            "offsetY": -2
+        },
+
+        "options": [
+            "Chop down",
+            "Pick from"
+        ]
+    },
+
+    {
+        "id": "stump_common",
+        "name": "Tree stump",
+        "sprite": "tree/stump"
+    },
+
+    {
+        "id": "tree_birch",
+        "name": "Birch",
+        "sprite": "tree/birch",
+
+        "shadow": {
+            "offsetX": -4,
+            "offsetY": -2
+        },
+
+        "options": [
+            "Chop down"
+        ]
+    },
+
+    {
+        "id": "stump_birch",
+        "name": "Birch tree stump",
+        "sprite": "tree/birch_stump"
+    },
+
+    {
+        "id": "tree_palm",
+        "name": "Palm tree",
+        "sprite": "palm_tree",
+        "offsetX": 4,
+
+        "shadow": {
+            "offsetY": 4,
+            "offsetX": -2
+        }
+    },
+
+    {
+        "id": "bush",
+        "name": "Bush",
+        "sprite": "bush",
+        "width": 2
+    },
+
+    {
+        "id": "bush_strawberry",
+        "name": "Strawberry bush",
+        "sprite": "red_bush",
+        "width": 2,
+
+        "options": [
+            "Pick from"
+        ]
+    },
+
+    {
+        "id": "ore_copper",
+        "name": "Copper ore",
+        "sprite": "ore/copper",
+        "width": 2,
+
+        "options": [
+            "Mine"
+        ]
+    },
+
+    {
+        "id": "ore_iron",
+        "name": "Iron ore",
+        "sprite": "ore/iron",
+        "width": 2,
+
+        "options": [
+            "Mine"
+        ]
+    },
+
+    {
+        "id": "ore_gold",
+        "name": "Gold ore",
+        "sprite": "ore/gold",
+        "width": 2,
+
+        "options": [
+            "Mine"
+        ]
+    },
+
+    {
+        "id": "ore_depleted",
+        "name": "Rubble",
+        "sprite": "ore/rubble",
+        "width": 2
+    },
+
+    {
+        "id": "anvil",
+        "name": "Anvil",
+        "sprite": "anvil",
+
+        "options": [
+            "Smith"
+        ]
+    },
+
+    {
+        "id": "furnace",
+        "name": "Furnace",
+        "sprite": "furnace",
+        "width": 2,
+        "light": 32,
+
+        "options": [
+            "Smelt"
+        ]
+    },
+
+    {
+        "id": "range",
+        "name": "Range",
+        "sprite": "range",
+        "width": 2,
+        "light": 32,
+
+        "options": [
+            "Cook"
+        ]
+    },
+
+    {
+        "id": "crate_small",
+        "name": "Crate",
+        "sprite": "crate",
+
+        "options": [
+            "Search"
+        ]
+    },
+
+    {
+        "id": "torch_common",
+        "name": "Torch",
+        "sprite": "torch",
+        "light": 32
+    },
+
+    {
+        "id": "torch_wall",
+        "name": "Torch",
+        "sprite": "wall_torch",
+        "light": 24
+    },
+
+    {
+        "id": "car",
+        "name": "Car",
+        "sprite": "car",
+        "width": 2,
+
+        "options": [
+            "Drive"
+        ]
+    }
+]

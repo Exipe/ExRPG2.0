@@ -1,0 +1,231 @@
+
+[
+    {
+        "name": "Furnace",
+
+        "recipes": [
+            {
+                "unlockable": false,
+                "delay": 1000,
+                "item": "ingot_copper",
+                "materials": [
+                    ["ore_copper", 1]
+                ]
+            },
+
+            {
+                "unlockable": false,
+                "delay": 2000,
+                "item": "ingot_iron",
+                "materials": [
+                    ["ore_iron", 1]
+                ]
+            },
+
+            {
+                "unlockable": false,
+                "delay": 3000,
+                "item": "ingot_gold",
+                "materials": [
+                    ["ore_gold", 1]
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Range",
+
+        "recipes": [
+            {
+                "unlockable": false,
+                "delay": 2000,
+                "item": "fish_cooked",
+                "materials": [
+                    ["fish", 1]
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Anvil",
+
+        "recipes": [
+            {
+                "unlockable": false,
+                "delay": 1000,
+                "item": "helm_copper",
+                "materials": [
+                    ["ingot_copper", 3]
+                ]
+            },
+
+            {
+                "unlockable": false,
+                "delay": 2000,
+                "item": "plate_copper",
+                "materials": [
+                    ["ingot_copper", 5]
+                ]
+            },
+
+            {
+                "unlockable": false,
+                "delay": 1500,
+                "item": "legs_copper",
+                "materials": [
+                    ["ingot_copper", 4]
+                ]
+            },
+
+            {
+                "unlockable": false,
+                "delay": 1000,
+                "item": "shield_copper",
+                "materials": [
+                    ["ingot_copper", 3]
+                ]
+            },
+
+            {
+                "unlockable": false,
+                "delay": 1000,
+                "item": "sword_copper",
+                "materials": [
+                    ["ingot_copper", 3]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 2000,
+                "item": "helm_iron",
+                "materials": [
+                    ["ingot_iron", 3]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 4000,
+                "item": "plate_iron",
+                "materials": [
+                    ["ingot_iron", 5]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 3000,
+                "item": "legs_iron",
+                "materials": [
+                    ["ingot_iron", 4]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 2000,
+                "item": "shield_iron",
+                "materials": [
+                    ["ingot_iron", 3]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 2000,
+                "item": "sword_iron",
+                "materials": [
+                    ["ingot_iron", 3]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 3000,
+                "item": "helm_gold",
+                "materials": [
+                    ["ingot_gold", 3]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 6000,
+                "item": "plate_gold",
+                "materials": [
+                    ["ingot_gold", 5]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 4500,
+                "item": "legs_gold",
+                "materials": [
+                    ["ingot_gold", 4]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 3000,
+                "item": "shield_gold",
+                "materials": [
+                    ["ingot_gold", 3]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 3000,
+                "item": "sword_gold",
+                "materials": [
+                    ["ingot_gold", 3]
+                ]
+            },
+            
+            {
+                "unlockable": true,
+                "delay": 2000,
+                "item": "pickaxe_copper",
+                "materials": [
+                    ["ingot_copper", 3],
+                    ["log_common", 2]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 1500,
+                "item": "axe_copper",
+                "materials": [
+                    ["ingot_copper", 2],
+                    ["log_common", 2]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 3000,
+                "item": "pickaxe_iron",
+                "materials": [
+                    ["ingot_iron", 3],
+                    ["log_birch", 2]
+                ]
+            },
+
+            {
+                "unlockable": true,
+                "delay": 2500,
+                "item": "axe_iron",
+                "materials": [
+                    ["ingot_iron", 2],
+                    ["log_birch", 2]
+                ]
+            }
+        ]
+    }
+]

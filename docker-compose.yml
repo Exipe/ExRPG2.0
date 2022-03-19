@@ -1,0 +1,48 @@
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 52503:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: 'true'
+
+  server:
+    restart: always
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    depends_on:
+      - "game"
+      - "mongo"
+    environment:
+      RES_PATH: http://game:8080/res/
+      DB_URL: mongodb://root:example@mongo:27017/
+      PORT: 80
+    ports:
+      - 52500:80
+
+  game:
+    build:
+      context: ./
+      dockerfile: game/Dockerfile
+    ports:
+      - 52501:8080
+
+  editor:
+    build:
+      context: ./
+      dockerfile: editor/Dockerfile
+    ports:
+      - 52502:8080

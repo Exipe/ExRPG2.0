@@ -1,0 +1,4 @@
+dist/
+.dockerignore
+.gitignore
+.npmignore

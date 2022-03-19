@@ -1,0 +1,817 @@
+
+:root {
+    --bg-color: rgba(100, 50, 0, 0.85);
+    --bg-solid: rgb(100, 50, 0);
+    --fg-color: rgb(50, 25, 0);
+    --fg-color-bright: rgb(125, 75, 0);
+
+    --standard-icon: 48px;
+}
+
+#ui {
+    font-family: 'Roboto Slab', serif;
+
+    pointer-events: none;
+    user-select: none;
+    overflow: hidden;
+    white-space: nowrap;
+
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+.text-icon {
+    display: inline;
+    vertical-align: middle;
+}
+
+.top-right {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+.box-standard {
+    border-radius: 5px;
+    background-color: var(--bg-color);
+    border: 3px solid var(--fg-color);
+    border-top-color: var(--fg-color-bright);
+    border-left-color: var(--fg-color-bright);
+}
+
+.box-solid {
+    border-radius: 5px;
+    background-color: var(--bg-solid);
+    border: 3px solid var(--fg-color);
+}
+
+.box-gradient {
+    border-radius: 5px;
+    background: radial-gradient(rgb(75, 50, 25), rgb(60, 35, 10));
+    border: 3px solid var(--fg-color);
+}
+
+.playerName, .npcName {
+    transform: translate(-50%, -100%);
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0px 4px;
+}
+
+.chatBubble {
+    transform: translate(-50%, -100%) translateY(-2rem);
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    white-space: normal;
+    background-color: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(166, 166, 177, 1);
+    border-bottom-width: 2px;
+    min-width: 100px;
+    max-width: 200px;
+    padding: 8px;
+}
+
+.chatBubble:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: 8px solid transparent;
+	border-top-color: rgba(166, 166, 177, 1);
+	border-bottom: 0;
+	margin-left: -8px;
+	margin-bottom: -8px;
+}
+
+.progressIndicator {
+    transform: translate(-50%, 0);
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    flex-direction: row;
+    padding-left: 2px;
+}
+
+.progressCircle {
+    border-radius: 50%;
+    margin-right: 2px;
+    border: 1px solid black;
+    box-sizing: border-box;
+
+    width: 8px;
+    height: 8px;
+
+    transform: translate(0, 50%);
+}
+
+.circleOff {
+    background-color: black;
+}
+
+.circleOn {
+    background-color: rgb(165, 225, 225);
+}
+
+.playerName {
+    color: white;
+}
+
+.npcName {
+    color: yellow;
+}
+
+@keyframes fadeOutHitSplat {
+    from {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(-50%, -64px);
+    }
+}
+
+.hitSplat, .missSplat, .healSplat {
+    color: white;
+    font-family: sans-serif;
+    font-weight: bold;
+
+    border-radius: 100%;
+    border-width: 2px;
+    border-style: solid;
+    padding: 2px 4px;
+    
+    animation: fadeOutHitSplat linear forwards 2s;
+}
+
+.hitSplat {
+    border-color: rgb(100, 0, 0);
+    background-color: rgb(150, 0, 0);
+}
+
+.missSplat {
+    border-color: rgb(0, 0, 100);
+    background-color: rgb(0, 0, 150);
+}
+
+.healSplat {
+    border-color: rgb(100, 0, 100);
+    background-color: rgb(150, 0, 150);
+}
+
+.overlayHealthBar {
+    transform: translateX(-50%);
+    background-color: rgb(150, 0, 0);
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    background-clip: padding-box;
+    border-radius: 3px;
+    width: 40px;
+    height: 8px;
+}
+
+.overlayHealthFill {
+    background-color: rgb(0, 150, 0);
+    height: 100%;
+}
+
+.overlay {
+    position: absolute;
+    margin: 0;
+}
+
+#ctxMenu {
+    cursor: default;
+
+    pointer-events: initial;
+    z-index: 2;
+    position: absolute;
+
+    background-color: var(--fg-color);
+    color: white;
+    border-radius: 4px;
+    box-shadow: 2px 2px rgb(0, 0, 0, 0.5);
+
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#ctxMenu > * {
+    padding: 8px;
+    font-size: 15px;
+    text-shadow: -1px -1px black, 1px -1px black, -1px 1px black, 1px 1px black;
+}
+
+#ctxMenu > *:hover {
+    color: lightgray;
+}
+
+#heldItem {
+    z-index: 2;
+
+    width: var(--standard-icon);
+    height: var(--standard-icon);
+
+    position: absolute;
+}
+
+#statusArea {
+    position: absolute;
+    width: 20em;
+    top: 4px;
+    left: 4px;
+}
+
+#statusArea > * {
+    margin: 8px;
+}
+
+#nameAndLevel {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+#nameAndLevel > * {
+    color: white;
+    margin: 0;
+}
+
+.statusBar {
+    border: 2px solid var(--fg-color);
+    background-color: var(--fg-color);
+    border-radius: 16px;
+    position: relative;
+}
+
+.statusBar p {
+    color: white;
+    margin: 0;
+    position: relative;
+    text-align: center;
+}
+
+.barFill {
+    border-radius: 16px;
+    position: absolute;
+    height: 100%;
+}
+
+#healthFill {
+    background: rgb(255, 0, 0);
+    background: linear-gradient(180deg, rgb(255, 0, 0) 0%, rgb(100, 0, 0) 100%);
+}
+
+#experienceFill {
+    width: 50%;
+    background: rgb(255, 0, 255);
+    background: linear-gradient(180deg, rgb(255, 0, 255) 0%, rgb(100, 0, 100) 100%);
+}
+
+#tabArea {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+
+    width: fit-content;
+
+    display: flex;
+    flex-direction: column;
+    /*align-items: flex-end;*/
+}
+
+#tabArea > * {
+    pointer-events: initial;
+    margin: 2px;
+}
+
+#tabs {
+    width: fit-content;
+    align-self: flex-end;
+    display: flex;
+    justify-content: space-around;
+    padding: 4px;
+}
+
+.tab {
+    width: var(--standard-icon);
+    height: var(--standard-icon);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: pixelated;
+
+    margin: 4px 12px;
+    opacity: 0.66;
+    transition: opacity 0.1s;
+}
+
+.tab:hover, .tab.openTab {
+    opacity: 1;
+}
+
+.uiButton {
+    background-color: var(--bg-solid);
+    width: 100%;
+    padding: 2px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    color: white;
+}
+
+#settings {
+    width: 200px;
+    height: 200px;
+    padding: 4px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#fullscreenButton {
+    margin-top: auto;
+}
+
+.itemContainer {
+    display: grid;
+    column-gap: 4px;
+    row-gap: 4px;
+
+    grid-auto-rows: var(--standard-icon);
+}
+
+.itemContainer > * {
+    position: relative;
+}
+
+.scaleIcon, .itemContainer > * {
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: pixelated;
+    background-position: center;
+}
+
+.windowName {
+    text-align: center;
+    color: yellow;
+    font-family: serif;
+}
+
+#craftingFilter {
+    margin-right: 4px;
+    background-color: var(--fg-color);
+    color: white;
+    font-size: 12px;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+#craftingWindow .itemContainer {
+    grid-template-columns: repeat(8, var(--standard-icon));
+    grid-template-rows: repeat(6, var(--standard-icon))
+}
+
+.hasMaterial {
+    color: yellowgreen;
+}
+
+.lacksMaterial {
+    color: orangered;
+}
+
+.recipeLocked {
+    filter: opacity(0.5) brightness(0.5)
+}
+
+#bankWindow .itemContainer {
+    grid-template-columns: repeat(8, var(--standard-icon));
+    grid-template-rows: repeat(6, var(--standard-icon));
+}
+
+#tradeWindow {
+    color: white;
+    font-family: serif;
+}
+
+.tradeHeader {
+    border: 1px solid var(--fg-color);
+    border-left: none;
+    border-right: none;
+    text-align: center;
+}
+
+#tradeWindow .itemContainer {
+    grid-template-columns: repeat(8, var(--standard-icon));
+    grid-template-rows: repeat(2, var(--standard-icon));
+}
+
+#tradeButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+#tradeButtons * {
+    margin: 1rem;
+}
+
+.tradeButton {
+    border: 1px solid var(--fg-color);
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+}
+
+#tradeAccept {
+    color: yellowgreen;
+}
+
+#tradeAccepted {
+    color: gray;
+}
+
+#tradeDecline {
+    color: coral;
+}
+
+#shopWindow .itemContainer {
+    grid-template-columns: repeat(8, var(--standard-icon));
+    grid-template-rows: repeat(6, var(--standard-icon));
+}
+
+.shopItem:hover, .recipeUnlocked:hover {
+    cursor: pointer;
+}
+
+.selectDialog {
+    min-width: 200px;
+    position: absolute;
+    z-index: 1;
+    background-color: var(--bg-solid);
+    border: 2px solid var(--fg-color);
+    border-radius: 4px;
+    color: white;
+    padding: 4px;
+}
+
+.selectDialog:hover {
+    cursor: initial;
+}
+
+.selectDialogRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.selectDialogRow > *:nth-child(2) {
+    margin: auto;
+}
+
+.selectDialogIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background-color: var(--fg-color);
+}
+
+.selectDialogAmount {
+    background-color: var(--fg-color);
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    color: white;
+    width: 48px;
+}
+
+.selectDialogIcon {
+    background-color: var(--fg-color);
+}
+
+.selectDialogButton {
+    background-color: var(--fg-color);
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+}
+
+#inventory {
+    width: fit-content;
+    height: fit-content;
+
+    grid-template-columns: repeat(6, var(--standard-icon));
+    grid-template-rows: repeat(5, var(--standard-icon));
+}
+
+.itemAmount {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+
+    border-radius: 4px;
+    background-color: rgb(0, 0, 0, 0.75);
+
+    color: white;
+    font-size: 14px;
+}
+
+#equipmentAttribs {
+    display: flex;
+    flex-direction: column;
+}
+
+#attribs {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    list-style-type: none;
+}
+
+#attribs > * {
+    color: white;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.positiveBonus {
+    color: greenyellow
+}
+
+.negativeBonus {
+    color: coral
+}
+
+#openPointSpend {
+    margin-top: auto;
+    text-align: center;
+}
+
+#equipment {
+    display: flex;
+    width: 18em;
+    justify-content: space-between;
+    padding: 4px;
+}
+
+#equipmentGrid {
+    display: grid;
+    grid-template-columns: repeat(3, var(--standard-icon));
+    grid-template-rows: repeat(3, var(--standard-icon));
+}
+
+#helmSlot {
+    background-image: url('ui/equip/helm.png');
+}
+
+#swordSlot {
+    background-image: url('ui/equip/sword.png');
+}
+
+#plateSlot {
+    background-image: url('ui/equip/plate.png');
+}
+
+#shieldSlot {
+    background-image: url('ui/equip/shield.png');
+}
+
+#legsSlot {
+    background-image: url('ui/equip/legs.png');
+}
+
+#pointSpendContainer {
+    padding: 4px;
+    color: sandybrown;
+}
+
+#pointSpendContainer .uiButton {
+    text-align: center;
+}
+
+#pointSpendHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 2px solid saddlebrown;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+}
+
+#pointSpendAttribs {
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    column-gap: 4px;
+    row-gap: 4px;
+}
+
+.pointSpendAttrib {
+    padding-top: 2px;
+}
+
+#pointSpendConfirm {
+    grid-column: span 3;
+}
+
+#chatArea {
+    /*
+    Needed to allow scrolling in chat-box
+    See: https://stackoverflow.com/a/29699728
+    */
+    pointer-events: initial;
+    
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+}
+
+#openChatButton {
+    background-image: url('ui/chat.png');
+    width: var(--standard-icon);
+    height: var(--standard-icon);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: pixelated;
+}
+
+#chatBox {
+    width: fit-content;
+    height: fit-content;
+
+    color: white;
+    white-space: initial;
+}
+
+.closeButton {
+    background-image: url('ui/close.png');
+    image-rendering: initial !important;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+
+    background-color: var(--fg-color);
+}
+
+#closeChat {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+}
+
+#chatBoxMessageArea {
+    display: flex;
+    flex-direction: column-reverse;
+
+    overflow-y: scroll;
+    width: 30rem;
+    height: 12rem;
+}
+
+#chatBoxMessageArea::-webkit-scrollbar-thumb {
+    background-color: var(--fg-color);
+}
+
+#chatBoxMessageArea::-webkit-scrollbar {
+    background-color: transparent;
+}
+
+#chatBoxMessageArea > p {
+    margin: 6px;
+}
+
+#chatBoxInput {
+    width: 100%;
+    box-sizing: border-box;
+
+    background-color: transparent;
+    border: none;
+    border-top: 3px solid var(--fg-color);
+
+    color: white;
+}
+
+#chatBoxInput:focus {
+    outline: none;
+}
+
+.window {
+    pointer-events: initial;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.secondary-window {
+    pointer-events: initial;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
+.secondary-window .selectDialog {
+    right: 0;
+}
+
+#dialogueBox {
+    width: 325px;
+    padding: 16px;
+
+    color: white;
+    white-space: initial;
+}
+
+#dialogueBox * {
+    margin: 0;
+    margin-top: 8px
+}
+
+#dialogueName {
+    margin-top: 0;
+    text-align: center;
+}
+
+#dialogueOptions {
+    border-top: 1px solid var(--fg-color);
+
+    margin-top: 24px;
+    padding-top: 8px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#dialogueOptions > * {
+    cursor: default;
+}
+
+#dialogueOptions > *:hover {
+    color: lightgray;
+}
+
+canvas {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+
+    image-rendering: pixelated;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-attachment: fixed;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-color: black;
+    margin: 0;
+}
+
+@media (max-width:1000px)  {
+    :root {
+        --standard-icon: 32px;
+    }
+
+    #chatBoxMessageArea {
+        width: 20rem;
+        height: 6rem;
+    }
+
+    #statusArea {
+        background-color: initial;
+        border: initial;
+    }
+
+    #nameAndLevel {
+        padding-left: 8px;
+        display: inline-flex;
+        justify-content: left;
+        background-color: var(--fg-color);
+        border-radius: 16px;
+    }
+
+    #nameAndLevel p {
+        margin-right: 8px;
+    }
+
+    #statusArea {
+        width: 14em;
+    }
+}
