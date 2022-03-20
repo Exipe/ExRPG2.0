@@ -1,6 +1,10 @@
-FROM node:16-alpine
+FROM node:17-alpine
+RUN npm install -g typescript
+
 WORKDIR /server
-COPY . .
+COPY ./package*.json .
 RUN npm install
+COPY . .
 RUN npm run build
+
 CMD npm start
