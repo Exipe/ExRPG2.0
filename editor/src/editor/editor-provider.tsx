@@ -119,12 +119,10 @@ export const EditorProvider: React.FC<{}> = ({
         const tool = Tools[toolId];
         const action = tool.createAction(toolMode, x, y, toolContext);
         const cleanUp = action(engine.map.builder);
-        if(!(cleanUp instanceof Object)) {
-            throw "Tool did not return a clean-up function";
+        if(cleanUp instanceof Object) {
+            setAppliedActions([...appliedActions, { action, cleanUp }]);
         }
-
-        setAppliedActions([...appliedActions, { action, cleanUp }]);
-    }, [toolId, toolMode, toolContext, setAppliedActions]);
+    }, [toolId, toolMode, toolContext, appliedActions, setAppliedActions]);
 
     const undo = () => {
         const { action, cleanUp } = appliedActions.at(-1);
@@ -137,11 +135,9 @@ export const EditorProvider: React.FC<{}> = ({
     const redo = () => {
         const action = undoneActions.at(-1);
         const cleanUp = action(engine.map.builder);
-        if(!(cleanUp instanceof Object)) {
-            throw "Tool did not return a clean-up function";
+        if(cleanUp instanceof Object) {
+            setAppliedActions([...appliedActions, { action, cleanUp }]);
         }
-
-        setAppliedActions([...appliedActions, { action, cleanUp }]);
     };
 
     const selectTexture = (id: TextureId, x: number, y: number) => {

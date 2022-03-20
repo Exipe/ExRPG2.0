@@ -20,7 +20,7 @@ export const useTileHover = (engine: Exrpg.Engine) => {
     const tileHover = React.useCallback((x: number, y: number) => {
         if((x === data.x && y === data.y) 
             || x < 0 || x >= engine.map.width 
-            || y >= engine.map.height) 
+            || y < 0 || y >= engine.map.height) 
         {
             return;
         }
