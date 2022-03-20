@@ -1,7 +1,9 @@
 import Exrpg = require("exrpg");
 import { AnchorPoint } from "exrpg/dist/util";
 import React = require("react");
+import { Graphics } from "./graphics";
 import { LightSettings, useLightSettings } from "./light-settings";
+import { HoverData, useTileHover } from "./tile-hover";
 
 const RES_PATH = 'http://localhost:52501/res';
 
@@ -17,6 +19,7 @@ export type IEngineContext = {
     resize: (width: number, height: number, 
         anchorX: AnchorPoint, anchorY: AnchorPoint) => void,
     getDimensions: () => Dimensions | undefined,
+    hoverData: HoverData,
     lightSettings: LightSettings
 };
 
@@ -26,6 +29,7 @@ const prepare = async (canvas: HTMLCanvasElement): Promise<Exrpg.Engine> => {
     const engine = await Exrpg.initEngine(canvas, RES_PATH, true);
 
     engine.map = new Exrpg.Scene(engine, 10, 10);
+    engine.map.builder.autoUpdate = true;
 
     const resize = () => {
         canvas.width = canvas.clientWidth;
@@ -46,6 +50,8 @@ const prepare = async (canvas: HTMLCanvasElement): Promise<Exrpg.Engine> => {
     };
     engine.inputHandler.onMouseDrag = onDrag;
     engine.inputHandler.clickOnDrag = true;
+
+    engine.camera.scale = 2;
 
     return engine;
 };
@@ -85,19 +91,23 @@ export const EngineProvider: React.FC<{}> = ({
         });
     }, [canvas.current])
 
+    const hoverData = useTileHover(engine);
+
     const context: IEngineContext = {
         engine,
         loadMap,
         saveMap,
         resize,
         getDimensions,
-        lightSettings
+        lightSettings,
+        hoverData
     }
 
     return <>
         <canvas ref={canvas} />
 
         <Context.Provider value={context}>
+            {engine !== undefined && <Graphics />}
             {children}
         </Context.Provider>
     </>

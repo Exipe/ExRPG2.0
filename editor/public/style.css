@@ -40,6 +40,12 @@ canvas {
     height: 100%;
 }
 
+#footer {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+}
+
 #header {
     color: white;
     background-color: rgba(0, 0, 0, 0.5);

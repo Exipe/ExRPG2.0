@@ -80,7 +80,7 @@ const toolWindows: ToolWindow[] = [
 
 export const useToolWidgets = () => {
     const widgets = useWidgets();
-    const engine = useEngine();
+    const { engine } = useEngine();
 
     React.useEffect(() => {
         if(engine === undefined) {
