@@ -1,8 +1,9 @@
 
 import { Sprite } from "../texture/sprite"
-import { Engine, Light } from ".."
+import { Engine } from ".."
 import { loadTexture } from "../texture/texture"
 import { ShadowData } from "../entity/entity-shadow"
+import { loadStaticAnimation, StaticAnimationData } from "../animation/static-animation"
 
 export type ObjectOption = [string, string]
 
@@ -26,6 +27,7 @@ export class ObjectData {
     public readonly depth: number
 
     public readonly shadowData = null as ShadowData
+    public readonly animationData = null as StaticAnimationData
 
     public readonly offsetX: number
     public readonly offsetY: number
@@ -49,6 +51,13 @@ export class ObjectData {
             }
         }
 
+        if(definition.animation) {
+            this.animationData = {
+                frames: ifPresent(definition.animation.frames, 0),
+                duration: ifPresent(definition.animation.duration, Infinity)
+            }
+        }
+
         this.offsetX = ifPresent(definition.offsetX, 0)
         this.offsetY = ifPresent(definition.offsetY, 0)
 
@@ -58,11 +67,21 @@ export class ObjectData {
 
     public async getSprite(engine: Engine) {
         if(this.sprite == null) {
-            const texture = await loadTexture(engine.gl, this.spritePath)
+            const texture = await engine.loadTexture(this.spritePath + ".png");
             this.sprite = new Sprite(engine, texture)
         }
 
         return this.sprite
+    }
+
+    public getAnimation(engine: Engine) {
+        if(this.animationData === null) {
+            return null;
+        }
+
+        const { frames, duration } = this.animationData;
+
+        return loadStaticAnimation(engine, this.spritePath, frames, duration);
     }
 
 }

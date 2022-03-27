@@ -20,7 +20,7 @@ export async function initObjects(resPath: string) {
 
         objList.push(id)
 
-        const obj = new ObjectData(objData, resPath + "/obj/" + sprite + ".png", options)
+        const obj = new ObjectData(objData, "/obj/" + sprite, options)
         objMap.set(id, obj)
     });
 

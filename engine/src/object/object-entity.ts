@@ -6,6 +6,7 @@ import { Entity } from "../entity/entity";
 import { InputHandler } from "../input-handler";
 import { LightComponent } from "../light/light-component";
 import { EntityShadow } from "../entity/entity-shadow";
+import { StaticAnimationComponent } from "../animation/static-animation-component";
 
 export class ObjectEntity extends Entity {
 
@@ -21,6 +22,16 @@ export class ObjectEntity extends Entity {
         if(objectData.light > 0) {
             const lightComp = new LightComponent(this, engine.lightHandler, objectData.light)
             this.componentHandler.add(lightComp)
+        }
+
+        const getAnimation = objectData.getAnimation(engine);
+        if(getAnimation !== null) {
+            getAnimation.then((animation) => {
+                this.setDimensions(animation.sprite.width, animation.sprite.height);
+                this.componentHandler.add(new StaticAnimationComponent(animation));
+            });
+
+            return;
         }
 
         objectData.getSprite(engine)

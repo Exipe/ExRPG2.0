@@ -17,9 +17,9 @@ export abstract class Component {
 
     public animate(_dt: number) {}
 
-    public draw(x: number, y: number) {}
+    public draw(_x: number, _y: number) {}
 
-    public postDraw(x: number, y: number) {}
+    public postDraw(_x: number, _y: number) {}
 
     public initialize() {}
 

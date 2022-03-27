@@ -318,7 +318,12 @@
         "id": "torch_common",
         "name": "Torch",
         "sprite": "torch",
-        "light": 32
+        "light": 32,
+
+        "animation": {
+            "frames": 3,
+            "duration": 400
+        }
     },
 
     {
