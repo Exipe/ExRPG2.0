@@ -19,6 +19,8 @@ export class Combat extends PrimaryTask {
         self.combatHandler.attack(target.combatHandler)
     }
 
-    stop() {}
+    stop() {
+        this.character.combatHandler.stop();
+    }
 
 }

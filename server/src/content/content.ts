@@ -11,6 +11,7 @@ import { initDesertMaze } from "./maze/desert-maze"
 import { initFishing } from "./fishing"
 import { initCraftingUnlocks } from "./crafting-unlock"
 import { initWoodcutting } from "./gathering/woodcutting"
+import { PointItemPacket } from "../connection/outgoing-packet"
 
 export function initContent() {
     initFood()
@@ -169,5 +170,17 @@ export function initContent() {
             new Dialogue("猫", [ "にゃー。" ]) :
             new Dialogue(npc.data.name, [ "Meow." ])
         player.window = dialogue
+    })
+
+    actionHandler.onNpc("range_test", (player, npc, action) => {
+        if(action != "target") {
+            return;
+        }
+
+        player.send(new PointItemPacket(
+            "bow_crude",
+            player.identifier,
+            npc.identifier
+        ));
     })
 }

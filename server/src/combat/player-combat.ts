@@ -5,28 +5,38 @@ import { Player, SPAWN_POINT } from "../player/player";
 import { playerHandler } from "../world";
 import { CombatHandler } from "./combat";
 import { red } from "../util/color";
+import { CombatStrategy } from "./strategy/combat-strategy";
+import { weaponStrategies } from "./weapon";
+import { MeleeStrategy } from "./strategy/melee-strategy";
+
+const defaultStrategy = new MeleeStrategy();
 
 export class PlayerCombatHandler extends CombatHandler {
-
+    
     private readonly player: Player
-
+    
     constructor(player: Player) {
         super(player, maxHealth(1), 1, maxDamage(1))
         this.player = player
         player.attributes.onChange('speed_attack', value => this.attackSpeed = speedBonus(value))
         player.attributes.onChange('damage', value => this.maxDamage = maxDamage(value))
     }
-
+    
     public get accuracy(): number {
         return this.player.attributes.get("accuracy")
     }
-
+    
     public get defence(): number {
         return this.player.attributes.get("defence")
     }
-
+    
     protected get heldItem(): string {
         return this.player.equipment.idOf("sword")
+    }
+
+    public get strategy(): CombatStrategy {
+        const weapon = this.player.equipment.get("sword");
+        return weaponStrategies[weapon?.id] ?? defaultStrategy;
     }
 
     protected retaliate() {

@@ -1,5 +1,5 @@
 
-import { CharacterType } from "../character/character"
+import { CharacterIdentifier, CharacterType } from "../character/character"
 import { EquipSlot } from "../item/equipment"
 import { AttribId } from "../player/attrib"
 
@@ -201,6 +201,19 @@ export class SwingItemPacket implements Packet {
             offX: offX,
             offY: offY,
             duration: duration
+        }
+    }
+}
+
+export class PointItemPacket implements Packet {
+    public readonly id = "POINT_ITEM"
+    public readonly data: any
+
+    constructor(itemId: string, character: CharacterIdentifier, target: CharacterIdentifier) {
+        this.data = {
+            itemId, 
+            character, 
+            target
         }
     }
 }

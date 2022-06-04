@@ -1,7 +1,7 @@
 
 import { Player } from "../player";
 import { Progress, SaveAttrib, SaveEquip, SaveItem } from "./progress";
-import { EQUIP_SLOTS } from "../../item/equipment";
+import { equipSlots } from "../../item/equipment";
 import { attributeIds } from "../attrib";
 import { Container } from "../../item/container/container";
 
@@ -24,7 +24,7 @@ export function saveProgress(player: Player): Progress {
     const inventory = saveContainer(player.inventory)
     const bank = saveContainer(player.bank)
     
-    const equipment: SaveEquip[] = EQUIP_SLOTS.map(slot => ({
+    const equipment: SaveEquip[] = equipSlots.map(slot => ({
         slot: slot,
         id: player.equipment.idOf(slot)
     }))

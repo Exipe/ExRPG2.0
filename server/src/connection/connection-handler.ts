@@ -62,6 +62,7 @@ export class ConnectionHandler {
             packet[1](connection, msg.data)
         } catch(e) {
             this.handleException(connection, msg, e)
+            console.log(e.stack)
         }
     }
 

@@ -3,18 +3,20 @@ import { Npc } from "../npc/npc";
 import { Player } from "../player/player";
 import { actionHandler } from "../world";
 import { CombatHandler } from "./combat";
+import { CombatStrategy } from "./strategy/combat-strategy";
+import { MeleeStrategy } from "./strategy/melee-strategy";
 
 export class NpcCombatHandler extends CombatHandler {
-
+    
     private readonly npc: Npc
-
+    
     private readonly xp: number
-
+    
     public readonly accuracy: number
-
+    
     public readonly defence: number
-
-    protected readonly heldItem: string
+    
+    public readonly strategy: CombatStrategy;
 
     constructor(npc: Npc, data = npc.data.combatData) {
         super(npc, data.health, data.attackSpeed, data.maxHit)
@@ -22,7 +24,7 @@ export class NpcCombatHandler extends CombatHandler {
         this.xp = data.experience
         this.accuracy = data.accuracy
         this.defence = data.defence
-        this.heldItem = data.weapon
+        this.strategy = new MeleeStrategy(data.weapon)
     }
 
     protected retaliate(other: Character) {

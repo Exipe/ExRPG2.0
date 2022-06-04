@@ -4,15 +4,15 @@ import { Player } from "../player/player";
 import { UpdateEquipmentPacket } from "../connection/outgoing-packet";
 import { itemDataHandler } from "../world";
 
-export type EquipSlot = "legs" | "plate" | "helm" | "shield" | "sword"
-
 /*
 Do note that the order in this list, is the order the equipment will be sent on appearance updates
 */
-export const EQUIP_SLOTS = [ "legs", "plate", "helm", "shield", "sword" ] as EquipSlot[]
+export const equipSlots = [ "legs", "plate", "helm", "shield", "sword" ] as const;
+
+export type EquipSlot = typeof equipSlots[number];
 
 export function isEquipSlot(slot: string): slot is EquipSlot {
-    return EQUIP_SLOTS.includes(slot as EquipSlot)
+    return equipSlots.includes(slot as EquipSlot)
 }
 
 export class Equipment {
@@ -24,14 +24,14 @@ export class Equipment {
     constructor(player: Player) {
         this.player = player
 
-        EQUIP_SLOTS.forEach(slot => {
+        equipSlots.forEach(slot => {
             this.equippedItems.set(slot, null)
         })
     }
 
     public update() {
         const packet = new UpdateEquipmentPacket(
-            EQUIP_SLOTS.map(slot => 
+            equipSlots.map(slot => 
                 [slot, this.idOf(slot)])
         )
 
@@ -44,7 +44,7 @@ export class Equipment {
 
     public get appearanceValues() {
         const equipment = [] as string[]
-        EQUIP_SLOTS.forEach(slot => {
+        equipSlots.forEach(slot => {
             const item = this.get(slot)
             if(item == null) {
                 return

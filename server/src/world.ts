@@ -15,6 +15,7 @@ import { ReadOnlyMap } from "./util/readonly-map"
 import { CraftingStation } from "./crafting/crafting-station"
 import { Shop } from "./shop/shop"
 import { loadShopData } from "./shop/shop-data"
+import { initWeapons } from "./combat/weapon"
 
 export let npcDataHandler: ReadOnlyMap<string, NpcData> = null
 export let objDataHandler: ReadOnlyMap<string, ObjectData> = null
@@ -79,6 +80,7 @@ export async function initWorld(resPath: string) {
 
     initCommands()
     initContent()
+    initWeapons()
 
     weatherHandler = initWeather()
 

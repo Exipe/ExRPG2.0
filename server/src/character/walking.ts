@@ -1,7 +1,12 @@
 
-import { Player } from "../player/player"
 import { Character } from "./character"
 import { Task } from "./task"
+
+export type Goal = {
+    callback: () => void,
+    criteriaMet: () => boolean,
+    persistent: boolean
+}
 
 export class Walking implements Task {
 
@@ -12,8 +17,7 @@ export class Walking implements Task {
     private _goalX: number
     private _goalY: number
 
-    private _goal: [() => void, boolean]
-    private _idle: () => void
+    private _goal: Goal = null
 
     public lastExecution = -1
 
@@ -25,10 +29,26 @@ export class Walking implements Task {
         return this.character.walkDelay
     }
 
+    private checkGoal() {
+        if(this._goal == null || !this._goal.criteriaMet()) {
+            return;
+        }
+
+        const { callback, persistent } = this._goal;
+        callback();
+
+        if(!persistent) {
+            this._goal = null;
+            this.character.taskHandler.stopTask(this);
+        }
+    }
+
     private setGoalCoordinates(x: number, y: number) {
-        this._goalX = x
-        this._goalY = y
-        this.character.taskHandler.setTask(this)
+        this._goalX = x;
+        this._goalY = y;
+        this.character.taskHandler.setTask(this);
+
+        this.checkGoal();
     }
 
     public get still() {
@@ -49,23 +69,10 @@ export class Walking implements Task {
         }
 
         if(this.still) {
-            this.character.taskHandler.stopTask(this)
-
-            if(this._goal != null) {
-                const [goal, persistence] = this._goal
-                goal()
-
-                if(persistence) { //do not clear goal, do not start idle task
-                    return
-                }
-
-                this._goal = null
-            }
-
-            if(this._idle != null) {
-                this._idle()
-            }
+            this.character.taskHandler.stopTask(this);
         }
+
+        this.checkGoal();
     }
 
     private get map() {
@@ -80,29 +87,22 @@ export class Walking implements Task {
         return this._goalY
     }
 
-    public set goal(goal: () => void) {
-        if(this.still) {
-            goal()
-            return
+    public setGoal(callback: () => void, criteriaMet: () => boolean, persistent: boolean) {
+        if(criteriaMet()) {
+            callback();
+            
+            if(!persistent) return;
         }
 
-        this._goal = [goal, false]
+        this._goal = {  callback, criteriaMet, persistent }
+    }
+
+    public set goal(goal: () => void) {
+        this.setGoal(goal, () => this.still, false);
     }
 
     public set persistentGoal(goal: () => void) {
-        this._goal = [goal, true]
-
-        if(this.still) {
-            goal()
-        }
-    }
-
-    public set idle(idle: () => void) {
-        if(this.still) {
-            idle()
-        }
-
-        this._idle = idle
+        this.setGoal(goal, () => this.still, true);
     }
 
     public followStep(x: number, y: number) {

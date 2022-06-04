@@ -3,12 +3,15 @@ import { Scene } from "../scene/scene"
 import { Walking } from "./walking"
 import { sceneHandler } from "../world"
 import { TaskHandler } from "./task-handler"
-import { Combat } from "../combat/combat-task"
-import { ProgressIndicatorPacket, RemoveProgressIndicatorPacket, SwingItemPacket } from "../connection/outgoing-packet"
+import { PointItemPacket, ProgressIndicatorPacket, RemoveProgressIndicatorPacket, SwingItemPacket } from "../connection/outgoing-packet"
 import { CombatHandler } from "../combat/combat"
 import { MapId } from "../scene/map-id"
 
 export type CharacterType = "player" | "npc"
+export type CharacterIdentifier = {
+    characterType: CharacterType,
+    id: number,
+}
 
 const WALK_DELAY = 250
 
@@ -23,6 +26,13 @@ export abstract class Character {
     protected following = null as Character
 
     public readonly type: CharacterType
+
+    public get identifier(): CharacterIdentifier {
+        return {
+            characterType: this.type,
+            id: this.id
+        }
+    }
 
     public readonly id: number
 
@@ -70,6 +80,13 @@ export abstract class Character {
         this.map.broadcast(
             new SwingItemPacket(itemId, this.type, this.id, offX, offY, duration))
     }
+
+    public pointItem(itemId: any, target: Character) {
+        this.map.broadcast(
+            new PointItemPacket(itemId, this.identifier, target.identifier));
+    }
+
+    public stopPointing() {} // to-do: implement
 
     public get attackable() {
         return this.combatHandler != null
@@ -162,10 +179,7 @@ export abstract class Character {
             throw new Error("Attempt to attack unattackable")
         }
 
-        this.follow(character)
-        this.walking.persistentGoal = () => {
-            this.taskHandler.setTask(new Combat(this))
-        }
+        this.combatHandler.target(character, this.walking);
     }
 
     public unfollow() {
