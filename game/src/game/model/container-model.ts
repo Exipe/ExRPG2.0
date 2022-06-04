@@ -1,18 +1,18 @@
 import { ItemData } from "exrpg"
 import { Observable } from "../../util/observable"
 
-export type Item = [ItemData, number]
+export type ItemModel = [ItemData, number]
 
 export class ContainerModel {
     
-    public readonly items: Item[]
+    public readonly items: ItemModel[]
 
     public count(item: ItemData) {
         return this.items.reduce((sum, current) => (
             sum + (current != null && current[0] == item ? current[1] : 0)), 0)
     }
 
-    constructor(items: Item[]) {
+    constructor(items: ItemModel[]) {
         this.items = items
     }
 

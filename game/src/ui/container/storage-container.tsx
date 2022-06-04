@@ -1,7 +1,7 @@
 import { ItemData } from "exrpg";
 import { useState } from "react";
 import React = require("react");
-import { ContainerModel, Item, StorageContainerModel } from "../../game/model/container-model";
+import { ContainerModel, ItemModel, StorageContainerModel } from "../../game/model/container-model";
 import { HeldItemContext } from "../held-item";
 import { DisplayItem, ItemContainer } from "./container";
 

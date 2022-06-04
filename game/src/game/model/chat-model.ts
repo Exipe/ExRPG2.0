@@ -1,16 +1,7 @@
 
 import { Connection } from "../../connection/connection";
 import { SayPacket, CommandPacket } from "../../connection/packet";
-import { Game } from "../game";
 import { Observable } from "../../util/observable";
-
-export function initChat(game: Game) {
-    const connection = game.connection
-
-    connection.on("MESSAGE", (message: string[]) => {
-        game.chat.addMessage(message)
-    })
-}
 
 const COMMAND_PREFIX = "/"
 

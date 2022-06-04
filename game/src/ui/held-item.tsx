@@ -1,10 +1,10 @@
 import React = require("react");
-import { Item, StorageId } from "../game/model/container-model";
+import { ItemModel, StorageId } from "../game/model/container-model";
 
 export interface HeldItem {
     mouseX: number,
     mouseY: number,
-    item: Item,
+    item: ItemModel,
     slot: number,
     source: StorageId
 }

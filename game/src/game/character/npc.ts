@@ -1,10 +1,8 @@
 
 import { EntityShadow, NpcData, OutlineComponent, Sprite } from "exrpg";
 import { Game } from "../game";
-import { NpcActionPacket } from "../../connection/packet";
 import { Character } from "./character";
 import { NameTagComponent } from "./component/name-tag";
-import { Goal } from "../path-finder/path-finder-types";
 
 function combatLevel(npcData: NpcData) {
     const cb = npcData.raw.combat
@@ -20,6 +18,15 @@ function combatLevel(npcData: NpcData) {
         / attribs.length)
 }
 
+export interface NpcInfo {
+    id: number,
+    dataId: string,
+    x: number,
+    y: number
+}
+
+type Listener = (npc: Npc) => void;
+
 export class Npc extends Character {
     
     public readonly id: number
@@ -28,15 +35,16 @@ export class Npc extends Character {
     
     private sprite: Sprite = null
 
-    public contextListener: () => void
+    public readonly contextListener: Listener
+    public readonly clickListener: Listener
 
-    public clickListener: () => void
+    constructor(game: Game, info: NpcInfo, contextListener: Listener, clickListener: Listener) {
+        super(game, info.x, info.y)
+        this.contextListener = contextListener;
+        this.clickListener = clickListener;
+        this.id = info.id
 
-    constructor(game: Game, id: number, dataId: string, tileX: number, tileY: number) {
-        super(game, tileX, tileY)
-        this.id = id
-
-        this.data = game.engine.npcHandler.get(dataId)
+        this.data = game.engine.npcHandler.get(info.dataId)
         const cbLevel = combatLevel(this.data)
         const nameTag = (cbLevel > 0 ? `[${cbLevel}] ` : '')
             + this.data.name
@@ -75,7 +83,7 @@ export class Npc extends Character {
             return
         }
 
-        this.contextListener()
+        this.contextListener(this)
     }
 
     protected onClick(_: any) {
@@ -83,7 +91,7 @@ export class Npc extends Character {
             return false
         }
 
-        this.clickListener()
+        this.clickListener(this)
         return true
     }
 
@@ -97,63 +105,4 @@ export class Npc extends Character {
         this.sprite.draw(this.drawX, this.drawY)
     }
 
-}
-
-export function initNpcs(game: Game): void {
-    const connection = game.connection
-
-    const npcAction = (npc: Npc, action: string) => {
-        const goal: Goal = {
-            x: npc.tileX,
-            y: npc.tileY,
-            width: 1,
-            height: 1,
-            distance: 1
-        }
-
-        game.walkToGoal(goal).then(() => {
-            if(action != null) {
-                connection.send(new NpcActionPacket(npc.id, action))
-            }
-        })
-    }
-
-    const onNpcContext = (npc: Npc) => {
-        const data = npc.data
-        data.options.forEach(option => {
-            const text = `${option[0]} /rgb(255,230,120,${data.name})`
-            game.ctxMenu.add([text, () => {
-                npcAction(npc, option[1])
-            }])
-        })
-    }
-
-    const onNpcClick = (npc: Npc) => {
-        const action = npc.data.options.length > 0 ? npc.data.options[0][1] : null
-        npcAction(npc, action)
-    }
-
-    connection.on("ADD_NPC", data => {
-        data.forEach((n: [number, string, number, number]) => {
-            const npc = new Npc(game, n[0], n[1], n[2], n[3])
-
-            npc.clickListener = onNpcClick.bind(null, npc)
-            npc.contextListener = onNpcContext.bind(null, npc)
-            game.addNpc(npc)
-        })
-    })
-
-    connection.on("MOVE_NPC", data => {
-        const npc = game.getNpc(data.id)
-        
-        if(data.animate) {
-            npc.walkTo(data.x, data.y, data.animationSpeed)
-        } else {
-            npc.place(data.x, data.y)
-        }
-    })
-
-    connection.on("REMOVE_NPC", (id: number) => {
-        game.removeNpc(id)
-    })
 }

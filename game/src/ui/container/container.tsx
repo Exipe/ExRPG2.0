@@ -1,10 +1,10 @@
 
 import { ItemData } from "exrpg";
 import React = require("react");
-import { Item } from "../../game/model/container-model";
+import { ItemModel } from "../../game/model/container-model";
 
 export interface SelectDialogProps {
-    item: Item,
+    item: ItemModel,
     selectAmount: number,
     children: JSX.Element | JSX.Element[],
     onClose: () => void,
@@ -70,7 +70,7 @@ export function ContainerSelectDialog(props: ContainerSelectProps) {
 }
 
 export interface DisplayItemProps {
-    item: Item
+    item: ItemModel
     className?: string,
     children?: JSX.Element,
     onClick?: (e: React.MouseEvent) => void

@@ -1,10 +1,11 @@
 
-import { Game, initGame } from "./game/game";
+import { Game } from "./game/game";
 import React = require("react");
 import { connection } from "./connection/connection";
 import { initEngine, Engine } from "exrpg";
 import { UiContainer } from "./ui/ui";
 import { ReadyPacket } from "./connection/packet";
+import { initGame } from "./game/init-game";
 
 function windowResize(canvas: HTMLCanvasElement, engine: Engine) {
     canvas.width = canvas.clientWidth

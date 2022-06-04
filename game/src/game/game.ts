@@ -1,19 +1,17 @@
 
-import { Player, initPlayers } from "./character/player";
-import { Scene, Engine, TILE_SIZE } from "exrpg";
-import { Npc, initNpcs } from "./character/npc";
+import { Player, PlayerInfo } from "./character/player";
+import { Scene, Engine, TILE_SIZE, Sprite } from "exrpg";
+import { Npc, NpcInfo } from "./character/npc";
 import { Connection } from "../connection/connection";
 import { WalkPacket } from "../connection/packet";
-import { initInventory, InventoryModel } from "./model/tab/inventory-model";
-import { GroundItem, initGroundItems } from "./ground-item";
+import { InventoryModel } from "./model/tab/inventory-model";
+import { GroundItem } from "./ground-item";
 import { ContextMenuModel } from "./model/context-menu-model";
 import { EquipmentModel } from "./model/tab/equipment/equipment-model";
-import { initObjects } from "./object";
 import { DialogueModel } from "./model/window/dialogue-model";
-import { ChatModel, initChat } from "./model/chat-model";
+import { ChatModel } from "./model/chat-model";
 import { OverlayAreaModel } from "./model/overlay-model";
 import { StatusModel } from "./model/status-model";
-import { bindIncomingPackets } from "../connection/incoming-packet";
 import { SettingsModel } from "./model/tab/settings-model";
 import { ShopModel } from "./model/window/shop-model";
 import { Observable } from "../util/observable";
@@ -22,45 +20,6 @@ import { BankModel } from "./model/window/bank-model";
 import { TradeModel } from "./model/window/trade-model";
 import { PathFinderWorker } from "./path-finder/path-finder-worker";
 import { Goal } from "./path-finder/path-finder-types";
-
-export async function initGame(engine: Engine, connection: Connection) {
-    const pathFinderWorker = new PathFinderWorker() // start path finder thread
-    const game = new Game(engine, connection, 
-        pathFinderWorker);
-
-    (window as any).hideLocal = () => {
-        game.getLocal().destroy()
-    }
-
-    await initPlayers(game)
-    initNpcs(game)
-    initObjects(game)
-    initGroundItems(game)
-    initInventory(game)
-    initChat(game)
-
-    bindIncomingPackets(game)
-
-    engine.inputHandler.onTileClick = (x, y, _) => {
-        game.walkTo(x, y)
-    }
-
-    engine.inputHandler.onTileContext = (x, y) => {
-        game.ctxMenu.add(["Walk here", () => { 
-            game.walkTo(x, y) 
-        }])
-    }
-
-    engine.inputHandler.onContext = (x, y) => {
-        game.ctxMenu.open(x, y)
-    }
-
-    engine.onAnimate = () => {
-        game.update()
-    }
-
-    return game
-}
 
 export type PrimaryWindow = "None" | "Shop" | "Dialogue" | "Crafting" | "Bank" | "Trade"
 
@@ -92,6 +51,10 @@ export class Game {
     public readonly trade: TradeModel
 
     public readonly primaryWindow = new Observable<PrimaryWindow>("None")
+
+    public createPlayer: (equipment: string[], info: PlayerInfo) => Player;
+    public createNpc: (info: NpcInfo) => Npc;
+    public updatePlayerAppearance: (id: number, equipment: string[]) => void;
 
     constructor(engine: Engine, connection: Connection, pathFinderWorker: PathFinderWorker) {
         this.engine = engine

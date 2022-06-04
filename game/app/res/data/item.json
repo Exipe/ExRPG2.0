@@ -650,6 +650,25 @@
     },
 
     {
+        "id": "bow_sword",
+        "name": "Bow sword",
+        "sprite": "bow",
+        "value": 67,
+        "equip": {
+            "slot": "sword",
+
+            "bonuses": {
+                "accuracy": 5,
+                "damage": 5
+            },
+
+            "requirements": {
+                "accuracy": 10
+            }
+        }
+    },
+
+    {
         "id": "helm_copper",
         "name": "Copper helmet",
         "sprite": "copper/helm",
@@ -781,6 +800,28 @@
         "name": "Birch log",
         "sprite": "log/birch",
         "value": 12
+    },
+
+    {
+        "id": "bow_crude",
+        "name": "Crude bow",
+        "equip": {
+            "slot": "sword"
+        },
+        "sprite": "bow"
+    },
+
+    {
+        "id": "arrows_crude",
+        "name": "Crude arrows",
+        "sprite": "arrows",
+        "stack": 100
+    },
+
+    {
+        "id": "quiver",
+        "name": "Quiver",
+        "sprite": "quiver"
     }
 
 ]

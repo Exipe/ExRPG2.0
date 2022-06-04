@@ -145,28 +145,21 @@
     color: white;
     font-family: sans-serif;
     font-weight: bold;
-
-    border-radius: 100%;
-    border-width: 2px;
-    border-style: solid;
-    padding: 2px 4px;
+    -webkit-text-stroke: 1px black;
     
     animation: fadeOutHitSplat linear forwards 2s;
 }
 
 .hitSplat {
-    border-color: rgb(100, 0, 0);
-    background-color: rgb(150, 0, 0);
+    color: red;
 }
 
 .missSplat {
-    border-color: rgb(0, 0, 100);
-    background-color: rgb(0, 0, 150);
+    color: skyblue;
 }
 
 .healSplat {
-    border-color: rgb(100, 0, 100);
-    background-color: rgb(150, 0, 150);
+    color: magenta;
 }
 
 .overlayHealthBar {
@@ -176,7 +169,7 @@
     background-clip: padding-box;
     border-radius: 3px;
     width: 40px;
-    height: 8px;
+    height: 4px;
 }
 
 .overlayHealthFill {
