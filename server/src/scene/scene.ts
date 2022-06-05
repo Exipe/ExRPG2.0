@@ -61,6 +61,11 @@ export class Scene {
         }
     }
 
+    public tick() {
+        this.players.forEach(p => p.tick());
+        this.npcs.forEach(n => n.tick());
+    }
+
     public addTempObj(objId: string, x: number, y: number, lifeTime = -1) {
         const obj = objDataHandler.get(objId)
         

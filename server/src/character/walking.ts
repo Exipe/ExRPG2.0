@@ -148,12 +148,17 @@ export class Walking implements Task {
             let diffX = compare(x, goalX)
             let diffY = compare(y, goalY)
 
-            if(!this.character.walkable(x, y, diffX, diffY)) {
-                break
+            if(this.character.walkable(x, y, diffX, diffY)) {
+                x += diffX;
+                y += diffY;
+            } else if(diffX != 0 && this.character.walkable(x, y, diffX, 0)) {
+                x += diffX;
+            } else if(diffY != 0 && this.character.walkable(x, y, 0, diffY)) {
+                y += diffY;
+            } else {
+                break;
             }
 
-            x += diffX
-            y += diffY
             this.steps.push([x, y])
         }
 

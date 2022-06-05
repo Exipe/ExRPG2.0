@@ -112,5 +112,9 @@ export class SceneHandler {
     public get(id: string) {
         return this.scenes.get(id)
     }
+
+    public tick() {
+        this.scenes.forEach(scene => scene.tick());
+    }
     
 }

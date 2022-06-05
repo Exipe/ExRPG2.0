@@ -39,7 +39,7 @@ function currTime() {
 const TICK_INTERVAL = 250
 
 function tick() {
-    npcHandler.tick()
+    sceneHandler.tick();
 }
 
 export async function initWorld(resPath: string) {

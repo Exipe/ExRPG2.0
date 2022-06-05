@@ -26,10 +26,6 @@ export class NpcHandler {
         this.npcMap.forEach(npc => npc.spawn())
     }
 
-    public tick() {
-        this.npcMap.forEach(npc => npc.tick())
-    }
-
     public create(dataId: string, map: MapId, x: number, y: number) {
         const data = this.npcDataHandler.get(dataId)
         if(data == null) {
@@ -70,6 +66,10 @@ export class Npc extends Character {
         return this.map != null
     }
 
+    public get aggressive() {
+        return this.data.id == "skeleton";
+    }
+
     public tileWalkable(x: number, y: number) {
         return !this.map.isNpcBlocked(x, y)
     }
@@ -79,35 +79,27 @@ export class Npc extends Character {
     }
 
     public tick() {
-        if(!this.alive) {
-            return
-        }
+        super.tick();
 
         const radius = this.data.walkRadius
+        if(this.target == null && this.aggressive) {
+            for(let other of this.map.players) {
+                const distX = other.x - this.x;
+                const distY = other.y - this.y;
 
-        if(this.target == null && this.data.id == "skeleton") {
-            for(let p of this.map.players) {
-                const diffX = p.x - this.x
-                const diffY = p.y - this.y
-
-                if((diffX != 0 || diffY != 0) && 
-                Math.abs(diffX) <= 1 && Math.abs(diffY) <= 1 && 
-                this.walkable(this.x, this.y, diffX, diffY)) {
-                    this.attack(p)
-                    return
+                if(Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2)) < 6) {
+                    this.attack(other)
                 }
             }
         }
+        
+        if(this.still && randomChance(15)) {
+            const goalX = randomOffset(this.spawnX, radius)
+            const goalY = randomOffset(this.spawnY, radius)
 
-        if(!this.alive || !this.still || !randomChance(15)) {
-            return
+            this.walking.clear()
+            this.walking.addSteps(goalX, goalY)
         }
-
-        const goalX = randomOffset(this.spawnX, radius)
-        const goalY = randomOffset(this.spawnY, radius)
-
-        this.walking.clear()
-        this.walking.addSteps(goalX, goalY)
     }
 
     protected enterMap() {

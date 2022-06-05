@@ -11,7 +11,7 @@ export class Combat extends PrimaryTask {
         const self = this.character
         const target = self.target
 
-        if(target == null) {
+        if(target == null ||!self.combatHandler.strategy.reaches(self, target)) {
             self.taskHandler.stopTask(this)
             return
         }

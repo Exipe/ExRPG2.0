@@ -60,6 +60,13 @@ export abstract class Character {
         this.walkSpeed = walkSpeed
     }
 
+    public tick() {
+        // prevent character from getting stuck
+        if(this.taskHandler.stopped && this.target != null) {
+            this.getBehind(this.target);
+        }
+    }
+
     public get followDebug() {
         return this.followers.includes(this.following) && !this.following.walking.still
     }

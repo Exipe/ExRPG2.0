@@ -61,13 +61,6 @@ export abstract class CombatHandler {
         const { character: self, strategy } = this;
         const target = other.character
 
-        const distX = target.x - self.x
-        const distY = target.y - self.y
-
-        if((distX == 0 && distY == 0) || !strategy.reaches(self, target)) {
-            return
-        }
-
         const [type, damage] = calculateDamage(this.maxDamage, this.accuracy, other.defence)
 
         strategy.onAttack(self, target, this.attackDelay);

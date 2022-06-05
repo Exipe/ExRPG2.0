@@ -57,4 +57,8 @@ export class TaskHandler {
         this.task.tick()
     }
 
+    public get stopped() {
+        return this.task == null;
+    }
+
 }
