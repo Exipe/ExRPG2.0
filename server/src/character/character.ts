@@ -211,6 +211,8 @@ export abstract class Character {
     }
 
     public goToMap(map: Scene, x: number, y: number) {
+        this._x = x
+        this._y = y
         this.stop()
 
         for(let f of this.followers) {
@@ -222,8 +224,6 @@ export abstract class Character {
                 this.leaveMap()
             }
 
-            this._x = x
-            this._y = y
             this.lastX = x
             this.lastY = y
 

@@ -88,7 +88,8 @@ export class Npc extends Character {
                 const distY = other.y - this.y;
 
                 if(Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2)) < 6) {
-                    this.attack(other)
+                    this.attack(other);
+                    break;
                 }
             }
         }
