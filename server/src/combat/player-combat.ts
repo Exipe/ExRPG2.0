@@ -29,14 +29,10 @@ export class PlayerCombatHandler extends CombatHandler {
     public get defence(): number {
         return this.player.attributes.get("defence")
     }
-    
-    protected get heldItem(): string {
-        return this.player.equipment.idOf("sword")
-    }
 
     public get strategy(): CombatStrategy {
-        const weapon = this.player.equipment.get("sword");
-        return weaponStrategies[weapon?.id] ?? defaultStrategy;
+        const weapon = this.player.equipment.idOf("sword");
+        return weaponStrategies[weapon] ?? defaultStrategy;
     }
 
     protected retaliate() {

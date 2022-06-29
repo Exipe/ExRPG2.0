@@ -12,7 +12,7 @@ import { AttribId, Attributes } from "../game/model/tab/equipment/attributes";
 import { ChatBubbleComponent, CHAT_BUBBLE_COMPONENT } from "../game/character/component/chat-bubble";
 import { NpcInfo } from "../game/character/npc";
 import { GroundItem } from "../game/ground-item";
-import { ItemPointComponent } from "../game/character/component/item-point";
+import { ItemPointComponent, ITEM_POINT_COMPONENT } from "../game/character/component/item-point";
 
 //#region Player packets
 
@@ -162,6 +162,13 @@ function onPointItem(game: Game, data: any) {
         : game.getNpc(data.target.id);
     const pointItem = new ItemPointComponent(spritePromise, character, target);
     character.componentHandler.add(pointItem);
+}
+
+function onCancelPointItem(game: Game, data: any) {
+    const character = data.character.characterType == "player" 
+        ? game.getPlayer(data.character.id)
+        : game.getNpc(data.character.id);
+    character.componentHandler.remove(ITEM_POINT_COMPONENT);
 }
 
 //#endregion
@@ -360,6 +367,7 @@ export function bindIncomingPackets(game: Game) {
 
     bind("SWING_ITEM", onSwingItem)
     bind("POINT_ITEM", onPointItem)
+    bind("CANCEL_POINT", onCancelPointItem)
 
     bind("HIT_SPLAT", onHitSplat)
     bind("PROGRESS_INDICATOR", onProgressIndicator)

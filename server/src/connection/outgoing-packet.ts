@@ -218,6 +218,17 @@ export class PointItemPacket implements Packet {
     }
 }
 
+export class CancelPointItemPacket implements Packet {
+    public readonly id = "CANCEL_POINT"
+    public readonly data: any
+
+    constructor(character: CharacterIdentifier) {
+        this.data = {
+            character
+        }
+    }
+}
+
 export type HitSplatType = "hit" | "miss" | "heal"
 
 export class HitSplatPacket implements Packet {

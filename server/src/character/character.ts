@@ -3,7 +3,7 @@ import { Scene } from "../scene/scene"
 import { Walking } from "./walking"
 import { sceneHandler } from "../world"
 import { TaskHandler } from "./task-handler"
-import { PointItemPacket, ProgressIndicatorPacket, RemoveProgressIndicatorPacket, SwingItemPacket } from "../connection/outgoing-packet"
+import { CancelPointItemPacket, PointItemPacket, ProgressIndicatorPacket, RemoveProgressIndicatorPacket, SwingItemPacket } from "../connection/outgoing-packet"
 import { CombatHandler } from "../combat/combat"
 import { MapId } from "../scene/map-id"
 
@@ -93,7 +93,11 @@ export abstract class Character {
             new PointItemPacket(itemId, this.identifier, target.identifier));
     }
 
-    public stopPointing() {} // to-do: implement
+    public stopPointing() {
+        this.map.broadcast(
+            new CancelPointItemPacket(this.identifier)
+        );
+    }
 
     public get attackable() {
         return this.combatHandler != null
@@ -258,6 +262,9 @@ export abstract class Character {
 
     public stop() {
         this.unfollow()
+        if(this.map != null && this.attackable) {
+            this.combatHandler.stop()
+        }
         this.walking.clear()
         this.taskHandler.stopTask()
     }
@@ -290,7 +297,7 @@ export abstract class Character {
         }
 
         for(let f of this.followers) {
-            f.unfollow()
+            f.stop()
         }
     }
 

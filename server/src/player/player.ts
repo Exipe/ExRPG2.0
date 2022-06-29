@@ -315,6 +315,7 @@ export class Player extends Character {
             this.attributes.unsetArmor(unequipped, false)
         }
         this.attributes.setArmor(item)
+        this.combatHandler.updateStrategy()
 
         playerHandler.broadcast(this.updateAppearancePacket)
     }
@@ -327,6 +328,7 @@ export class Player extends Character {
         const unequipped = this.equipment.remove(slot)
         this.inventory.addData(unequipped, 1, true)
         this.attributes.unsetArmor(unequipped)
+        this.combatHandler.updateStrategy()
 
         playerHandler.broadcast(this.updateAppearancePacket)
     }

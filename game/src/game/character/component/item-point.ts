@@ -1,7 +1,9 @@
-import { Entity, ITEM_SIZE, Sprite, translation } from "exrpg";
+import { Entity, Sprite, translation } from "exrpg";
 import { Component } from "exrpg/dist/entity/component";
 
 export const ITEM_POINT_COMPONENT = "ITEM_POINT";
+
+const ITEM_OFFSET = 12;
 
 export class ItemPointComponent extends Component {
 
@@ -28,7 +30,7 @@ export class ItemPointComponent extends Component {
 
         const angle = Math.atan2(x2-x, y-y2) * 180 / Math.PI;
 
-        const matrix = translation(-sprite.width / 2, -ITEM_SIZE -sprite.height / 2)
+        const matrix = translation(-sprite.width / 2, -ITEM_OFFSET -sprite.height / 2)
         .rotate(angle)
         .translate(x, y);
 

@@ -44,6 +44,22 @@ export abstract class CombatHandler {
 
     protected abstract die(killer: Character): void;
 
+    private previousStrategy: CombatStrategy
+
+    public updateStrategy() {
+        const { character: self, previousStrategy, strategy } = this;
+        this.previousStrategy = strategy;
+        const other = self.target;
+
+        if(previousStrategy != null) {
+            previousStrategy.onLoseTarget(self);
+        }
+        
+        if(self.target != null) {
+            strategy.onTarget(self, other);
+        }
+    }
+
     public target(other: Character, walking: Walking) {
         const { character: self } = this;
         self.follow(other)
@@ -54,7 +70,7 @@ export abstract class CombatHandler {
         const criteria = () => this.strategy.reaches(self, other);
         walking.setGoal(callback, criteria, true);
 
-        this.strategy.onTarget(self, other);
+        this.updateStrategy();
     }
 
     public attack(other: CombatHandler) {
