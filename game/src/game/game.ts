@@ -20,6 +20,7 @@ import { BankModel } from "./model/window/bank-model";
 import { TradeModel } from "./model/window/trade-model";
 import { PathFinderWorker } from "./path-finder/path-finder-worker";
 import { Goal } from "./path-finder/path-finder-types";
+import { Character } from "./character/character";
 
 export type PrimaryWindow = "None" | "Shop" | "Dialogue" | "Crafting" | "Bank" | "Trade"
 
@@ -260,6 +261,11 @@ export class Game {
 
     public getPlayer(id: number) {
         return this.players.find(p => p.id == id)
+    }
+
+    public getCharacter(type: "player" | "npc", id: number): Character {
+        if(type == "player") return this.getPlayer(id);
+        if(type == "npc") return this.getNpc(id);
     }
 
     public getLocal() {

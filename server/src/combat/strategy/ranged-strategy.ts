@@ -1,6 +1,10 @@
 import { Character } from "../../character/character";
+import { ProjectilePacket } from "../../connection/outgoing-packet";
 import { isPlayer } from "../../player/player";
+import { calculateDamage } from "../../util/formula";
 import { CombatStrategy } from "./combat-strategy";
+
+const PROJECTILE_DELAY = 350;
 
 export class RangedStrategy implements CombatStrategy {
 
@@ -12,9 +16,18 @@ export class RangedStrategy implements CombatStrategy {
         this.distance = distance;
     }
 
-    onAttack(self: Character, target: Character, delay: number): void {
-        // to-do: shoot projectile
-        return;
+    onAttack(self: Character, target: Character, _delay: number): void {
+        const cb = self.combatHandler;
+        const targetCb = target.combatHandler;
+        
+        self.map.broadcast(new ProjectilePacket(
+            self.identifier, target.identifier, "arrow", PROJECTILE_DELAY));
+
+        const { maxDamage, accuracy } = cb; // damage and accuracy before shooting
+        cb.delayDamage(targetCb, () => {
+            const defence = targetCb.defence; // defence when shot
+            return calculateDamage(maxDamage, accuracy, defence);
+        }, PROJECTILE_DELAY);
     }
 
     reaches(self: Character, other: Character) {

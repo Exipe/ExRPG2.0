@@ -229,6 +229,20 @@ export class CancelPointItemPacket implements Packet {
     }
 }
 
+export class ProjectilePacket implements Packet {
+    public readonly id = "PROJECTILE"
+    public readonly data: any
+
+    constructor(character: CharacterIdentifier, target: CharacterIdentifier, sprite: string, delay: number) {
+        this.data = {
+            character,
+            target,
+            sprite,
+            delay
+        }
+    }
+}
+
 export type HitSplatType = "hit" | "miss" | "heal"
 
 export class HitSplatPacket implements Packet {

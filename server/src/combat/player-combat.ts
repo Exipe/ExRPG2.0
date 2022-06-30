@@ -80,8 +80,8 @@ export class PlayerCombatHandler extends CombatHandler {
         this.updateHealth()
     }
 
-    public damage(value: number, type: HitSplatType) {
-        super.damage(value, type)
+    public applyDamage(value: number, type: HitSplatType) {
+        super.applyDamage(value, type)
         this.updateHealth()
     }
     

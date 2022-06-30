@@ -74,22 +74,18 @@ export abstract class CombatHandler {
     }
 
     public attack(other: CombatHandler) {
-        const { character: self, strategy } = this;
-        const target = other.character
-
-        const [type, damage] = calculateDamage(this.maxDamage, this.accuracy, other.defence)
-
-        strategy.onAttack(self, target, this.attackDelay);
-        other.retaliate(self)
-
-        if(self.type == "player") {
-            other.damageCounter.count(self.id, damage)
-        }
-        other.damage(damage, type)
+        this.strategy.onAttack(this.character, other.character, this.attackDelay);
     }
 
+    private damageTimeout: NodeJS.Timeout = null;
+
     public stop() {
-        this.strategy.onLoseTarget(this.character);
+        const { strategy, character, damageTimeout } = this;
+        if(damageTimeout != null) {
+            clearTimeout(damageTimeout);
+        }
+
+        strategy.onLoseTarget(character);
     }
 
     public heal(value: number) {
@@ -101,7 +97,25 @@ export abstract class CombatHandler {
         this.health = Math.min(this.health + value, this.maxHealth)
     }
 
-    public damage(value: number, type: HitSplatType) {
+    public delayDamage(other: CombatHandler, callback: () => [HitSplatType, number], delay: number) {
+        other.damageTimeout = setTimeout(() => {
+            const damage = callback();
+            this.damage(other, damage);
+        }, delay);
+    }
+
+    public damage(other: CombatHandler, damage: [HitSplatType, number]) {
+        const { character: self } = this;
+        const [type, value] = damage;
+
+        other.retaliate(self);
+        if(self.type == "player") {
+            other.damageCounter.count(self.id, value);
+        }
+        other.applyDamage(value, type);
+    }
+
+    public applyDamage(value: number, type: HitSplatType) {
         const self = this.character
         const damage = Math.min(this.health, value)
 

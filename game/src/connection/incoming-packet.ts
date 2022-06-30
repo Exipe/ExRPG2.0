@@ -1,5 +1,5 @@
 
-import { ItemData, loadScene } from "exrpg";
+import { ItemData, loadScene, Sprite } from "exrpg";
 import { ItemModel } from "../game/model/container-model"
 import { Game } from "../game/game";
 import { ContainerModel } from "../game/model/container-model";
@@ -13,6 +13,7 @@ import { ChatBubbleComponent, CHAT_BUBBLE_COMPONENT } from "../game/character/co
 import { NpcInfo } from "../game/character/npc";
 import { GroundItem } from "../game/ground-item";
 import { ItemPointComponent, ITEM_POINT_COMPONENT } from "../game/character/component/item-point";
+import { ProjectileComponent } from "../game/character/component/projectile";
 
 //#region Player packets
 
@@ -162,6 +163,20 @@ function onPointItem(game: Game, data: any) {
         : game.getNpc(data.target.id);
     const pointItem = new ItemPointComponent(spritePromise, character, target);
     character.componentHandler.add(pointItem);
+}
+
+function onProjectile(game: Game, data: any) {
+    const engine = game.engine;
+    const spritePromise = 
+        engine.loadTexture(`projectile/${data.sprite}.png`)
+        .then(texture => new Sprite(engine, texture));
+
+    const character = game.getCharacter(data.character.characterType, data.character.id);
+    const target = game.getCharacter(data.target.characterType, data.target.id);
+    const delay = data.delay;
+
+    const projectile = new ProjectileComponent(spritePromise, target, character, delay);
+    target.componentHandler.add(projectile);
 }
 
 function onCancelPointItem(game: Game, data: any) {
@@ -368,6 +383,7 @@ export function bindIncomingPackets(game: Game) {
     bind("SWING_ITEM", onSwingItem)
     bind("POINT_ITEM", onPointItem)
     bind("CANCEL_POINT", onCancelPointItem)
+    bind("PROJECTILE", onProjectile)
 
     bind("HIT_SPLAT", onHitSplat)
     bind("PROGRESS_INDICATOR", onProgressIndicator)
