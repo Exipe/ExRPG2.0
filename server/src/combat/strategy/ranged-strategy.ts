@@ -5,6 +5,7 @@ import { calculateDamage } from "../../util/formula";
 import { CombatStrategy } from "./combat-strategy";
 
 const PROJECTILE_DELAY = 350;
+const ARROWS = "arrows_crude";
 
 export class RangedStrategy implements CombatStrategy {
 
@@ -20,6 +21,15 @@ export class RangedStrategy implements CombatStrategy {
         const cb = self.combatHandler;
         const targetCb = target.combatHandler;
         
+        if(isPlayer(self)) {
+            const remaining = self.inventory.remove(ARROWS, 1);
+            if(remaining > 0) {
+                self.sendMessage("You have run out of arrows");
+                self.stop();
+                return;
+            }
+        }
+
         self.map.broadcast(new ProjectilePacket(
             self.identifier, target.identifier, "arrow", PROJECTILE_DELAY));
 
@@ -54,6 +64,13 @@ export class RangedStrategy implements CombatStrategy {
     
     onTarget(self: Character, target: Character) {
         const { itemId } = this;
+
+        if(isPlayer(self) && !self.inventory.hasItem("arrows_crude")) {
+            self.sendMessage("You do not have any arrows on you");
+            self.stop();
+            return;
+        }
+
         if(itemId != "") {
             self.pointItem(itemId, target);
         }

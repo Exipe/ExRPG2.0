@@ -3,7 +3,7 @@ import { Component } from "exrpg/dist/entity/component";
 
 export const ITEM_POINT_COMPONENT = "ITEM_POINT";
 
-const ITEM_OFFSET = 12;
+const ITEM_OFFSET = 8;
 
 export class ItemPointComponent extends Component {
 

@@ -26,6 +26,7 @@ A base for a browser based, online RPG.
  * Trading
  * NPC:s, with basic dialogues
  * PvP - / PvM combat
+   * Ranged projectiles
    * Level up / attributes
    * Item drops
    * Heal
