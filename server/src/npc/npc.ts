@@ -94,7 +94,7 @@ export class Npc extends Character {
             }
         }
         
-        if(this.still && randomChance(15)) {
+        if(this.idle && randomChance(15)) {
             const goalX = randomOffset(this.spawnX, radius)
             const goalY = randomOffset(this.spawnY, radius)
 
@@ -107,12 +107,12 @@ export class Npc extends Character {
         this.map.addNpc(this)
     }
 
-    protected leaveMap() {
+    protected onLeaveMap() {
         this.map.removeNpc(this)
     }
     
-    protected onMove(animate: boolean) {
-        this.map.broadcast(new MoveNpcPacket(this.id, this.x, this.y, animate ? this.predictWalkDelay : -1))
+    protected onMove(delay: number) {
+        this.map.broadcast(new MoveNpcPacket(this.id, this.x, this.y, delay))
     }
 
 }

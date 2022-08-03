@@ -79,12 +79,16 @@ export abstract class CombatHandler {
 
     private damageTimeout: NodeJS.Timeout = null;
 
-    public stop() {
-        const { strategy, character, damageTimeout } = this;
+    public leaveMap() {
+        const { damageTimeout } = this;
+
         if(damageTimeout != null) {
             clearTimeout(damageTimeout);
         }
+    }
 
+    public stop() {
+        const { strategy, character } = this;
         strategy.onLoseTarget(character);
     }
 

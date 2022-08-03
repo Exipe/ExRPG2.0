@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build-dev": "webpack --config ./webpack.dev.js --watch",
-    "build-prod": "webpack --config ./webpack.prod.js",
-    "build-desktop-dev": "webpack --config ./webpack.desktop.dev.js --watch",
+    "build-prod": "webpack --config ./webpack.prod.js --env PROTOCOL=$PROTOCOL ADDRESS=$ADDRESS PORT=$PORT",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

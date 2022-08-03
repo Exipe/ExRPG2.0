@@ -134,10 +134,23 @@ export class Game {
         const player = this.getLocal()
         const islandMap = this.map.islandMap
         const playerIsland = islandMap.get(player.tileX, player.tileY)
-        const goalIsland = islandMap.get(Math.floor(goal.x), Math.floor(goal.y))
 
-        if(playerIsland != goalIsland) {
-            return
+        let found = false;
+
+        outer:
+        for(let i = 0; i < goal.height; i++) {
+            for(let j = 0; j < goal.width; j++) {
+                const island = islandMap.get(goal.x + j, goal.y - i);
+
+                if(playerIsland == island) {
+                    found = true;
+                    break outer;
+                }
+            }
+        }
+
+        if(!found) {
+            return;
         }
 
         this.targetX = goal.x

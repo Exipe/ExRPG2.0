@@ -12,6 +12,8 @@ import { initFishing } from "./fishing"
 import { initCraftingUnlocks } from "./crafting-unlock"
 import { initWoodcutting } from "./gathering/woodcutting"
 import { PointItemPacket } from "../connection/outgoing-packet"
+import { SequenceBuilder } from "../character/sequence-task"
+import { Player } from "../player/player"
 
 export function initContent() {
     initFood()
@@ -22,6 +24,43 @@ export function initContent() {
     initFishing()
     initDialogue()
     initDesertMaze()
+
+    const rope = objDataHandler.get("rope");
+    actionHandler.onObject(rope.id, (player, _action, objX, bottom) => {
+        const top = bottom - rope.depth + 1;
+        
+        let startY: number, endY: number;
+        let direction: string;
+        
+        if(player.y <= top) {
+            startY = top - 1;
+            endY = bottom + 1;
+            direction = "down";
+        } else {
+            startY = bottom + 1;
+            endY = top - 1;
+            direction = "up";
+        }
+        
+        const sequence = new SequenceBuilder<Player>();
+        sequence.interruptible = false;
+        sequence.character = player;
+
+        if(player.x != objX || player.y != startY) {
+            sequence
+            .sleep(500)
+            .then((p) => p.move(objX, startY, true, 500))
+            .sleep(500);
+        }
+
+        sequence
+        .sleep(500)
+        .then((p) => p.move(objX, endY, true, 2500))
+        .sleep(2500)
+        .then((p) => p.sendMessage(`You climb ${direction} the rope`));
+
+        player.taskHandler.setTask(sequence.build(), false);
+    });
 
     actionHandler.onObject("ladder_dungeon", (player) => {
         player.goTo('capital', 13, 1)
@@ -170,17 +209,5 @@ export function initContent() {
             new Dialogue("猫", [ "にゃー。" ]) :
             new Dialogue(npc.data.name, [ "Meow." ])
         player.window = dialogue
-    })
-
-    actionHandler.onNpc("range_test", (player, npc, action) => {
-        if(action != "target") {
-            return;
-        }
-
-        player.send(new PointItemPacket(
-            "bow_crude",
-            player.identifier,
-            npc.identifier
-        ));
     })
 }

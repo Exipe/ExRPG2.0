@@ -85,7 +85,9 @@ function onWalk(conn: Connection, data: any) {
     }
 
     let player = conn.player
-    player.stop()
+    if(!player.initWalking()) {
+        return;
+    }
 
     for(const step of data) {
         if(!Array.isArray(step) || isNaN(step[0]) || isNaN(step[1])) {

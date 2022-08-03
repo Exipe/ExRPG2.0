@@ -163,6 +163,24 @@
     },
 
     {
+        "id": "lewis_archery",
+        "name": "Lewis",
+
+        "sprite": "man",
+        "equip": [
+            ["clothes", 1],
+            ["archer", 0],
+            ["archer", 1],
+            ["hair", 1]
+        ],
+
+        "options": [
+            "Talk-to",
+            "Trade"
+        ]
+    },
+
+    {
         "id": "old_man",
         "name": "Old man",
 
@@ -393,22 +411,6 @@
             ["wizard", 1],
             ["wizard", 0],
             ["copper", 0]
-        ]
-    },
-
-    {
-        "id": "range_test",
-        "name": "Range Test",
-        "sprite": "man",
-        "equip": [
-            ["obsidian", 2],
-            ["obsidian", 1],
-            ["obsidian", 0]
-        ],
-        "walkRadius": 5,
-
-        "options": [
-            "Target"
         ]
     }
 

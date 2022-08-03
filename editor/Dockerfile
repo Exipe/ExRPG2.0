@@ -16,6 +16,7 @@ COPY ./editor/package*.json .
 RUN npm install
 COPY ./editor .
 RUN npm link exrpg
+ARG RES_PATH
 RUN npm run build
 
 # start web server

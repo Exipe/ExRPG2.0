@@ -17,11 +17,7 @@ export class TaskHandler {
             return
         }
 
-        if(this.task != null) {
-            this.task.stop()
-        }
-
-        clearTimeout(this.timeout)
+        this.stopTask();
         this.task = task
 
         if(!instant) {
@@ -51,14 +47,26 @@ export class TaskHandler {
     }
 
     private executeTask() {
-        this.task.lastExecution = currentTime()
-        this.setTimeout(this.task.delay)
+        const { task } = this;
 
-        this.task.tick()
+        task.lastExecution = currentTime()
+        task.tick()
+        
+        if(this.task == task) {
+            this.setTimeout(this.task.delay)
+        }
     }
 
     public get stopped() {
         return this.task == null;
+    }
+
+    public get interruptible() {
+        return this.task?.interruptible ?? true;
+    }
+
+    public isRunning(task: Task) {
+        return this.task == task;
     }
 
 }

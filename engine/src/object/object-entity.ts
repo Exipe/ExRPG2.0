@@ -16,9 +16,10 @@ export class ObjectEntity extends Entity {
 
     constructor(engine: Engine, objectData: ObjectData, tileX: number, tileY: number) {
         super(tileX, tileY, 0, 0, objectData.width, objectData.offsetX, objectData.offsetY)
+        this.flat = objectData.flat;
 
         this.data = objectData
-
+        
         if(objectData.light > 0) {
             const lightComp = new LightComponent(this, engine.lightHandler, objectData.light)
             this.componentHandler.add(lightComp)

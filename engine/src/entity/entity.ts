@@ -41,6 +41,8 @@ export abstract class Entity implements Hoverable {
     public componentHandler = new ComponentHandler()
     public shadow = null as EntityShadow
     
+    public flat = false
+
     constructor(tileX: number, tileY: number, width = 0, height = 0, tileSpan = 1, offsetX = 0, offsetY = 0) {
         this.tileX = tileX
         this.tileY = tileY
@@ -171,12 +173,16 @@ export abstract class Entity implements Hoverable {
         other.ahead = this
     }
 
+    protected get depth() {
+        return this.flat ? -Infinity : this._feetY;
+    }
+
     public isAhead(other: Entity) {
-        return this._feetY >= other._feetY
+        return this.depth >= other.depth
     }
 
     public isBehind(other: Entity) {
-        return this._feetY <= other._feetY
+        return this.depth <= other.depth
     }
 
     private moveDown() {

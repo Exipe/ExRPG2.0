@@ -1,5 +1,6 @@
+const webpack = require("webpack");
 
-module.exports = {
+module.exports = (env) => ({
     mode: "production",
 
     output: {
@@ -10,6 +11,12 @@ module.exports = {
     resolve: {
         extensions: [".js", ".ts", ".tsx"]
     },
+
+    plugins: [
+        new webpack.DefinePlugin({
+            "__RES_PATH__": JSON.stringify(env.RES_PATH)
+        })
+    ],
 
     module: {
         rules: [
@@ -25,4 +32,4 @@ module.exports = {
         ]
     },
 
-}
+});

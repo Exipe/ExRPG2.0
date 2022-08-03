@@ -67,10 +67,6 @@ export abstract class Character {
         }
     }
 
-    public get followDebug() {
-        return this.followers.includes(this.following) && !this.following.walking.still
-    }
-
     public showIndicator(itemId: string, duration: number) {
         this.map.broadcast(
             new ProgressIndicatorPacket(this.type, this.id, itemId, duration)
@@ -88,15 +84,27 @@ export abstract class Character {
             new SwingItemPacket(itemId, this.type, this.id, offX, offY, duration))
     }
 
-    public pointItem(itemId: any, target: Character) {
+    protected pointingItem?: string;
+
+    public pointItem(itemId: string, target: Character) {
+        if(this.pointingItem == itemId) {
+            return;
+        }
+
         this.map.broadcast(
             new PointItemPacket(itemId, this.identifier, target.identifier));
+        this.pointingItem = itemId;
     }
 
     public stopPointing() {
+        if(this.pointingItem == undefined) {
+            return;
+        }
+
         this.map.broadcast(
             new CancelPointItemPacket(this.identifier)
         );
+        delete this.pointingItem;
     }
 
     public get attackable() {
@@ -124,7 +132,7 @@ export abstract class Character {
      * If we are following another character slower than us, and have caught up with them, return their walk delay
      */
     public get predictWalkDelay() {
-        if(this.walking.still && this.following != null && this.following._walkDelay > this._walkDelay) {
+        if(this.walking.stopped && this.following != null && this.following._walkDelay > this._walkDelay) {
             return this.following._walkDelay
         }
 
@@ -138,8 +146,8 @@ export abstract class Character {
         return this.map == other.map && distX <= 1 && distY <= 1
     }
 
-    public get still() {
-        return this.following == null && this.walking.still
+    public get idle() {
+        return this.following == null && this.walking.stopped
     }
 
     private addFollower(character: Character) {
@@ -244,7 +252,16 @@ export abstract class Character {
     }
 
     protected abstract enterMap(): void
-    protected abstract leaveMap(): void
+
+    private leaveMap() {
+        if(this.attackable) {
+            this.combatHandler.leaveMap();
+        }
+        
+        this.onLeaveMap();
+        this._map = null;
+    }
+    protected abstract onLeaveMap(): void
 
     public walk(x: number, y: number) {
         this.move(x, y, true)
@@ -261,21 +278,18 @@ export abstract class Character {
     }
 
     public stop() {
-        this.unfollow()
-        if(this.map != null && this.attackable) {
-            this.combatHandler.stop()
+        this.unfollow();
+        this.walking.clear();
+        this.taskHandler.stopTask();
+        
+        if(this.attackable && this.map != null) {
+            this.combatHandler.stop();
         }
-        this.walking.clear()
-        this.taskHandler.stopTask()
     }
 
-    public addSteps(goalX: number, goalY: number) {
-        return this.walking.addSteps(goalX, goalY)
-    }
+    protected abstract onMove(delay: number): void
 
-    protected abstract onMove(animate: boolean): void
-
-    public move(x: number, y: number, animate = false) {
+    public move(x: number, y: number, animate = false, delay?: number) {
         this.lastX = this._x
         this.lastY = this._y
         this._x = x
@@ -285,7 +299,8 @@ export abstract class Character {
             f.getBehind(this, f.x, f.y)
         })
 
-        this.onMove(animate)
+        delay = animate ? (delay ?? this.predictWalkDelay) : -1;
+        this.onMove(delay);
     }
 
     public remove() {
@@ -293,7 +308,6 @@ export abstract class Character {
 
         if(this._map != null) {
             this.leaveMap()
-            this._map = null
         }
 
         for(let f of this.followers) {

@@ -25,6 +25,7 @@ export class ObjectData {
     public readonly light: number
     public readonly width: number
     public readonly depth: number
+    public readonly flat: boolean
 
     public readonly shadowData = null as ShadowData
     public readonly animationData = null as StaticAnimationData
@@ -43,6 +44,7 @@ export class ObjectData {
         this.light = ifPresent(definition.light, 0)
         this.width = ifPresent(definition.width, 1)
         this.depth = ifPresent(definition.depth, 1)
+        this.flat = ifPresent(definition.flat, false)
 
         if(definition.shadow) {
             this.shadowData = {

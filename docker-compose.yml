@@ -42,6 +42,10 @@ services:
     build:
       context: ./
       dockerfile: game/Dockerfile
+      args:
+        PROTOCOL: ws
+        ADDRESS: localhost
+        PORT: 52500
     ports:
       - 52501:8080
 
@@ -49,6 +53,8 @@ services:
     build:
       context: ./
       dockerfile: editor/Dockerfile
+      args:
+        RES_PATH: "http://localhost:52501/res"
     ports:
       - 52502:8080
 

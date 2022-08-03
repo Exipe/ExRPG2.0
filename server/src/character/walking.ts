@@ -51,8 +51,12 @@ export class Walking implements Task {
         this.checkGoal();
     }
 
-    public get still() {
+    private get queueEmpty() {
         return this.steps.length == 0
+    }
+
+    public get stopped() {
+        return !this.character.taskHandler.isRunning(this);
     }
 
     public clear() {
@@ -63,12 +67,17 @@ export class Walking implements Task {
     }
 
     public tick() {
-        if(!this.still) {
+        this.checkGoal();
+        if(this.stopped) {
+            return;
+        }
+
+        if(!this.queueEmpty) {
             const step = this.steps.shift()
             this.character.walk(step[0], step[1])
         }
 
-        if(this.still) {
+        if(this.queueEmpty) {
             this.character.taskHandler.stopTask(this);
         }
 
@@ -98,11 +107,11 @@ export class Walking implements Task {
     }
 
     public set goal(goal: () => void) {
-        this.setGoal(goal, () => this.still, false);
+        this.setGoal(goal, () => this.queueEmpty, false);
     }
 
     public set persistentGoal(goal: () => void) {
-        this.setGoal(goal, () => this.still, true);
+        this.setGoal(goal, () => this.queueEmpty, true);
     }
 
     public followStep(x: number, y: number) {

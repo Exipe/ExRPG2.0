@@ -10,6 +10,7 @@ export class InputHandler {
 
     public set scene(scene: Scene) {
         this._scene = scene
+        this.mouseUp();
     }
 
     public mouseX: number

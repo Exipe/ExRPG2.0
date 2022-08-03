@@ -28,6 +28,20 @@
     },
 
     {
+        "id": "rope",
+        "name": "Rope",
+        "sprite": "rope",
+
+        "depth": 3,
+        "flat": true,
+        "offsetY": -4,
+
+        "options": [
+            "Climb"
+        ]
+    },
+
+    {
         "id": "door_skeleton_boss",
         "name": "Door",
         "sprite": "door/locked",

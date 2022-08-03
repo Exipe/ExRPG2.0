@@ -4,7 +4,8 @@ export interface Task {
     tick: () => void,
     stop: () => void,
     delay: number,
-    lastExecution: number
+    lastExecution: number,
+    interruptible?: boolean
 }
 
 /**
@@ -32,5 +33,7 @@ export abstract class PrimaryTask implements Task {
     public get lastExecution() {
         return this.character.lastPrimaryExecution
     }
+
+    public interruptible = true
 
 }

@@ -117,8 +117,8 @@ function initObjects(game: Game) {
     let clickObject = (obj: ObjectEntity, action: string) => {
         const data = obj.data
         const goal: Goal = {
-            x: obj.tileX + (data.width - 1) / 2,
-            y: obj.tileY - (data.depth - 1) / 2,
+            x: obj.tileX,
+            y: obj.tileY,
             width: data.width,
             height: data.depth,
             distance: 1

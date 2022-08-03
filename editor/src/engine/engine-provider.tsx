@@ -5,7 +5,7 @@ import { Graphics } from "./graphics";
 import { LightSettings, useLightSettings } from "./light-settings";
 import { HoverData, useTileHover } from "./tile-hover";
 
-const RES_PATH = 'http://localhost:52501/res';
+declare var __RES_PATH__: string;
 
 export type Dimensions = {
     width: number,
@@ -26,7 +26,7 @@ export type IEngineContext = {
 const Context = React.createContext<IEngineContext>(undefined);
 
 const prepare = async (canvas: HTMLCanvasElement): Promise<Exrpg.Engine> => {
-    const engine = await Exrpg.initEngine(canvas, RES_PATH, true);
+    const engine = await Exrpg.initEngine(canvas, __RES_PATH__, true);
 
     engine.map = new Exrpg.Scene(engine, 10, 10);
     engine.map.builder.autoUpdate = true;

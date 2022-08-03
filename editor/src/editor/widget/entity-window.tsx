@@ -2,6 +2,8 @@ import React = require("react");
 import { EditorEntity, useEditor } from "../editor-provider";
 import { useEngine } from "../../engine/engine-provider";
 
+declare var __RES_PATH__: string;
+
 type EntityWindowProps = {
     placeHolder: string,
     search: (input: string) => string[],
@@ -52,7 +54,10 @@ export const ObjectWindow = () => {
 
     const selectObject = (id: string) => {
         const obj = engine.objectHandler.get(id);
-        setObject({ ...obj });
+        setObject({ 
+            ...obj,
+            spritePath: `${__RES_PATH__}/${obj.spritePath}.png`
+        });
     }
 
     const search = (name: string) => 

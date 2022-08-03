@@ -223,12 +223,29 @@ export class Player extends Character {
         this.map.addPlayer(this)
     }
 
-    protected leaveMap(): void {
+    protected onLeaveMap(): void {
         this.map.removePlayer(this)
     }
 
+    public initWalking() {
+        if(!this.taskHandler.interruptible) {
+            return false;
+        }
+
+        this.stop();
+        return true;
+    }
+
     public set goal(goal: () => void) {
+        if(!this.taskHandler.interruptible) {
+            return;
+        }
+
         this.walking.goal = goal
+    }
+
+    public addSteps(goalX: number, goalY: number) {
+        return this.walking.addSteps(goalX, goalY)
     }
 
     public readonly tradeHandler = new TradeHandler(this)
@@ -282,8 +299,8 @@ export class Player extends Character {
         }
     }
 
-    protected onMove(animate: boolean): void {
-        this.map.broadcast(new MovePlayerPacket(this.id, this.x, this.y, animate ? this.predictWalkDelay : -1))
+    protected onMove(delay: number): void {
+        this.map.broadcast(new MovePlayerPacket(this.id, this.x, this.y, delay))
     }
 
     public send(packet: Packet) {

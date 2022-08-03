@@ -68,8 +68,11 @@ class Point {
     }
 
     updateHeuristic(goal) {
-        this.distX = Math.abs(goal.x - this.x)
-        this.distY = Math.abs(goal.y - this.y)
+        const goalX = goal.x + (goal.width - 1) / 2;
+        const goalY = goal.y - (goal.height - 1) / 2;
+
+        this.distX = Math.abs(goalX - this.x)
+        this.distY = Math.abs(goalY - this.y)
         this.heuristic = Math.max(this.distX, this.distY)
     }
 

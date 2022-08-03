@@ -16,6 +16,9 @@ COPY ./game/package*.json .
 RUN npm install
 COPY ./game .
 RUN npm link exrpg
+ARG PROTOCOL
+ARG ADDRESS
+ARG PORT
 RUN npm run build-prod
 
 # start web server

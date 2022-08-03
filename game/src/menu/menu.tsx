@@ -5,6 +5,10 @@ import { initConnection, Connection } from "../connection/connection";
 import { FormContainer } from "./form";
 import { UpdateContainer } from "./updates";
 
+declare var __PROTOCOL__: string;
+declare var __ADDRESS__: string;
+declare var __PORT__: number;
+
 export interface MenuProps {
     setState: (state: StateId) => void
 }
@@ -13,10 +17,6 @@ const BACKGROUND = "menu_bg.png"
 
 const VERSION_MAJOR = 0
 const VERSION_MINOR = 0
-
-const PROTOCOL = (window as any).protocol
-const ADDRESS = (window as any).address
-const PORT = (window as any).port
 
 type ServerStatus = "Connecting" | "Online" | "Offline"
 
@@ -61,7 +61,7 @@ export function MenuContainer(props: MenuProps) {
     }, [connection, serverStatus])
 
     React.useEffect(() => {
-        const connection = initConnection(PROTOCOL, ADDRESS, PORT)
+        const connection = initConnection(__PROTOCOL__, __ADDRESS__, __PORT__)
         setConnection(connection)
 
         connection.on("CONNECT_RESPONSE", data => {
