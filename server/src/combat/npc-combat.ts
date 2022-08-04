@@ -5,6 +5,7 @@ import { actionHandler } from "../world";
 import { CombatHandler } from "./combat";
 import { CombatStrategy } from "./strategy/combat-strategy";
 import { MeleeStrategy } from "./strategy/melee-strategy";
+import { npcStrategies } from "./strategy/npc-strategy";
 
 export class NpcCombatHandler extends CombatHandler {
     
@@ -24,7 +25,8 @@ export class NpcCombatHandler extends CombatHandler {
         this.xp = data.experience
         this.accuracy = data.accuracy
         this.defence = data.defence
-        this.strategy = new MeleeStrategy(data.weapon)
+
+        this.strategy = npcStrategies[npc.data.id] ?? new MeleeStrategy(data.weapon)
     }
 
     protected retaliate(other: Character) {

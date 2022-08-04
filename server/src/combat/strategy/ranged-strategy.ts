@@ -12,9 +12,12 @@ export class RangedStrategy implements CombatStrategy {
     private readonly itemId: string;
     private readonly distance: number;
 
-    constructor(itemId: string, distance: number) {
+    private readonly projectile: string;
+
+    constructor(itemId: string, distance: number, projectile: string) {
         this.itemId = itemId;
         this.distance = distance;
+        this.projectile = projectile;
     }
 
     onAttack(self: Character, target: Character, _delay: number): void {
@@ -31,7 +34,7 @@ export class RangedStrategy implements CombatStrategy {
         }
 
         self.map.broadcast(new ProjectilePacket(
-            self.identifier, target.identifier, "arrow", PROJECTILE_DELAY));
+            self.identifier, target.identifier, this.projectile, PROJECTILE_DELAY));
 
         const { maxDamage, accuracy } = cb; // damage and accuracy before shooting
         cb.delayDamage(targetCb, () => {

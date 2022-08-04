@@ -14,7 +14,7 @@ function addBow(item: string, distance: number) {
         throw `[Invalid weapon data] distance must be > 0: ${item}`;
     }
 
-    weaponStrategies[item] = new RangedStrategy(item, distance);
+    weaponStrategies[item] = new RangedStrategy(item, distance, "arrow");
 }
 
 function addSword(item: string) {

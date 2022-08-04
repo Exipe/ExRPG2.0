@@ -412,6 +412,21 @@
             ["wizard", 0],
             ["copper", 0]
         ]
+    },
+
+    {
+        "id": "imp",
+        "name": "Imp",
+        "sprite": "imp",
+
+        "walkRadius": 10,
+        "combat": {
+            "health": 30,
+            "damage": 15,
+            "accuracy": 10,
+            "defence": 15,
+            "attackSpeed": 10
+        }
     }
 
 ]
