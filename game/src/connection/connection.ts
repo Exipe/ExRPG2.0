@@ -3,17 +3,6 @@ import { Packet } from "./packet"
 
 export type Callback = (data: any) => any
 
-export let connection: Connection = null
-
-export function initConnection(protocol: string, address: string, port: number) {
-    if(connection != null) throw "Connection already initialized"
-
-    connection = new Connection(protocol, address, port);
-    (window as any).connection = connection
-
-    return connection
-}
-
 export class Connection {
 
     private socket: WebSocket
@@ -27,13 +16,18 @@ export class Connection {
         }
     }
 
-    public onOpen(callback: () => void) {
+    public close() {
+        this.socket.onclose = undefined
+        this.socket.close()
+    }
+
+    public set onConnectionEstablished(callback: () => void) {
         this.socket.onopen = _ => {
             callback()
         }
     }
 
-    public onClose(callback: () => void) {
+    public set onConnectionLost(callback: () => void) {
         this.socket.onclose = _ => {
             if(callback != null) {
                 callback()

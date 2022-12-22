@@ -8,14 +8,12 @@ COPY ./engine/package*.json .
 RUN npm install
 COPY ./engine .
 RUN npm run build
-RUN npm link
 
 # build game
 WORKDIR /game
 COPY ./game/package*.json .
 RUN npm install
 COPY ./game .
-RUN npm link exrpg
 ARG PROTOCOL
 ARG ADDRESS
 ARG PORT
@@ -23,4 +21,4 @@ RUN npm run build-prod
 
 # start web server
 WORKDIR ./app
-CMD http-server -c-1 --cors='*'
+CMD http-server -c-1 --cors='*' --proxy http://localhost:8080?

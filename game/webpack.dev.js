@@ -1,9 +1,14 @@
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     mode: "development",
 
     devtool: "source-map",
+
+    devServer: {
+        historyApiFallback: true,
+    },
 
     output: {
         path: __dirname + "/app",
@@ -15,7 +20,10 @@ module.exports = {
             "__PROTOCOL__": JSON.stringify("ws"),
             "__ADDRESS__": JSON.stringify("localhost"),
             "__PORT__": JSON.stringify(80)
-        })
+        }),
+		new MiniCssExtractPlugin({
+			filename: "style.css"
+		})
     ],
 
     resolve: {
@@ -32,7 +40,15 @@ module.exports = {
                         loader: "ts-loader"
                     }
                 ]
-            }
+            },
+			{
+				test: /\.s[ac]ss$/i,
+				use: [
+				  MiniCssExtractPlugin.loader,
+				  "css-loader",
+				  "sass-loader",
+				],
+			},
         ],
     },
 

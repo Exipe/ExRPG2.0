@@ -4,22 +4,24 @@ import React = require('react')
 import { Main } from './main'
 import { Menu } from './menu/menu'
 import './ui/format-text'
-
-export type StateId = "menu" | "main"
-
-function App(_: any) {
-    const [state, setState] = React.useState("menu" as StateId)
-
-    let displayState = <></>
-    if(state == "main") {
-        displayState = <Main />
-    } else if(state == "menu") {
-        displayState = <Menu setState={ state => setState(state) } />
-    }
-
-    return displayState
-}
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { ConnectionProvider } from './connection/connection-provider'
 
 window.onload = () => {
-    ReactDOM.render(<App />, document.querySelector("#container"))
+    ReactDOM.render(
+        <ConnectionProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route 
+                        path="*"
+                        element={<Menu />}>
+                    </Route>
+                    <Route 
+                        path="/play"
+                        element={<Main />}>
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </ConnectionProvider>,
+        document.querySelector("#container"))
 }

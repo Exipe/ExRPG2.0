@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-dev": "webpack --config ./webpack.dev.js --watch",
+    "build-dev": "webpack serve -c ./webpack.dev.js --static-directory ./app",
     "build-prod": "webpack --config ./webpack.prod.js --env PROTOCOL=$PROTOCOL ADDRESS=$ADDRESS PORT=$PORT",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,14 +13,21 @@
   "devDependencies": {
     "@types/react": "^16.14.8",
     "@types/react-dom": "^16.9.13",
+    "css-loader": "^6.7.3",
+    "mini-css-extract-plugin": "^2.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.10",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.4",
     "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2"
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "lex": "^1.7.9"
+    "exrpg": "file:../engine",
+    "lex": "^1.7.9",
+    "react-router-dom": "^6.5.0"
   }
 }

@@ -1,24 +1,16 @@
 
 import React = require("react");
-import { StateId } from "..";
-import { initConnection, Connection } from "../connection/connection";
+import { Link, useNavigate } from "react-router-dom";
 import { FormContainer } from "./form";
+import { MenuProvider, useMenu } from "./menu-provider";
 import { UpdateContainer } from "./updates";
-
-declare var __PROTOCOL__: string;
-declare var __ADDRESS__: string;
-declare var __PORT__: number;
-
-export interface MenuProps {
-    setState: (state: StateId) => void
-}
+import "./menu.scss"
+import { useConnection } from "../connection/connection-provider";
 
 const BACKGROUND = "menu_bg.png"
 
 const VERSION_MAJOR = 0
 const VERSION_MINOR = 0
-
-type ServerStatus = "Connecting" | "Online" | "Offline"
 
 function LogoContainer(_: any) {
     return <div id="logoContainer">
@@ -29,60 +21,56 @@ function LogoContainer(_: any) {
 
 
 
-export function MenuContainer(props: MenuProps) {
-    const [connection, setConnection] = React.useState(null as Connection)
-    const [serverStatus, setServerStatus] = React.useState("Connecting" as ServerStatus)
-    const [errorMessage, setErrorMessage] = React.useState("")
+export function MenuContainer() {
+    const { errorMessage, setErrorMessage } = useMenu();
+    const { connection, serverStatus, connect } = useConnection();
+    const navigate = useNavigate();
+
+    const [online, setOnline] = React.useState(false)
+
+    React.useEffect(() => {
+        switch(serverStatus) {
+            case "Offline":
+                setOnline(false)
+                if(online) {
+                    setErrorMessage("Lost connection to server")
+                }
+                break
+            case "Online":
+                setOnline(true)
+                setErrorMessage("")
+                break
+        }
+    }, [serverStatus])
+
+    React.useEffect(
+        () => connect(), 
+        [])
 
     React.useEffect(() => {
         if(connection == null) {
             return
         }
 
-        connection.onOpen(() => {
-            setServerStatus("Online")
-            setErrorMessage("")
-        })
-
-        connection.onClose(() => {
-            if(serverStatus == "Online") {
-                setErrorMessage("Lost connection to server")
-            } else if(serverStatus == "Connecting") {
-                setErrorMessage("")
+        connection.on("CONNECT_RESPONSE", ({message, accepted}) => {
+            if(message != undefined) {
+                setErrorMessage(message)
             }
 
-            setServerStatus("Offline")
-        })
-
-        return () => {
-            connection.onOpen(null)
-            connection.onClose(null)
-        }
-    }, [connection, serverStatus])
-
-    React.useEffect(() => {
-        const connection = initConnection(__PROTOCOL__, __ADDRESS__, __PORT__)
-        setConnection(connection)
-
-        connection.on("CONNECT_RESPONSE", data => {
-            if(data.message != undefined) {
-                setErrorMessage(data.message)
-            }
-
-            if(data.accepted) {
-                props.setState("main")
+            if(accepted) {
+                navigate("play")
             }
         })
 
         return () => { connection.off("CONNECT_RESPONSE") }
-    }, [])
+    }, [connection])
 
     let displayForm = <></>
     if(serverStatus == 'Online') {
-        displayForm = <FormContainer connection={connection} 
-            setErrorMessage={setErrorMessage} />
+        displayForm = <FormContainer />
     } else if(serverStatus == 'Offline') {
-        displayForm = <a href="" className="link">Refresh</a>
+        displayForm = <a className="link"
+            onClick={() => connect() }>Refresh</a>
     }
 
     return <div id="menuContainer">
@@ -93,13 +81,12 @@ export function MenuContainer(props: MenuProps) {
         <p id="error">{errorMessage}</p>
 
         <div id="links">
-            <a className="link" target="_blank" href="https://github.com/ludwigdev/ExRPG">GitHub</a>
-            <a className="link" target="_blank" href="https://discord.gg/ZTEeuvYXDv">Discord</a>
+            <a className="link" href="#">Discord</a>
         </div>
     </div>
 }
 
-export function Menu(props: MenuProps) {
+export function Menu() {
     React.useEffect(() => {
         const body = document.querySelector("body")
         body.style.backgroundImage = `url('${BACKGROUND}')`
@@ -107,13 +94,15 @@ export function Menu(props: MenuProps) {
         return () => { body.style.backgroundImage = "" }
     }, [])
 
-    return <div>
-    <div id="header"></div>
-    <div id="footer"><p>© Ludwig Johansson</p></div>
-    <div id="menu">
-        <LogoContainer />
-        {MenuContainer(props)}
-        <UpdateContainer />
-    </div>
-    </div>
+    return <MenuProvider>
+        <div>
+            <div id="header"></div>
+            <div id="footer"><p>© Ludwig Johansson</p></div>
+            <div id="menu">
+                <LogoContainer />
+                <MenuContainer />
+                <UpdateContainer />
+            </div>
+        </div>
+    </MenuProvider>
 }

@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env) => ({
     mode: "production",
@@ -13,7 +14,10 @@ module.exports = (env) => ({
             "__PROTOCOL__": JSON.stringify(env.PROTOCOL),
             "__ADDRESS__": JSON.stringify(env.ADDRESS),
             "__PORT__": JSON.stringify(env.PORT)
-        })
+        }),
+		new MiniCssExtractPlugin({
+			filename: "style.css"
+		})
     ],
 
     resolve: {
@@ -30,7 +34,15 @@ module.exports = (env) => ({
                         loader: "ts-loader"
                     }
                 ]
-            }
+            },
+            {
+				test: /\.s[ac]ss$/i,
+				use: [
+				  MiniCssExtractPlugin.loader,
+				  "css-loader",
+				  "sass-loader",
+				],
+			},
         ]
     },
 

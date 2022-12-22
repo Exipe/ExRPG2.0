@@ -1,11 +1,12 @@
 
 import { Game } from "./game/game";
 import React = require("react");
-import { connection } from "./connection/connection";
 import { initEngine, Engine } from "exrpg";
 import { UiContainer } from "./ui/ui";
 import { ReadyPacket } from "./connection/packet";
 import { initGame } from "./game/init-game";
+import { useConnection } from "./connection/connection-provider";
+import { useNavigate } from "react-router-dom";
 
 function windowResize(canvas: HTMLCanvasElement, engine: Engine) {
     canvas.width = canvas.clientWidth
@@ -27,8 +28,15 @@ async function setupEngine(canvas: HTMLCanvasElement) {
 export function Main(_: any) {
     const [game, setGame] = React.useState(null as Game)
     const canvas = React.useRef(null as HTMLCanvasElement)
+    const { connection } = useConnection();
+    const navigate = useNavigate();
 
     React.useEffect(() => {
+        if(connection == null) {
+            navigate("/", { replace: true })
+            return
+        }
+
         let setup = async () => {
             const engine = await setupEngine(canvas.current);
             setGame(await initGame(engine, connection))
@@ -37,7 +45,7 @@ export function Main(_: any) {
         }
 
         setup()
-    }, [])
+    }, [connection])
 
     React.useEffect(() => {
         const disableContextMenu = (e: MouseEvent) => {
@@ -50,6 +58,10 @@ export function Main(_: any) {
             document.removeEventListener("contextmenu", disableContextMenu)
         }
     }, [])
+
+    React.useEffect(
+        () => () => connection?.close(), 
+        [])
 
     return <>
         <canvas ref={canvas}></canvas>

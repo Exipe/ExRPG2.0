@@ -1,32 +1,29 @@
 import React = require("react")
-import { Connection } from "../connection/connection"
+import { Route, Routes, useNavigate } from "react-router-dom"
+import { useConnection } from "../connection/connection-provider"
 import { LoginPacket, RegisterPacket } from "../connection/packet"
+import { useMenu } from "./menu-provider"
 
-type InputState = "main" | "register" | "login"
-
-interface InputStateProps {
-    setMenuState: (state: InputState) => void
-    setErrorMessage: (error: string) => void
-    connection: Connection
-}
-
-function MainState(properties: { props: InputStateProps }) {
-    const props = properties.props
+const MainState: React.FC<{}> = () => {
+    const navigate = useNavigate()
 
     return <>
         <div className="menuButton"
-            onClick={ () => props.setMenuState("register") }>New user</div>
+            onClick={ () => navigate("register") }>New user</div>
         <div className="menuButton"
-            onClick={ () => props.setMenuState("login") }>Existing user</div>
+            onClick={ () => navigate("login") }>Existing user</div>
     </>
 }
 
-function LoginState(properties: { props: InputStateProps }) {
-    const props = properties.props
+const LoginState: React.FC<{}> = () => {
     const [username, setUsername] = React.useState("")
     const [password, setPassword] = React.useState("")
     const userRef = React.useRef(null as HTMLInputElement)
     const passRef = React.useRef(null as HTMLInputElement)
+    const navigate = useNavigate()
+
+    const { setErrorMessage } = useMenu();
+    const { connection } = useConnection();
 
     React.useEffect(() => {
         userRef.current.focus()
@@ -34,21 +31,28 @@ function LoginState(properties: { props: InputStateProps }) {
 
     const login = () => {
         if(username == "") {
-            props.setErrorMessage("Please provide a username.")
+            setErrorMessage("Please provide a username.")
         }
         else if(password == "") {
-            props.setErrorMessage("Please provide a password.")
+            setErrorMessage("Please provide a password.")
         } else {
-            props.setErrorMessage("")
-            props.connection.send(new LoginPacket(username, password))
+            setErrorMessage("")
+            connection.send(new LoginPacket(username, password))
         }
     }
 
     return <>
-        <input ref={userRef} className="menuInput" placeholder="Username"
-            value={username} onChange={ e => setUsername(e.target.value) } 
+        <input ref={userRef} 
+            className="menuInput" 
+            placeholder="Username"
+            value={username} 
+            onChange={ e => setUsername(e.target.value) } 
             onKeyDown={(e) => { if(e.key == "Enter" && username.length > 0) passRef.current.focus() }} />
-        <input ref={passRef} className="menuInput" type="password" placeholder="Password" autoComplete="off" 
+        <input ref={passRef} 
+            className="menuInput" 
+            type="password" 
+            placeholder="Password" 
+            autoComplete="off" 
             value={password} onChange={ e => setPassword(e.target.value) }
             onKeyDown={(e) => { if(e.key == "Enter" && password.length > 0) login() }} />
 
@@ -56,81 +60,77 @@ function LoginState(properties: { props: InputStateProps }) {
             <div className="menuButton"
                 onClick={login}>Continue</div>
             <div className="menuButton"
-                onClick={ () => props.setMenuState("main") }>Cancel</div>
+                onClick={ () => navigate(-1) }>Cancel</div>
         </div>
     </>
 }
 
-function RegisterState(properties: { props: InputStateProps }) {
-    const props = properties.props
+const RegisterState: React.FC<{}> = () => {
     const [username, setUsername] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [repeatPassword, setRepeatPassword] = React.useState("")
+    const navigate = useNavigate()
+
+    const { setErrorMessage } = useMenu();
+    const { connection } = useConnection();
 
     const register = () => {
         if(username == "") {
-            props.setErrorMessage("Please provide a username.")
+            setErrorMessage("Please provide a username.")
         }
         else if(password == "") {
-            props.setErrorMessage("Please provide a password.")
+            setErrorMessage("Please provide a password.")
         }
         else if(repeatPassword == "") {
-            props.setErrorMessage("Please repeat your password.")
+            setErrorMessage("Please repeat your password.")
         }
         else if(password != repeatPassword) {
-            props.setErrorMessage("Passwords do not match.")
+            setErrorMessage("Passwords do not match.")
         }
         else {
-            props.setErrorMessage("")
-            props.connection.send(new RegisterPacket(username, password))
+            setErrorMessage("")
+            connection.send(new RegisterPacket(username, password))
         }
     }
 
     return <>
-        <input className="menuInput" placeholder="Username"
-            value={username} onChange={ e => setUsername(e.target.value) } />
-        <input className="menuInput" type="password" placeholder="Password" autoComplete="off" 
-            value={password} onChange={ e => setPassword(e.target.value) } />
-        <input className="menuInput" type="password" placeholder="Repeat password" autoComplete="off"  
-            value={repeatPassword} onChange={ e => setRepeatPassword(e.target.value) } />
+        <input className="menuInput" 
+            placeholder="Username"
+            value={username} 
+            onChange={ e => setUsername(e.target.value) } />
+        <input className="menuInput" 
+            type="password" 
+            placeholder="Password" 
+            autoComplete="off" 
+            value={password} 
+            onChange={ e => setPassword(e.target.value) } />
+        <input className="menuInput" 
+            type="password" 
+            placeholder="Repeat password" 
+            autoComplete="off"  
+            value={repeatPassword} 
+            onChange={ e => setRepeatPassword(e.target.value) } />
 
         <div className="menuRow">
             <div className="menuButton"
                 onClick={register}>Register</div>
             <div className="menuButton"
-                onClick={ () => props.setMenuState("main") }>Cancel</div>
+                onClick={ () => navigate(-1) }>Cancel</div>
         </div>
     </>
 }
 
-export interface FormContainerProps {
-    connection: Connection
-    setErrorMessage: (error: string) => void
-}
-
-export function FormContainer(props: FormContainerProps) {
-    const [state, setState] = React.useState("main" as InputState)
-
-    const inputStateProps: InputStateProps = {
-        setMenuState: setState,
-        setErrorMessage: props.setErrorMessage,
-        connection: props.connection
-    }
-
-    let displayState = <></>
-    switch(state) {
-        case "main":
-            displayState = <MainState props={inputStateProps} />
-            break
-        case "login":
-            displayState = <LoginState props={inputStateProps} />
-            break
-        case "register":
-            displayState = <RegisterState props={inputStateProps} />
-            break
-    }
-
+export const FormContainer: React.FC<{}> = () => {
     return <form id="inputContainer">
-        {displayState}
+        <Routes>
+            <Route index
+                element={<MainState />} />
+            <Route 
+                path="login"
+                element={<LoginState />} />
+            <Route
+                path="register"
+                element={<RegisterState />} />
+        </Routes>
     </form>
 }
