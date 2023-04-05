@@ -17,7 +17,7 @@ COPY ./game .
 ARG PROTOCOL
 ARG ADDRESS
 ARG PORT
-RUN npm run build-prod
+RUN npm run build
 
 # start web server
 WORKDIR ./app

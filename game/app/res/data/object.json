@@ -225,6 +225,17 @@
             "offsetX": -2
         }
     },
+	
+	{
+		"id": "cactus",
+		"name": "Cactus",
+		"sprite": "cactus",
+		"shadow": true,
+		
+		"options": [
+			"Touch"
+		]
+	},
 
     {
         "id": "bush",

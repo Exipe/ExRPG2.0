@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { ChatBubbleModel, HealthBarModel, HitSplatModel, HitSplatStyle, NameTagModel, OverlayAreaModel, OverlayModel, ProgressIndicatorModel } from "../game/model/overlay-model";
 import React = require("react")
+import "./overlay.scss"
 
 export interface OverlayAreaProps {
     overlayAreaModel: OverlayAreaModel

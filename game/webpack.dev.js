@@ -7,7 +7,11 @@ module.exports = {
     devtool: "source-map",
 
     devServer: {
+		open: true,
         historyApiFallback: true,
+		headers: {
+			"Access-Control-Allow-Origin": "*",
+		}
     },
 
     output: {

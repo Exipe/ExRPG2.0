@@ -28,7 +28,7 @@ export class NpcHandler {
 
     public create(dataId: string, map: MapId, x: number, y: number) {
         const data = this.npcDataHandler.get(dataId)
-        if(data == null) {
+        if (data == null) {
             return null
         }
 
@@ -57,7 +57,7 @@ export class Npc extends Character {
         this.id = id
         this.data = data
 
-        if(this.data.combatData != null) {
+        if (this.data.combatData != null) {
             this.combatHandler = new NpcCombatHandler(this)
         }
     }
@@ -67,7 +67,8 @@ export class Npc extends Character {
     }
 
     public get aggressive() {
-        return this.data.id == "skeleton";
+        return this.data.combatData?.agressive
+            ?? false;
     }
 
     public tileWalkable(x: number, y: number) {
@@ -82,19 +83,19 @@ export class Npc extends Character {
         super.tick();
 
         const radius = this.data.walkRadius
-        if(this.target == null && this.aggressive) {
-            for(let other of this.map.players) {
+        if (this.target == null && this.aggressive) {
+            for (let other of this.map.players) {
                 const distX = other.x - this.x;
                 const distY = other.y - this.y;
 
-                if(Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2)) < 6) {
+                if (Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2)) < 6) {
                     this.attack(other);
                     break;
                 }
             }
         }
-        
-        if(this.idle && randomChance(15)) {
+
+        if (this.idle && randomChance(15)) {
             const goalX = randomOffset(this.spawnX, radius)
             const goalY = randomOffset(this.spawnY, radius)
 
@@ -110,7 +111,7 @@ export class Npc extends Character {
     protected onLeaveMap() {
         this.map.removeNpc(this)
     }
-    
+
     protected onMove(delay: number) {
         this.map.broadcast(new MoveNpcPacket(this.id, this.x, this.y, delay))
     }

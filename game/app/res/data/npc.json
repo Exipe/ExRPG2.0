@@ -38,6 +38,22 @@
             "defence": -10
         }
     },
+	
+	{
+		"id": "red_slime",
+		"name": "Red slime",
+		"sprite": "red_slime",
+		"walkRadius": 5,
+		"walkSpeed": 0.5,
+		
+		"combat": {
+			"health": 25,
+			"damage": 5,
+			"attackSpeed": 0,
+			"accuracy": 1,
+			"defence": 1
+		}
+	},
 
     {
         "id": "goblin_weak",

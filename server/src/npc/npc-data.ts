@@ -7,6 +7,16 @@ const DEFAULT_RESPAWN_TIME = 15
 const DEFAULT_WALK_SPEED = 1
 const DEFAULT_WALK_RADIUS = 0 // don't move
 
+export const isAgressive = (id: string) => {
+    switch(id) {
+        case "skeleton":
+        case "red_slime":
+            return true;
+        default:
+            return false;
+    }
+}
+
 export interface NpcCombatData {
     weapon: string
     respawnTime: number
@@ -16,6 +26,7 @@ export interface NpcCombatData {
     accuracy: number
     defence: number
     experience: number
+    agressive: boolean
 }
 
 export interface NpcData {
@@ -57,6 +68,7 @@ export async function loadNpcData(resPath: string) {
                 maxHit: maxHit,
                 accuracy: combatAttrib(cb.accuracy),
                 defence: combatAttrib(cb.defence),
+                agressive: isAgressive(npc.id),
                 experience: cb.experience ? cb.experience : cb.health
             }
         }

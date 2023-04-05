@@ -11,7 +11,7 @@ import { initDesertMaze } from "./maze/desert-maze"
 import { initFishing } from "./fishing"
 import { initCraftingUnlocks } from "./crafting-unlock"
 import { initWoodcutting } from "./gathering/woodcutting"
-import { PointItemPacket } from "../connection/outgoing-packet"
+import { ChatBubblePacket, PointItemPacket } from "../connection/outgoing-packet"
 import { SequenceBuilder } from "../character/sequence-task"
 import { Player } from "../player/player"
 
@@ -61,6 +61,12 @@ export function initContent() {
 
         player.taskHandler.setTask(sequence.build(), false);
     });
+
+    actionHandler.onObject("cactus", (player) => {
+        player.map.broadcast(new ChatBubblePacket("player", player.id, "Ow! >.<"))
+        player.combatHandler.applyDamage(1, "hit")
+        player.sendMessage("You sting yourself on the cactus. Why did you think that was a good idea..?")
+    })
 
     actionHandler.onObject("ladder_dungeon", (player) => {
         player.goTo('capital', 13, 1)

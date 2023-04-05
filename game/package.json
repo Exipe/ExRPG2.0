@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-dev": "webpack serve -c ./webpack.dev.js --static-directory ./app",
-    "build-prod": "webpack --config ./webpack.prod.js --env PROTOCOL=$PROTOCOL ADDRESS=$ADDRESS PORT=$PORT",
+    "start": "webpack serve -c ./webpack.dev.js --static-directory ./app",
+    "build": "webpack --config ./webpack.prod.js --env PROTOCOL=$PROTOCOL ADDRESS=$ADDRESS PORT=$PORT",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
