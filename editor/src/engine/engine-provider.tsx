@@ -4,6 +4,7 @@ import React = require("react");
 import { Graphics } from "./graphics";
 import { LightSettings, useLightSettings } from "./light-settings";
 import { HoverData, useTileHover } from "./tile-hover";
+import { LayerOptions, useLayerOptions } from "./layer-options";
 
 declare var __RES_PATH__: string;
 
@@ -20,7 +21,8 @@ export type IEngineContext = {
         anchorX: AnchorPoint, anchorY: AnchorPoint) => void,
     getDimensions: () => Dimensions | undefined,
     hoverData: HoverData,
-    lightSettings: LightSettings
+    lightSettings: LightSettings,
+    layerOptions: LayerOptions
 };
 
 const Context = React.createContext<IEngineContext>(undefined);
@@ -63,27 +65,28 @@ export const EngineProvider: React.FC<{}> = ({
     const [engine, setEngine] = React.useState<Exrpg.Engine | undefined>();
 
     const lightSettings = useLightSettings(engine);
+    const layerOptions = useLayerOptions(engine);
 
-    const loadMap = (content: string) => {
+    const loadMap = React.useCallback((content: string) => {
         engine.map = Exrpg.loadScene(engine, content);
         engine.map.builder.autoUpdate = true;
-    };
+    }, [engine]);
 
-    const saveMap = () => {
+    const saveMap = React.useCallback(() => {
         const scene = engine.map;
         return Exrpg.saveScene(scene);
-    }
+    }, [engine]);
 
-    const resize = (width: number, height: number, 
+    const resize = React.useCallback((width: number, height: number, 
         anchorX: AnchorPoint, anchorY: AnchorPoint) => 
     {
         engine.map.resize(width, height, anchorX, anchorY)
-    }
+    }, [engine]);
 
-    const getDimensions = (): Dimensions => ({
+    const getDimensions = React.useCallback((): Dimensions => ({
         width: engine.map.width,
         height: engine.map.height
-    })
+    }), [engine]);
 
     React.useEffect(() => {
         prepare(canvas.current).then((engine) => {
@@ -100,6 +103,7 @@ export const EngineProvider: React.FC<{}> = ({
         resize,
         getDimensions,
         lightSettings,
+        layerOptions,
         hoverData
     }
 

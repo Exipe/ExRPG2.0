@@ -232,7 +232,8 @@ export class Scene {
     public addObject(id: string, x: number, y: number) {
         const objData = this.engine.objectHandler.get(id)
         if(objData == null) {
-            throw "Invalid object ID: " + id
+            console.error("Invalid object ID: " + id)
+            return
         }
 
         const obj = new ObjectEntity(this.engine, objData, x, y)
@@ -243,7 +244,8 @@ export class Scene {
     public addNpc(id: string, x: number, y: number) {
         const npcData = this.engine.npcHandler.get(id)
         if(npcData == null) {
-            throw "Invalid NPC ID: " + id
+            console.error("Invalid NPC ID: " + id)
+            return
         }
 
         const npc = new NpcEntity(this.engine, npcData, x, y)
@@ -254,7 +256,8 @@ export class Scene {
     public createItem(id: string, x: number, y: number) {
         const itemData = this.engine.itemHandler.get(id)
         if(itemData == null) {
-            throw "Invalid item ID: " + id
+            console.error("Invalid item ID: " + id)
+            return
         }
 
         const item = new Item(this.engine, itemData, x, y)

@@ -5,25 +5,34 @@ import { WindowModel, WindowPosition } from "../model/window-model";
 export type IWindowContext = {
     addWindow: (model: Omit<WindowModel, "position">) => void;
     removeWindow: (id: string) => void;
-    update: (id: string, position: Partial<WindowPosition>) => void;
+    toggleWindowVisibility: (id: string, visible: boolean) => void;
 };
 
 const Context = React.createContext<IWindowContext>({
     addWindow: () => {},
     removeWindow: () => {},
-    update: () => {}
+    toggleWindowVisibility: () => {}
 });
 
 export const WindowProvider: React.FC<{}> = ({
     children
 }) => {
     const [windows, setWindows] = React.useState<WindowModel[]>([]);
-
     const [zCounter, setZCounter] = React.useState(0);
 
     const moveForward = (id: string) => {
         update(id, { z: zCounter });
         setZCounter((z) => z+1);
+    }
+
+    const toggleWindowVisibility = (id: string, visible: boolean) => {
+        let z: number;
+        if(visible) {
+            z = zCounter;
+            setZCounter((z) => z+1);
+        }
+
+        update(id, { visible, z });
     }
 
     const addWindow = (model: Omit<WindowModel, "position">) => {
@@ -37,7 +46,6 @@ export const WindowProvider: React.FC<{}> = ({
             }
         }
 
-        setZCounter((z) => z+1);
         setWindows((windows) => [...windows, window]);
     }
 
@@ -75,7 +83,7 @@ export const WindowProvider: React.FC<{}> = ({
 
         <Context.Provider value={{ 
             addWindow, removeWindow, 
-            update 
+            toggleWindowVisibility
         }}>
             {children}
         </Context.Provider>

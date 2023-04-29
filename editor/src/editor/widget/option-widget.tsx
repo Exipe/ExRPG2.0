@@ -1,8 +1,8 @@
-import { saveScene } from "exrpg";
 import React = require("react");
 import { useEngine } from "../../engine/engine-provider";
 import { useWidgets } from "../../widget/widget-provider";
 import { loadFile, saveFile } from "../load-save";
+import { OptionsWindow } from "./options-window";
 
 type OptionWindow = {
     id: string;
@@ -19,13 +19,13 @@ const optionWindows: OptionWindow[] = [
     {
         id: "options",
         title: "Options",
-        body: <>Options</>
+        body: <OptionsWindow />
     }
 ];
 
 export const useOptionWidgets = () => {
     const widgets = useWidgets();
-    const engine = useEngine();
+    const { engine, loadMap, saveMap } = useEngine();
 
     React.useEffect(() => {
         if(engine === undefined) {
@@ -34,11 +34,11 @@ export const useOptionWidgets = () => {
 
         widgets.createButton("load", "Load", async () => {
             const map = await loadFile();
-            engine.loadMap(map);
+            loadMap(map);
         }, "option")
 
         widgets.createButton("save", "Save", async () => {
-            const content = engine.saveMap();
+            const content = saveMap();
             await saveFile(content);
         }, "option")
 
@@ -56,5 +56,5 @@ export const useOptionWidgets = () => {
             optionWindows.forEach((o) => widgets.removeWidget(o.id));
             widgets.removeWidget("r-island");
         };
-    }, [engine]);
+    }, [engine, loadMap, saveMap]);
 }

@@ -256,7 +256,6 @@ async function onLoadMap(game: Game, mapId: string) {
 
     const mapData = await fetch("res/map/" + mapId + ".json").then(res => res.text())
     const map = loadScene(game.engine, mapData)
-    map.attribLayer.visible = false
 
     game.enterMap(map)
 }

@@ -1,4 +1,5 @@
 import { Engine } from "exrpg"
+import React = require("react");
 
 export type Color = [number, number, number]
 
@@ -26,7 +27,7 @@ export type LightSettings = {
 }
 
 export const useLightSettings = (engine: Engine): LightSettings => {
-    const getLight = (): Light => {
+    const getLight = React.useCallback((): Light => {
         const ambientLight = engine.map.ambientLight;
         if(ambientLight === null) {
             return { type: "Cycle" }
@@ -35,15 +36,15 @@ export const useLightSettings = (engine: Engine): LightSettings => {
             type: "Ambient",
             light: ambientLight
         };
-    }
+    }, [engine])
 
-    const setLight = (color: Color) => {
+    const setLight = React.useCallback((color: Color) => {
         engine.map.ambientLight = color;
-    }
+    }, [engine])
 
-    const useCycle = () => {
+    const useCycle = React.useCallback(() => {
         engine.map.ambientLight = null;
-    }
+    }, [engine])
 
     return {
         getLight,

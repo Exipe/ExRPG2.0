@@ -1,4 +1,4 @@
-import { Scene, AnimateCallback, DrawCallback, TILE_SIZE } from "."
+import { Scene, AnimateCallback, DrawCallback, TILE_SIZE, BACKGROUND } from "."
 import { Camera } from "./camera"
 import { InputHandler } from "./input-handler"
 import { ItemHandler } from "./item/item-handler"
@@ -134,7 +134,7 @@ export class Engine {
             this.offscreenHandler.bind() // render to offscreen texture, to scale up later
         }
 
-        this.gl.clearColor(0, 0, 0, 1)
+        this.gl.clearColor(BACKGROUND[0], BACKGROUND[1], BACKGROUND[2], 1)
         this.gl.clear(this.gl.COLOR_BUFFER_BIT)
 
         if(this.scene != null) {

@@ -1,6 +1,6 @@
 import React = require("react");
 import { Button, ToggleButton } from "../component/button";
-import { useWindows } from "./window-provider";
+import { IWindowContext, useWindows } from "./window-provider";
 
 export type WidgetPosition = "option" | "tool";
 
@@ -31,8 +31,10 @@ export const WidgetProvider: React.FC<{}> = ({
 }) => {
     const windows = useWindows();
     const [widgets, setWidgets] = React.useState<Widget[]>([]);
+    const windowsRef = React.useRef<IWindowContext>();
     const widgetsRef = React.useRef<Widget[]>();
 
+    windowsRef.current = windows;
     widgetsRef.current = widgets;
 
     const createWidget = (widget: Omit<Widget, "toggled">) => {
@@ -64,7 +66,7 @@ export const WidgetProvider: React.FC<{}> = ({
             const toggled = !widget.toggled;
             
             updateWidget(id, { toggled });
-            windows.update(id, { visible: toggled })
+            windowsRef.current.toggleWindowVisibility(id, toggled);
         }
 
         createWidget({

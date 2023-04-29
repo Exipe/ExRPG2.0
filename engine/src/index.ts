@@ -24,9 +24,10 @@ import { PlayerSprite } from "./texture/player-sprite"
 import { OutlineComponent } from "./entity/outline-component"
 import { EngineDeps, Engine } from "./engine"
 import { Camera } from "./camera"
+import { Layer } from "./scene/layer/layer"
 
 export { Engine, Camera }
-export { Scene, SceneBuilder, loadScene, saveScene, feetCoords }
+export { Scene, Layer, SceneBuilder, loadScene, saveScene, feetCoords }
 export { Sprite, PlayerSprite, MergeTexture }
 export { Entity, NpcEntity, NpcData, ObjectEntity, EntityShadow }
 export { Item, ItemData, EquipmentData }
@@ -37,6 +38,7 @@ export const TILE_SIZE = 16
 export const ITEM_SIZE = 16
 export const PLAYER_SIZE = [ 24, 32 ] as [number, number]
 export const SHADOW_OUTLINE = [ 0, 0, 0, 0.20 ] as [number, number, number, number]
+export const BACKGROUND = [0.08, 0.06, 0.05] as [number, number, number]
 
 export * from "./matrix"
 

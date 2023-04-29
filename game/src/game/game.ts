@@ -166,6 +166,7 @@ export class Game {
     }
 
     public enterMap(map: Scene) {
+        map.attribLayer.visible = false
         this.engine.map = map
         const updateBlockMap = () => this.updateBlockMap()
         map.onBlockMapChange = updateBlockMap

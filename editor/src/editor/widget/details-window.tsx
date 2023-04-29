@@ -53,8 +53,8 @@ export const DetailsWindow = () => {
     const numericWidth = parseInt(widthInput);
     const numericHeight = parseInt(heightInput);
 
-    const validInput = numericWidth != NaN && numericWidth > 0
-        && numericHeight != NaN && numericHeight > 0;
+    const validInput = !Number.isNaN(numericWidth) && numericWidth > 0
+        && !Number.isNaN(numericHeight) && numericHeight > 0;
     
     const [anchor, anchorElements] = useAnchors();
 
