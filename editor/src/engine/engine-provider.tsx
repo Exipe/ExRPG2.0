@@ -15,8 +15,10 @@ export type Dimensions = {
 
 export type IEngineContext = {
     engine?: Exrpg.Engine,
+    resetMap: () => void,
     loadMap: (content: string) => void,
     saveMap: () => string,
+    rebuildIslandMap: () => void,
     resize: (width: number, height: number, 
         anchorX: AnchorPoint, anchorY: AnchorPoint) => void,
     getDimensions: () => Dimensions | undefined,
@@ -67,10 +69,28 @@ export const EngineProvider: React.FC<{}> = ({
     const lightSettings = useLightSettings(engine);
     const layerOptions = useLayerOptions(engine);
 
-    const loadMap = React.useCallback((content: string) => {
-        engine.map = Exrpg.loadScene(engine, content);
+    const setMap = React.useCallback((map: Exrpg.Scene) => {
+        if(engine.map != null) {
+            engine.map.destroy();
+        }
+
+        engine.map = map;
         engine.map.builder.autoUpdate = true;
     }, [engine]);
+
+    const rebuildIslandMap = React.useCallback(() => {
+        engine.map.islandMap.rebuild();
+    }, [engine]);
+
+    const resetMap = React.useCallback(() => {
+        setMap(
+            new Exrpg.Scene(engine, 10, 10));
+    }, [setMap]);
+
+    const loadMap = React.useCallback((content: string) => {
+        setMap(
+            Exrpg.loadScene(engine, content));
+    }, [setMap]);
 
     const saveMap = React.useCallback(() => {
         const scene = engine.map;
@@ -98,6 +118,8 @@ export const EngineProvider: React.FC<{}> = ({
 
     const context: IEngineContext = {
         engine,
+        rebuildIslandMap,
+        resetMap,
         loadMap,
         saveMap,
         resize,

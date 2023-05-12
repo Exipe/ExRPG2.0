@@ -189,7 +189,7 @@ export function Equipment(props: EquipmentProps) {
                 )}
             </ul>
 
-            <div onClick={() => setShowSpendPoints(true)} id="openPointSpend" className="uiButton">Spend points ({attributes.points})</div>
+            <div onClick={() => setShowSpendPoints(true)} id="openPointSpend" className="uiButton">Assign points ({attributes.points})</div>
         </div>
     </div>
 

@@ -1,8 +1,17 @@
 
-export const maps = [ 
-    "newbie_village", "newbie_east_route", "newbie_north_route", "slime_grove", 
-    "capital", "dungeon", "skeleton_boss_chamber",
-    "desert", "desert_maze_start", "desert_maze", "snake_pit", "maze_mine", ] as const;
+export const maps = [
+    "newbie_village",
+    "slime_grove",
+    "newbie_east_route",
+    "newbie_north_route",
+    "newbie_capital",
+    "capital_dungeon",
+    "skeleton_boss_chamber",
+    "desert",
+    "desert_maze_start",
+    "desert_maze",
+    "snake_pit",
+    "maze_mine"] as const;
 
 export type MapId = typeof maps[number];
 

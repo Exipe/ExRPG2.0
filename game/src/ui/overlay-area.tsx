@@ -175,7 +175,7 @@ function ChatBubble(props: ChatBubbleProps) {
         return () => chatBubbleModel.message.unregister(setMessage)
     }, [])
 
-    return <Overlay overlayModel={chatBubbleModel} className={"chatBubble box-standard"}>
+    return <Overlay overlayModel={chatBubbleModel} className={"chatBubble"}>
         {message}
     </Overlay>
 }

@@ -3,6 +3,7 @@ import { useEngine } from "../../engine/engine-provider";
 import { useWidgets } from "../../widget/widget-provider";
 import { loadFile, saveFile } from "../load-save";
 import { OptionsWindow } from "./options-window";
+import { NewWindow } from "./new-windows";
 
 type OptionWindow = {
     id: string;
@@ -14,7 +15,7 @@ const optionWindows: OptionWindow[] = [
     {
         id: "new",
         title: "New",
-        body: <>New</>
+        body: <NewWindow />
     },
     {
         id: "options",
@@ -25,7 +26,7 @@ const optionWindows: OptionWindow[] = [
 
 export const useOptionWidgets = () => {
     const widgets = useWidgets();
-    const { engine, loadMap, saveMap } = useEngine();
+    const { engine, rebuildIslandMap, loadMap, saveMap } = useEngine();
 
     React.useEffect(() => {
         if(engine === undefined) {
@@ -47,7 +48,7 @@ export const useOptionWidgets = () => {
         });
 
         widgets.createButton("r-island", "R Island", () => {
-            console.log("Reload islands");
+            rebuildIslandMap();
         }, "option");
 
         return () => {

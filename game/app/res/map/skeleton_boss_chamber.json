@@ -45,7 +45,7 @@
 			"BLOCK",
 			"OBJECT: torch_wall",
 			"NPC: skeleton_boss",
-			"WARP: dungeon 7 1"
+			"WARP: capital_dungeon 7 1"
 		],
 		"grid": [
 			"1112112111",

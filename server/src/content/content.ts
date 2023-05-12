@@ -69,7 +69,7 @@ export function initContent() {
     })
 
     actionHandler.onObject("ladder_dungeon", (player) => {
-        player.goTo('capital', 13, 1)
+        player.goTo('newbie_capital', 10, 3)
     })
 
     actionHandler.onObject("door_skeleton_boss", (player) => {

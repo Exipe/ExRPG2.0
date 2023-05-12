@@ -123,11 +123,15 @@ export const ObjectTool: Tool = {
     modes: ["Place", "Remove"],
 
     createAction: (mode, x, y, context) => (builder) => {
-        const { id } = context.object;
+        const entity = context.object;
 
         switch(mode) {
             case "Place":
-                builder.putObject(x, y, id);
+                if(!entity) {
+                    return;
+                }
+
+                builder.putObject(x, y, entity.id);
                 break;
             case "Remove":
                 builder.removeAttrib(x, y);
@@ -141,11 +145,15 @@ export const NpcTool: Tool = {
     modes: ["Place", "Remove"],
 
     createAction: (mode, x, y, context) => (builder) => {
-        const { id } = context.npc;
+        const entity = context.npc;
 
         switch(mode) {
             case "Place":
-                builder.putNpc(x, y, id);
+                if(!entity) {
+                    return;
+                }
+
+                builder.putNpc(x, y, entity.id);
                 break;
             case "Remove":
                 builder.removeAttrib(x, y);
@@ -159,11 +167,15 @@ export const ItemTool: Tool = {
     modes: ["Place", "Remove"],
 
     createAction: (mode, x, y, context) => (builder) => {
-        const { id } = context.item;
+        const entity = context.item;
 
         switch(mode) {
             case "Place":
-                builder.putItem(x, y, id);
+                if(!entity) {
+                    return;
+                }
+
+                builder.putItem(x, y, entity.id);
                 break;
             case "Remove":
                 builder.removeAttrib(x, y);
