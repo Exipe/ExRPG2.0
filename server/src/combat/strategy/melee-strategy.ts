@@ -26,11 +26,7 @@ export class MeleeStrategy implements CombatStrategy {
     }
 
     reaches(self: Character, other: Character) {
-        const diffX = other.x - self.x;
-        const diffY = other.y - self.y;
-        return !(diffX == 0 && diffY == 0) 
-            && Math.abs(diffX) <= 1 && Math.abs(diffY) <= 1
-            && self.walkable(self.x, self.y, diffX, diffY);
+        return self.isAdjacent(other);
     }
 
     onTarget(_self: Character, _target: Character) {}

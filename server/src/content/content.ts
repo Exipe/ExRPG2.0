@@ -184,24 +184,49 @@ export function initContent() {
     actionHandler.onNpc("carl_armor", (player, npc, action) => {
         const shop = shopHandler.get("Carl's Armor")
         
-        const dialoge = new Dialogue(npc.data.name, [
+        const dialogue = new Dialogue(npc.data.name, [
             "Greetings adventurer.",
             "Would you like to see my selection of armor?"
         ])
 
-        dialoge.addOption("Yes please", () => {
+        dialogue.addOption("Yes please", () => {
             player.window = shop
             return null
         })
 
-        dialoge.addOption("I'm fine", () => null)
+        dialogue.addOption("I'm fine", () => null)
 
         switch(action) {
             case "trade":
                 player.window = shop
                 break
             case "talk-to":
-                player.window = dialoge
+                player.window = dialogue
+                break
+        }
+    })
+
+    actionHandler.onNpc("lewis_archery", (player, npc, action) => {
+        const shop = shopHandler.get("Lewis's Archery Goods");
+        const dialogue = new Dialogue(npc.data.name, [
+            "Hello there!",
+            "You look like you might be interested in archery.",
+            "May I show you my goods?"
+        ]);
+
+        dialogue.addOption("Sure, I'll have a look!", () => {
+            player.window = shop;
+            return null;
+        });
+
+        dialogue.addOption("No thanks, I'll be on my way", () => null);
+
+        switch(action) {
+            case "trade":
+                player.window = shop
+                break
+            case "talk-to":
+                player.window = dialogue
                 break
         }
     })

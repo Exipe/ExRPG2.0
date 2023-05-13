@@ -19,5 +19,13 @@
         "items": [
             "helm_copper", "plate_copper", "legs_copper", "shield_copper"
         ]
+    },
+
+    {
+        "name": "Lewis's Archery Goods",
+
+        "items": [
+            "bow_crude", "arrows_crude"
+        ]
     }
 ]

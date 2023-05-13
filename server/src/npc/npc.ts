@@ -85,12 +85,8 @@ export class Npc extends Character {
         const radius = this.data.walkRadius
         if (this.target == null && this.aggressive) {
             for (let other of this.map.players) {
-                const distX = other.x - this.x;
-                const distY = other.y - this.y;
-
-                if (Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2)) < 6) {
+                if(this.isInFieldOfVision(other, this.data.walkRadius)) {
                     this.attack(other);
-                    break;
                 }
             }
         }

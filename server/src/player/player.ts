@@ -282,7 +282,7 @@ export class Player extends Character {
         this.unfollow()
         const npc = npcHandler.get(id)
 
-        if(npc == null || !this.reaches(npc)) {
+        if(npc == null || !this.isAdjacent(npc)) {
             return
         }
 

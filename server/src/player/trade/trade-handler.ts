@@ -23,7 +23,7 @@ export class TradeHandler {
         this.stop()
         otherTh.stop()
 
-        if(!this.player.reaches(otherTh.player)) {
+        if(!this.player.isAdjacent(otherTh.player)) {
             this.player.sendMessage(`${Colors.yellow}`, 'You are too far away to trade.')
             return
         }

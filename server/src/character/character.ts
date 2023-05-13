@@ -139,11 +139,36 @@ export abstract class Character {
         return this._walkDelay
     }
 
-    public reaches(other: Character) {
-        const distX = Math.abs(other.x - this.x)
-        const distY = Math.abs(other.y - this.y)
+    public isAdjacent(other: Character) {
+        const diffX = other.x - this.x;
+        const diffY = other.y - this.y;
 
-        return this.map == other.map && distX <= 1 && distY <= 1
+        return this.map === other.map
+            && !(diffX == 0 && diffY == 0) 
+            && Math.abs(diffX) <= 1 && Math.abs(diffY) <= 1
+            && this.walkable(this.x, this.y, diffX, diffY);
+    }
+
+    public isInFieldOfVision(other: Character, distance: number) {
+        const distX = other.x - this.x;
+        const distY = other.y - this.y;
+        const steps = Math.max(Math.abs(distX), Math.abs(distY));
+
+        if((distX == 0 && distY == 0) || steps > distance) return false;
+        
+        const dx = distX / steps;
+        const dy = distY / steps;
+
+        for(let i = 0; i < steps; i++) {
+            const previousX = this.x + Math.ceil(dx * i);
+            const previousY = this.y + Math.ceil(dy * i);
+
+            if(!this.walkable(previousX, previousY, Math.round(dx), Math.round(dy))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public get idle() {
@@ -264,7 +289,11 @@ export abstract class Character {
     protected abstract onLeaveMap(): void
 
     public walk(x: number, y: number) {
-        this.move(x, y, true)
+        if(this.tileWalkable(x, y)) {
+            this.move(x, y, true)
+        } else {
+            this.stop();
+        }
     }
 
     public tileWalkable(x: number, y: number) {

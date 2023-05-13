@@ -44,25 +44,7 @@ export class RangedStrategy implements CombatStrategy {
     }
 
     reaches(self: Character, other: Character) {
-        const distX = other.x - self.x;
-        const distY = other.y - self.y;
-        const steps = Math.max(Math.abs(distX), Math.abs(distY));
-
-        if((distX == 0 && distY == 0) || steps > this.distance) return false;
-        
-        const dx = distX / steps;
-        const dy = distY / steps;
-
-        for(let i = 0; i < steps; i++) {
-            const previousX = self.x + Math.ceil(dx * i);
-            const previousY = self.y + Math.ceil(dy * i);
-
-            if(!self.walkable(previousX, previousY, Math.round(dx), Math.round(dy))) {
-                return false;
-            }
-        }
-
-        return true;
+        return self.isInFieldOfVision(other, this.distance);
     }
     
     onTarget(self: Character, target: Character) {

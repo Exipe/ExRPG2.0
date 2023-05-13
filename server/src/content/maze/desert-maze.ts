@@ -42,7 +42,7 @@ function moveTrigger(player: Player, action: string) {
 
 export function initDesertMaze() {
     actionHandler.onObject("ladder_maze", (player) => {
-        player.goTo('desert', 24, 44)
+        player.goTo('desert', 31, 45)
     })
 
     actionHandler.onTrigger(MOVE_UP, moveTrigger)
