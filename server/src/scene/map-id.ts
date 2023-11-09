@@ -4,6 +4,8 @@ export const maps = [
     "slime_grove",
     "newbie_east_route",
     "newbie_north_route",
+    "newbie_cave_entrance",
+	"newbie_cave",
     "newbie_capital",
     "capital_dungeon",
     "skeleton_boss_chamber",

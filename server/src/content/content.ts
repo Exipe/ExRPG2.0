@@ -72,6 +72,10 @@ export function initContent() {
         player.goTo('newbie_capital', 10, 3)
     })
 
+    actionHandler.onObject("ladder_newbie_cave", (player) => {
+        player.goTo('newbie_north_route', 8, 5)
+    })
+
     actionHandler.onObject("door_skeleton_boss", (player) => {
         if(!player.inventory.hasItem('key_dungeon')) {
             player.sendNotification("You need a key to unlock this door", red)

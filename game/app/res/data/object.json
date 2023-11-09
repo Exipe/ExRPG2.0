@@ -64,6 +64,41 @@
             "Climb up"
         ]
     },
+	
+	{
+		"id": "ladder_newbie_cave",
+		"name": "Ladder",
+		"sprite": "ladder",
+		
+		"shadow": true,
+		
+		"options": [
+			"Climb up"
+		]
+	},
+	
+	{
+		"id": "door_newbie_cave",
+		"name": "Door",
+		"sprite": "door/double",
+		
+		"offsetY": 2,
+		"width": 2,
+		
+		"options": [
+			"/sprite(res/item/key) Unlock"
+		]
+	},
+
+	{
+		"id": "chest_newbie_cave",
+		"name": "Chest",
+		"sprite": "chest",
+		"width": 2,
+		"options": [
+			"Open"
+		]
+	},
 
     {
         "id": "ladder_maze",
