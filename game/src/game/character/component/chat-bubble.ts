@@ -5,7 +5,7 @@ import { ChatBubbleModel, OverlayAreaModel } from "../../model/overlay-model";
 
 export const CHAT_BUBBLE_COMPONENT = "CHAT_BUBBLE"
 
-const HIDE_BUBBLE_TIME = 8888
+const HIDE_BUBBLE_TIME = 5555
 
 export class ChatBubbleComponent extends Component {
 

@@ -32,6 +32,8 @@ export let commandHandler: CommandHandler = null
 
 export let weatherHandler: WeatherHandler = null
 
+export let tickCount = 0
+
 function currTime() {
     return new Date().getTime()
 }
@@ -39,6 +41,7 @@ function currTime() {
 const TICK_INTERVAL = 250
 
 function tick() {
+    tickCount++;
     sceneHandler.tick();
 }
 

@@ -1,6 +1,6 @@
 
 import { Player } from "../player";
-import { Progress, SaveAttrib, SaveEquip, SaveItem } from "./progress";
+import { Progress, SaveAttrib, SaveEquip, SaveItem, SaveVar } from "./progress";
 import { equipSlots } from "../../item/equipment";
 import { attributeIds } from "../attrib";
 import { Container } from "../../item/container/container";
@@ -34,6 +34,11 @@ export function saveProgress(player: Player): Progress {
         base: player.attributes.getBase(attrib)
     }))
 
+    const vars: SaveVar[] = player.varKeys.map((key) => ({
+        key,
+        value: player.getVar(key)
+    }))
+
     return {
         level: player.level.level,
         experience: player.level.experience,
@@ -46,6 +51,7 @@ export function saveProgress(player: Player): Progress {
         equipment: equipment,
         attributes: attributes,
         points: player.attributes.getPoints(),
-        unlockedRecipes: player.unlockedRecipes
+        unlockedRecipes: player.unlockedRecipes,
+        vars
     }
 }

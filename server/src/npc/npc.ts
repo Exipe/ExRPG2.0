@@ -6,6 +6,7 @@ import { MapId } from "../scene/map-id";
 import { randomChance, randomOffset } from "../util/util";
 import { NpcCombatHandler } from "../combat/npc-combat";
 import { ReadOnlyMap } from "../util/readonly-map";
+import { actionHandler } from "../world";
 
 export class NpcHandler {
 
@@ -81,6 +82,7 @@ export class Npc extends Character {
 
     public tick() {
         super.tick();
+        actionHandler.npcTick(this);
 
         const radius = this.data.walkRadius
         if (this.target == null && this.aggressive) {

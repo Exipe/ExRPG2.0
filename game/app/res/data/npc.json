@@ -431,6 +431,16 @@
     },
 
     {
+        "id": "sleepy_imp",
+        "name": "Sleeping imp",
+        "sprite": "imp",
+
+        "options": [
+            "Wake"
+        ]
+    },
+
+    {
         "id": "imp",
         "name": "Imp",
         "sprite": "imp",

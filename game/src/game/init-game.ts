@@ -161,7 +161,7 @@ function initGroundItems(game: Game): void {
     }
 
     engine.inputHandler.onItemContext = item => {
-        const text = `Take /rgb(155,255,255,${item.data.name})`
+        const text = [`Take /rgb(155,255,255,{})`, item.data.name]
         game.ctxMenu.add([text, () => {
             takeItem(item)
         }])

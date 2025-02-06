@@ -12,25 +12,24 @@ interface InventoryProps {
 
 function openContext(inventory: InventoryModel, item: ItemData, idx: number) {
     let ctxMenu = [] as MenuEntry[]
-
-    const name = `/rgb(155,255,255,${item.name})`
+    const buildEntryText = (option: string) => [`${option} /rgb(155,255,255,{})`, item.name];
 
     if(item.equipable) {
         ctxMenu.push([
-            "Equip " + name, 
+            buildEntryText("Equip"), 
             () => { inventory.useItem("equip", item.id, idx) }
         ])
     }
 
     item.options.forEach(option => {
         ctxMenu.push([
-            `${option[0]} ${name}`, 
+            buildEntryText(option[0]), 
             () => { inventory.useItem(option[1], item.id, idx) }
         ])
     })
 
     ctxMenu.push([
-        "Drop " + name, 
+        buildEntryText("Drop"), 
         () => { inventory.useItem("drop", item.id, idx) }
     ])
 

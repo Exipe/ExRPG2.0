@@ -77,6 +77,8 @@ export class Player extends Character {
 
     public mute = false
 
+    private vars: Map<string, any> = new Map<string, any>();
+
     constructor(connection: Connection, persistentId: string, id: number, name: string, progress = null as Progress) {
         super("player", id)
         this.persistentId = persistentId
@@ -92,6 +94,22 @@ export class Player extends Character {
         this.progress = progress
 
         this.attributes.onChange('speed_move', value => this.walkSpeed = speedBonus(value))
+    }
+
+    public get varKeys() {
+        return [...this.vars.keys()];
+    }
+
+    public getVar<T>(key: string) {
+        return this.vars.get(key) as T;
+    }
+
+    public setVar<T>(key: string, value: T) {
+        if(typeof value != "number" && typeof value != "string" && typeof value != "boolean") {
+            throw new Error("Value must be of type 'number', 'string' or 'boolean'");
+        }
+
+        this.vars.set(key, value);
     }
 
     public kick() {
@@ -361,10 +379,10 @@ export class Player extends Character {
             return
         }
 
+        this.sendChatBubble(message)
+
         let format = this.rank == 1 ? '/sprite(ui/crown)' : ''
         format += ` ${yellow} {}`
-
-        this.map.broadcast(new ChatBubblePacket(this.type, this.id, message))
         playerHandler.globalMessage(format, this.name+":", message)
     }
 

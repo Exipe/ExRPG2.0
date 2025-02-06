@@ -1,6 +1,6 @@
 import { Observable } from "../../util/observable"
 
-export type MenuEntry = [string, () => void]
+export type MenuEntry = [string | string[], () => void]
 
 export class OpenContextMenu {
     public readonly entries: MenuEntry[]

@@ -30,8 +30,10 @@ export function initDrops() {
     addDrop("bear", 3, "fish", 1)
     addDrop("bear", 12, "plate_copper", 1)
     addDrop("bear", 12, "legs_copper", 1)
+	
+	addDrop("imp", 5, "key_imp_treasure", 1)
 
-    addDrop('skeleton', 100, 'key_dungeon', 1)
+    addDrop('skeleton', 100, 'key_skeleton_dungeon', 1)
     addDrop('skeleton', 75, 'recipe_sword_iron', 1)
     addDrop('skeleton', 75, 'recipe_helm_iron', 1)
     addDrop('skeleton', 75, 'recipe_plate_iron', 1)

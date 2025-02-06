@@ -52,6 +52,10 @@ export function loadProgress(player: Player, progress: Progress) {
         player.attributes.setBase(attrib.id, attrib.base, false)
     }
 
+    for(let saveVar of progress.vars ?? []) {
+        player.setVar(saveVar.key, saveVar.value)
+    }
+
     player.inventory.update()
     player.equipment.update()
     player.attributes.update()

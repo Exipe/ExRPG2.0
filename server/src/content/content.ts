@@ -14,6 +14,7 @@ import { initWoodcutting } from "./gathering/woodcutting"
 import { ChatBubblePacket, PointItemPacket } from "../connection/outgoing-packet"
 import { SequenceBuilder } from "../character/sequence-task"
 import { Player } from "../player/player"
+import { initNewbieCave } from "./newbie-cave"
 
 export function initContent() {
     initFood()
@@ -24,6 +25,7 @@ export function initContent() {
     initFishing()
     initDialogue()
     initDesertMaze()
+    initNewbieCave()
 
     const rope = objDataHandler.get("rope");
     actionHandler.onObject(rope.id, (player, _action, objX, bottom) => {
@@ -63,7 +65,7 @@ export function initContent() {
     });
 
     actionHandler.onObject("cactus", (player) => {
-        player.map.broadcast(new ChatBubblePacket("player", player.id, "Ow! >.<"))
+        player.sendChatBubble("Ow! >.<")
         player.combatHandler.applyDamage(1, "hit")
         player.sendMessage("You sting yourself on the cactus. Why did you think that was a good idea..?")
     })
@@ -72,12 +74,8 @@ export function initContent() {
         player.goTo('newbie_capital', 10, 3)
     })
 
-    actionHandler.onObject("ladder_newbie_cave", (player) => {
-        player.goTo('newbie_north_route', 8, 5)
-    })
-
     actionHandler.onObject("door_skeleton_boss", (player) => {
-        if(!player.inventory.hasItem('key_dungeon')) {
+        if(!player.inventory.hasItem('key_skeleton_dungeon')) {
             player.sendNotification("You need a key to unlock this door", red)
             return
         }
@@ -87,7 +85,7 @@ export function initContent() {
             [red.toString(), "Players below level 30 are adviced to stay away."]
         ])
         dialoge.addOption("Enter chamber", () => {
-            if(player.inventory.remove('key_dungeon', 1) == 0) {
+            if(player.inventory.remove('key_skeleton_dungeon', 1) == 0) {
                 player.goTo('skeleton_boss_chamber', 4, 9)
             }
 

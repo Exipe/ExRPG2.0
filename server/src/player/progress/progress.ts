@@ -17,6 +17,11 @@ export interface SaveAttrib {
     base: number
 }
 
+export interface SaveVar {
+    key: string,
+    value: boolean | number | string
+}
+
 export interface Progress {
     level: number
     experience: number
@@ -41,4 +46,5 @@ export interface Progress {
     points: number
 
     unlockedRecipes: string[]
+    vars: SaveVar[]
 }

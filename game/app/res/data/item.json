@@ -31,10 +31,16 @@
     },
 
     {
-        "id": "key_dungeon",
-        "name": "Dungeon key",
-        "sprite": "key"
+        "id": "key_skeleton_dungeon",
+        "name": "Key (Skeleton dungeon)",
+        "sprite": "key/golden"
     },
+	
+	{
+		"id": "key_imp_treasure",
+		"name": "Key (Imp treasure)",
+		"sprite": "key/red"
+	},
 
     {
         "id": "beta_hat",
@@ -79,7 +85,7 @@
     {
         "id": "pirate_hat",
         "name": "Pirate hat",
-        "sprite": "hat",
+        "sprite": "pirate_hat",
         "equip": {
             "slot": "helm",
             "sprite": ["hat", 4]

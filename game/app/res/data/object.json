@@ -49,7 +49,7 @@
         "offsetY": 2,
 
         "options": [
-            "/sprite(res/item/key) Unlock"
+            "/sprite(res/item/key/golden) Unlock"
         ]
     },
 
@@ -86,7 +86,7 @@
 		"width": 2,
 		
 		"options": [
-			"/sprite(res/item/key) Unlock"
+			"/sprite(res/item/key/red) Unlock"
 		]
 	},
 
