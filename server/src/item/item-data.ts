@@ -1,5 +1,3 @@
-
-import fetch from "node-fetch"
 import { AttribId, isAttribId } from "../player/attrib"
 import { ReadOnlyMap } from "../util/readonly-map"
 import { EquipSlot, isEquipSlot } from "./equipment"
@@ -16,11 +14,10 @@ export class ItemData {
 
     public readonly actions: string[]
 
-    constructor(id: string, name: string, 
+    constructor(id: string, name: string,
         equipSlot: EquipSlot, equipBonuses: [AttribId, number][], equipReqs: [AttribId, number][],
-        actions: string[], 
-        stack: number, value: number) 
-    {
+        actions: string[],
+        stack: number, value: number) {
         this.id = id
         this.name = name
         this.equipSlot = equipSlot
@@ -40,10 +37,10 @@ export class ItemData {
 export async function loadItemData(resPath: string) {
     const itemDataMap = new Map<string, ItemData>()
     const data = await fetch(resPath + "data/item.json")
-    .then(res => res.json())
+        .then(res => res.json()) as any[]
 
     data.forEach((item: any) => {
-        if(itemDataMap.get(item.id) != null) {
+        if (itemDataMap.get(item.id) != null) {
             throw "IMPORTANT - duplicate item ID: " + item.id
         }
 
@@ -52,19 +49,19 @@ export async function loadItemData(resPath: string) {
         let equipReqs = [] as [AttribId, number][]
 
         const equip = item.equip
-        if(equip != null) {
+        if (equip != null) {
             const slot = equip.slot
 
-            if(isEquipSlot(slot)) {
+            if (isEquipSlot(slot)) {
                 equipSlot = slot
             } else {
                 throw `IMPORTANT - Invalid equipment slot [${slot}] on item: ${item.id}`
             }
 
             const bonuses = equip.bonuses
-            if(bonuses != null) {
-                for(let id in bonuses) {
-                    if(isAttribId(id)) {
+            if (bonuses != null) {
+                for (let id in bonuses) {
+                    if (isAttribId(id)) {
                         equipBonuses.push([id, bonuses[id]])
                     } else {
                         throw `IMPORTANT - Invalid bonus attribute [${id}] on item: ${item.id}`
@@ -73,9 +70,9 @@ export async function loadItemData(resPath: string) {
             }
 
             const reqs = equip.requirements
-            if(reqs != null) {
-                for(let id in reqs) {
-                    if(isAttribId(id)) {
+            if (reqs != null) {
+                for (let id in reqs) {
+                    if (isAttribId(id)) {
                         equipReqs.push([id, reqs[id]])
                     } else {
                         throw `IMPORTANT - Invalid requirement attribute [${id}] on item: ${item.id}`
@@ -86,12 +83,12 @@ export async function loadItemData(resPath: string) {
 
         let stack = item.stack ? item.stack : 1
         let value = item.value ? item.value : 0
-        let actions = item.options ? item.options.map((action: string) => 
+        let actions = item.options ? item.options.map((action: string) =>
             action.toLowerCase().replace(" ", "_")) : []
 
-        const itemData = new ItemData(item.id, item.name, 
+        const itemData = new ItemData(item.id, item.name,
             equipSlot, equipBonuses, equipReqs,
-            actions, 
+            actions,
             stack, value)
         itemDataMap.set(item.id, itemData)
     })

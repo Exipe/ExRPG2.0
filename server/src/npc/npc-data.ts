@@ -1,5 +1,3 @@
-
-import fetch from "node-fetch"
 import { maxDamage, speedBonus } from "../util/formula"
 import { ReadOnlyMap } from "../util/readonly-map"
 
@@ -8,7 +6,7 @@ const DEFAULT_WALK_SPEED = 1
 const DEFAULT_WALK_RADIUS = 0 // don't move
 
 export const isAgressive = (id: string) => {
-    switch(id) {
+    switch (id) {
         case "skeleton":
         case "red_slime":
             return true;
@@ -41,12 +39,12 @@ export interface NpcData {
 export async function loadNpcData(resPath: string) {
     const npcDataMap = new Map<string, NpcData>()
     const data = await fetch(resPath + "data/npc.json")
-    .then(res => res.json())
+        .then(res => res.json()) as any[]
 
     const combatAttrib = (value: number) => value ? value : 0
 
     data.forEach((npc: any) => {
-        if(npcDataMap.get(npc.id) != null) {
+        if (npcDataMap.get(npc.id) != null) {
             throw "IMPORTANT - duplicate NPC ID: " + npc.id
         }
 
@@ -56,7 +54,7 @@ export async function loadNpcData(resPath: string) {
         let combatData = null as NpcCombatData
         const cb = npc.combat
 
-        if(cb != null) {
+        if (cb != null) {
             const attackSpeed = speedBonus(combatAttrib(cb.attackSpeed))
             const maxHit = maxDamage(combatAttrib(cb.damage))
 

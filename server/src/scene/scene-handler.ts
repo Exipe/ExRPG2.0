@@ -1,5 +1,5 @@
 
-import fetch from "node-fetch";
+// import fetch from "node-fetch";
 import { SpecialTrigger, WarpTrigger } from "./trigger";
 import { Scene, SceneAttrib } from "./scene";
 import { isMapId, MapId, maps } from "./map-id";
@@ -18,45 +18,45 @@ export function parseAttrib(map: Scene, attrib: SceneAttrib) {
     const x = attrib.x
     const y = attrib.y
 
-    if(id.startsWith(OBJ_PREFIX)) {
+    if (id.startsWith(OBJ_PREFIX)) {
         const objId = id.substr(OBJ_PREFIX.length)
         const objData = objDataHandler.get(objId)
         map.addObject(x, y, objData)
-    } 
-    else if(id.startsWith(NPC_PREFIX)) {
+    }
+    else if (id.startsWith(NPC_PREFIX)) {
         const npcId = id.substr(NPC_PREFIX.length)
         npcHandler.create(npcId, map.id, x, y)
-    } 
-    else if(id.startsWith(WARP_PREFIX)) {
+    }
+    else if (id.startsWith(WARP_PREFIX)) {
         const split = id.substr(WARP_PREFIX.length).split(" ")
         const mapId = split[0]
 
-        if(!isMapId(mapId)) {
+        if (!isMapId(mapId)) {
             throw `Invalid WARP [${mapId}] in ${map.id}`
         }
 
         map.setTrigger(x, y, new WarpTrigger(mapId, Number(split[1]), Number(split[2])))
     }
-    else if(id.startsWith(TRIGGER_PREFIX)) {
+    else if (id.startsWith(TRIGGER_PREFIX)) {
         const action = id.substr(TRIGGER_PREFIX.length)
         map.setTrigger(x, y, new SpecialTrigger(action))
     }
-    else if(id.startsWith(ITEM_PREFIX)) {
+    else if (id.startsWith(ITEM_PREFIX)) {
         const itemId = id.substr(ITEM_PREFIX.length)
         const itemData = itemDataHandler.get(itemId)
         map.addItem(itemData, 1, x, y)
     }
-    else if(id == BLOCK_ID) {
+    else if (id == BLOCK_ID) {
         map.block(x, y)
     }
-    else if(id == NPC_AVOID_ID) {
+    else if (id == NPC_AVOID_ID) {
         map.npcBlock(x, y)
     }
 }
 
 async function loadScene(path: string, mapId: MapId) {
     const mapData = await fetch(path + mapId + ".json")
-    .then(res => res.json())
+        .then(res => res.json()) as any
 
     const map = new Scene(mapId, mapData.width, mapData.height)
 
@@ -71,7 +71,7 @@ async function loadScene(path: string, mapId: MapId) {
             let id = "EMPTY"
 
             const idx = parseInt(col, 10) - 1
-            if(idx >= 0) {
+            if (idx >= 0) {
                 id = ids[idx]
             }
 
@@ -92,7 +92,7 @@ export async function loadScenes(path: string) {
     const scenes = new Map<string, Scene>()
 
     const promises = maps.map(async s => {
-        const scene = await loadScene(path+"map/", s);
+        const scene = await loadScene(path + "map/", s);
         scenes.set(s, scene);
     })
 
@@ -104,7 +104,7 @@ export async function loadScenes(path: string) {
 export class SceneHandler {
 
     private readonly scenes: Map<string, Scene>
-    
+
     constructor(scenes: Map<string, Scene>) {
         this.scenes = scenes
     }
@@ -116,5 +116,5 @@ export class SceneHandler {
     public tick() {
         this.scenes.forEach(scene => scene.tick());
     }
-    
+
 }

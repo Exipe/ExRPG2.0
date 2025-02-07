@@ -1,5 +1,3 @@
-
-import fetch from "node-fetch"
 import { ReadOnlyMap } from "../util/readonly-map"
 
 export class ObjectData {
@@ -24,10 +22,10 @@ export class ObjectData {
 export async function loadObjectData(resPath: string) {
     const objDataMap = new Map<string, ObjectData>()
     const data = await fetch(resPath + "data/object.json")
-    .then(res => res.json())
+        .then(res => res.json()) as any[]
 
     data.forEach((obj: any) => {
-        if(objDataMap.get(obj.id) != null) {
+        if (objDataMap.get(obj.id) != null) {
             throw "IMPORTANT - duplicate object ID: " + obj.id
         }
 

@@ -11,16 +11,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.0.1",
-    "dotenv": "^10.0.0",
-    "mongodb": "^4.1.2",
-    "node-fetch": "^2.6.1",
-    "ws": "^7.4.6"
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "mongodb": "^6.13.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
-    "@types/bcrypt": "^3.0.1",
-    "@types/node-fetch": "^2.5.10",
-    "@types/ws": "^7.4.2",
-    "madge": "^5.0.1"
+    "@types/bcrypt": "^5.0.2",
+    "@types/ws": "^8.5.14"
   }
 }

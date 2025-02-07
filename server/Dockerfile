@@ -1,4 +1,4 @@
-FROM node:17-alpine
+FROM node:22-alpine
 RUN npm install -g typescript
 
 WORKDIR /server
