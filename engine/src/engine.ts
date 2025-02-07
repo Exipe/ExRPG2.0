@@ -5,7 +5,6 @@ import { ItemHandler } from "./item/item-handler"
 import { LightHandler } from "./light/light-handler"
 import { NpcHandler } from "./npc/npc-handler"
 import { ObjectHandler } from "./object/object-handler"
-import { OffscreenHandler } from "./offscreen"
 import { ShaderHandler } from "./shader/shader-handler"
 import { loadTexture } from "./texture/texture"
 import { TileHandler } from "./tile/tile-handler"
@@ -38,17 +37,15 @@ export class Engine {
 
     public lightHandler: LightHandler
 
-    public readonly offscreenHandler: OffscreenHandler
     public camera: Camera
 
     public onAnimate: AnimateCallback = null
     public onDraw: DrawCallback = null
 
-    constructor(deps: EngineDeps) 
-    {
-        const { 
-            canvas, gl, resPath, 
-            shaderHandler, tileHandler, 
+    constructor(deps: EngineDeps) {
+        const {
+            canvas, gl, resPath,
+            shaderHandler, tileHandler,
             objectHandler, npcHandler, itemHandler,
         } = deps;
 
@@ -62,7 +59,6 @@ export class Engine {
         this.itemHandler = itemHandler
 
         this.lightHandler = new LightHandler(gl)
-        this.offscreenHandler = new OffscreenHandler(this)
         this.camera = new Camera(this)
         this.inputHandler = new InputHandler(canvas, this.camera)
 
@@ -90,13 +86,13 @@ export class Engine {
         let maxX = Infinity
         let maxY = Infinity
 
-        if(map != null) {
+        if (map != null) {
             minX = 0
             minY = 0
             maxX = map.width * TILE_SIZE
             maxY = map.height * TILE_SIZE
         }
-        
+
         this.camera.setBoundaries(minX, minY, maxX, maxY)
     }
 
@@ -107,12 +103,8 @@ export class Engine {
     unbindFB() {
         const gl = this.gl
 
-        if(this.camera.enablePixelScaling) {
-            this.offscreenHandler.bind()
-        } else {
-            gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-            gl.viewport(0, 0, this.camera.realWidth, this.camera.realHeight)
-        }
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+        gl.viewport(0, 0, this.camera.realWidth, this.camera.realHeight)
     }
 
     resize(width: number, height: number) {
@@ -125,19 +117,14 @@ export class Engine {
 
         this.tileHandler.animateWater(dt)
 
-        if(this.onAnimate != null) {
+        if (this.onAnimate != null) {
             this.onAnimate(dt)
-        }
-
-        const offscreen = this.camera.enablePixelScaling
-        if(offscreen) {
-            this.offscreenHandler.bind() // render to offscreen texture, to scale up later
         }
 
         this.gl.clearColor(BACKGROUND[0], BACKGROUND[1], BACKGROUND[2], 1)
         this.gl.clear(this.gl.COLOR_BUFFER_BIT)
 
-        if(this.scene != null) {
+        if (this.scene != null) {
             const [mouseX, mouseY] = this.camera.translateClick(
                 this.inputHandler.mouseX, this.inputHandler.mouseY)
             this.scene.updateHover(mouseX, mouseY)
@@ -147,11 +134,7 @@ export class Engine {
             this.scene.draw()
         }
 
-        if(offscreen) {
-            this.offscreenHandler.render()
-        }
-
-        if(this.onDraw != null) {
+        if (this.onDraw != null) {
             this.onDraw()
         }
 

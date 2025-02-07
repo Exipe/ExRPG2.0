@@ -1,13 +1,12 @@
 
 import { Shader } from "./shader"
-import { projection, scaling, translation, view, Matrix } from "../matrix"
+import { projection, view, Matrix } from "../matrix"
 import { ShadowShader as ShadowShader } from "./shadow-shader"
 import { OverlayShader as OverlayShader } from "./overlay-shader"
 import { BaseShader } from "./base-shader"
 import { StandardShader } from "./standard-shader"
 import { LightShader } from "./light-shader"
 import { EntityShadowShader } from "./entity-shadow-shader"
-import { ScaleShader } from "./scale-shader"
 
 /**
  * Loads shader source code and compiles an OpenGL shader
@@ -51,9 +50,7 @@ export async function initShaders(gl: WebGL2RenderingContext, srcPath: string) {
         frag("light-frag"),
         vert("entity-shadow-vert"),
         frag("entity-shadow-frag"),
-        frag("outline-frag"),
-        vert("scale-vert"),
-        frag("scale-frag")
+        frag("outline-frag")
     ])
 
     return new ShaderHandler({
@@ -64,7 +61,6 @@ export async function initShaders(gl: WebGL2RenderingContext, srcPath: string) {
         lightShader: new LightShader(gl, results[7], results[8]),
         entityShadowShader: new EntityShadowShader(gl, results[9], results[10]),
         outlineShader: new EntityShadowShader(gl, results[9], results[11]),
-        scaleShader: new ScaleShader(gl, results[12], results[13])
     })
 }
 
@@ -76,7 +72,6 @@ interface Shaders {
     lightShader: LightShader
     entityShadowShader: EntityShadowShader
     outlineShader: EntityShadowShader
-    scaleShader: ScaleShader
 }
 
 export class ShaderHandler {
@@ -90,7 +85,6 @@ export class ShaderHandler {
     private lightShader: LightShader
     private entityShadowShader: EntityShadowShader
     private outlineShader: EntityShadowShader
-    private scaleShader: ScaleShader
 
     private all: Shader[]
 
@@ -103,10 +97,9 @@ export class ShaderHandler {
         this.lightShader = shaders.lightShader
         this.entityShadowShader = shaders.entityShadowShader
         this.outlineShader = shaders.outlineShader
-        this.scaleShader = shaders.scaleShader
 
         /*
-        Light shader + Scale shader purposefully excluded, as they use their own view/projection matrices
+        Light shader purposefully excluded, as it uses its own view/projection matrix
         */
         this.all = [ this.standardShader, this.baseShader, this.overlayShader, 
             this.shadowShader, this.entityShadowShader, this.outlineShader ]
@@ -154,15 +147,9 @@ export class ShaderHandler {
         return this.outlineShader
     }
 
-    useScaleShader() {
-        this.setCurrent(this.scaleShader)
-        return this.scaleShader
-    }
-
     setProjection(width: number, height: number) {
         const projectionMatrix = projection(width, height);
         this.setProjectionMatrix(projectionMatrix)
-        this.useScaleShader().setProjectionMatrix(scaling(2 / width, 2 / height).translate(-1, -1))
     }
 
     setProjectionMatrix(matrix: Matrix) {

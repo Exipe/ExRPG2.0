@@ -14,7 +14,6 @@ export class SettingsModel {
 
         this.zoom = localStorage.zoom ? localStorage.zoom : 3
         this.cameraMode = localStorage.cameraMode ? localStorage.cameraMode : "clip"
-        this.pixelScaling = localStorage.pixelScaling == 'true'
     }
 
     public set zoom(value: number) {
@@ -46,14 +45,4 @@ export class SettingsModel {
     public get cameraMode() {
         return this._cameraMode
     }
-
-    public set pixelScaling(value: boolean) {
-        this.engine.camera.enablePixelScaling = value
-        localStorage.pixelScaling = value
-    }
-
-    public get pixelScaling() {
-        return this.engine.camera.enablePixelScaling
-    }
-
 }

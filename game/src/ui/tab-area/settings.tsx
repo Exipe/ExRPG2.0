@@ -11,7 +11,6 @@ export interface SettingsProps {
 export function Settings(props: SettingsProps) {
     const [zoom, setZoom] = React.useState(props.settings.zoom)
     const [camera, setCamera] = React.useState(props.settings.cameraMode)
-    const [pixelScaling, setPixelScaling] = React.useState(props.settings.pixelScaling)
 
     const settings = props.settings
     const ctxMenu = props.ctxMenu
@@ -42,20 +41,6 @@ export function Settings(props: SettingsProps) {
         ctxMenu.open(e.clientX, e.clientY)
     }
 
-    function onPixelScaling(e: MouseEvent) {
-        ctxMenu.add(["Set: on", () => {
-            settings.pixelScaling = true
-            setPixelScaling(true)
-        }])
-
-        ctxMenu.add(["Set: off", () => {
-            settings.pixelScaling = false
-            setPixelScaling(false)
-        }])
-
-        ctxMenu.open(e.clientX, e.clientY)
-    }
-
     function onFullscreen() {
         const container = document.querySelector("#container")
         container.requestFullscreen()
@@ -64,7 +49,6 @@ export function Settings(props: SettingsProps) {
     return <div id="settings" className="box-standard">
         <div className="uiButton" onClick={e => { onZoom(e.nativeEvent) }}>Zoom: {zoom}x</div>
         <div className="uiButton" onClick={e => { onCamera(e.nativeEvent) }}>Camera: {camera}</div>
-        <div className="uiButton" onClick={e => { onPixelScaling(e.nativeEvent) }}>Pixel scaling: {pixelScaling ? "on" : "off"}</div>
 
         <div id="fullscreenButton" className="uiButton" onClick={onFullscreen}>Fullscreen</div>
     </div>

@@ -5,7 +5,6 @@ import { Quad } from "../quad";
 import { translation, Matrix } from "../matrix";
 import { StandardShader } from "../shader/standard-shader";
 import { EntityShadowShader } from "../shader/entity-shadow-shader";
-import { ScaleShader } from "../shader/scale-shader";
 
 export class Sprite {
 
@@ -42,7 +41,7 @@ export class Sprite {
         return this.texture.height
     }
 
-    private get standardShader(): StandardShader | EntityShadowShader | ScaleShader {
+    private get standardShader(): StandardShader | EntityShadowShader {
         return this.engine.shaderHandler.useStandardShader()
     }
 

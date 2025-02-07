@@ -126,7 +126,7 @@ export class BaseChunk extends Chunk<WaterTile | GroundTile> {
         gl.bindVertexArray(this.groundVao)
         gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, this.groundCount)
 
-        engine.tileHandler.drawWater(!engine.camera.enablePixelScaling, engine.shaderHandler)
+        engine.tileHandler.drawWater(true, engine.shaderHandler)
         gl.bindVertexArray(this.waterVao)
         gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, this.waterCount)
     }
