@@ -68,13 +68,16 @@ export class HealthBarModel extends OverlayModel {
 
 }
 
+export type ChatBubbleStyle = "standard" | "quiet"
+
 export class ChatBubbleModel extends OverlayModel {
-
     public readonly message: Observable<string>
+    public readonly style: Observable<ChatBubbleStyle>
 
-    constructor(id: number, camera: Camera, x: number, y: number, message: string) {
+    constructor(id: number, camera: Camera, x: number, y: number, message: string, style: ChatBubbleStyle) {
         super(id, camera, x, y)
         this.message = new Observable(message)
+        this.style = new Observable(style)
     }
 
 }
@@ -140,8 +143,8 @@ export class OverlayAreaModel {
         return healthBarModel
     }
 
-    public addChatBubble(message: string, x: number, y: number) {
-        const chatBubbleModel = new ChatBubbleModel(this.idCount++, this.camera, x, y, message)
+    public addChatBubble(message: string, style: ChatBubbleStyle, x: number, y: number) {
+        const chatBubbleModel = new ChatBubbleModel(this.idCount++, this.camera, x, y, message, style)
         this.addOverlay(chatBubbleModel)
         return chatBubbleModel
     }

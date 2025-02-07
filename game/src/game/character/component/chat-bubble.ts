@@ -1,7 +1,7 @@
 
 import { Entity } from "exrpg";
 import { Component } from "exrpg/dist/entity/component";
-import { ChatBubbleModel, OverlayAreaModel } from "../../model/overlay-model";
+import { ChatBubbleModel, ChatBubbleStyle, OverlayAreaModel } from "../../model/overlay-model";
 
 export const CHAT_BUBBLE_COMPONENT = "CHAT_BUBBLE"
 
@@ -27,12 +27,13 @@ export class ChatBubbleComponent extends Component {
         this.chatBubbleTimeout = -1
     }
 
-    public set message(value: string) {
+    public showChatBubble(message: string, style: ChatBubbleStyle) {
         if(this.chatBubble != null) {
-            this.chatBubble.message.value = value
+            this.chatBubble.message.value = message
+            this.chatBubble.style.value = style
             clearTimeout(this.chatBubbleTimeout)
         } else {
-            this.chatBubble = this.overlayArea.addChatBubble(value, ...this.entity.centerAboveCoords)
+            this.chatBubble = this.overlayArea.addChatBubble(message, style, ...this.entity.centerAboveCoords)
         }
 
         this.chatBubbleTimeout = window.setTimeout(() => {

@@ -222,7 +222,7 @@ function onChatBubble(game: Game, data: any) {
     if(component == null) {
         return
     }
-    component.message = data.message
+    component.showChatBubble(data.message, data.style)
 }
 
 function onHealthBar(game: Game, data: any) {

@@ -311,12 +311,14 @@ export class RemoveProgressIndicatorPacket implements Packet {
     }
 }
 
+export type ChatBubbleStyle = "standard" | "quiet"
+
 export class ChatBubblePacket implements Packet {
     public readonly id = "CHAT_BUBBLE"
     public readonly data: any
 
-    constructor(character: CharacterType, characterId: number, message: string) {
-        this.data = { character, characterId, message }
+    constructor(character: CharacterType, characterId: number, message: string, style: ChatBubbleStyle) {
+        this.data = { character, characterId, message, style }
     }
 }
 

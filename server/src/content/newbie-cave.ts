@@ -1,6 +1,4 @@
 import { SequenceBuilder } from "../character/sequence-task"
-import { ChatBubblePacket } from "../connection/outgoing-packet"
-import { ObjectData } from "../object/object-data"
 import { Player } from "../player/player"
 import { Colors, green, red } from "../util/color"
 import { randomChance, randomInt } from "../util/util"
@@ -24,7 +22,11 @@ export const initNewbieCave = () => {
             return;
         }
 
-        npc.sendChatBubble("Zzz")
+        npc.sendChatBubble("* zZz *", "quiet")
+    })
+
+    actionHandler.onNpc(sleepingImp.id, (player) => {
+        player.sendMessage("You figure you'd better not disturb him")
     })
 }
 
@@ -87,7 +89,7 @@ const openChest = (player: Player) => {
         }
 
         player.sendNotification("The lid slams shut on your fingers", red)
-        player.sendChatBubble("Fricking heck!!")
+        player.sendChatBubble("Ouch!!", "quiet")
         player.combatHandler.applyDamage(2, "hit")
         player.stop()
     }

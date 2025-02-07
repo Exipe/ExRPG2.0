@@ -3,7 +3,7 @@ import { Scene } from "../scene/scene"
 import { Walking } from "./walking"
 import { sceneHandler } from "../world"
 import { TaskHandler } from "./task-handler"
-import { CancelPointItemPacket, ChatBubblePacket, PointItemPacket, ProgressIndicatorPacket, RemoveProgressIndicatorPacket, SwingItemPacket } from "../connection/outgoing-packet"
+import { CancelPointItemPacket, ChatBubblePacket, ChatBubbleStyle, PointItemPacket, ProgressIndicatorPacket, RemoveProgressIndicatorPacket, SwingItemPacket } from "../connection/outgoing-packet"
 import { CombatHandler } from "../combat/combat"
 import { MapId } from "../scene/map-id"
 
@@ -67,8 +67,8 @@ export abstract class Character {
         }
     }
 
-    public sendChatBubble(message: string) {
-        this.map.broadcast(new ChatBubblePacket(this.type, this.id, message))
+    public sendChatBubble(message: string, style: ChatBubbleStyle = "standard") {
+        this.map.broadcast(new ChatBubblePacket(this.type, this.id, message, style))
     }
 
     public showIndicator(itemId: string, duration: number) {

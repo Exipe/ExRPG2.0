@@ -433,7 +433,7 @@
     {
         "id": "sleepy_imp",
         "name": "Sleeping imp",
-        "sprite": "imp",
+        "sprite": "sleepy_imp",
 
         "options": [
             "Wake"

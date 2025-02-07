@@ -169,13 +169,19 @@ interface ChatBubbleProps {
 function ChatBubble(props: ChatBubbleProps) {
     const { chatBubbleModel }= props
     const [message, setMessage] = React.useState(chatBubbleModel.message.value)
+    const [style, setStyle] = React.useState(chatBubbleModel.style.value)
 
     React.useEffect(() => {
         chatBubbleModel.message.register(setMessage)
         return () => chatBubbleModel.message.unregister(setMessage)
     }, [])
 
-    return <Overlay overlayModel={chatBubbleModel} className={"chatBubble"}>
+    React.useEffect(() => {
+        chatBubbleModel.style.register(setStyle)
+        return () => chatBubbleModel.style.unregister(setStyle)
+    }, []);
+
+    return <Overlay overlayModel={chatBubbleModel} className={`chatBubble chatBubble-${style}`}>
         {message}
     </Overlay>
 }

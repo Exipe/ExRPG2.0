@@ -14,12 +14,18 @@
     color: yellow;
 }
 
+.chatBubble-quiet {
+    color: rgba(166, 166, 177, 1);
+    font-style: italic;
+}
+
 .chatBubble {
     transform: translate(-50%, -100%) translateY(-2rem);
     font-family: sans-serif;
     font-weight: bold;
     font-size: 12px;
     white-space: normal;
+    text-align: center;
     background-color: rgba(255, 255, 255, 0.88);
     border: 1px solid rgba(166, 166, 177, 1);
     border-bottom-width: 2px;
