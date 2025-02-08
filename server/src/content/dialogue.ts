@@ -40,6 +40,7 @@ const talkToMan = (player: Player, npc: Npc, action: string) => {
             message = ["Good morning, sir."]
             break
         case "EVENING":
+        case "NIGHT":
             message = ["Good evening, sir."]
             break
     }
