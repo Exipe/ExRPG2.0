@@ -8,7 +8,7 @@ import { ObjectHandler } from "./object/object-handler"
 import { ShaderHandler } from "./shader/shader-handler"
 import { loadTexture } from "./texture/texture"
 import { TileHandler } from "./tile/tile-handler"
-import { WeatherHandler } from "./weather/weather-handler"
+import { RAIN_EFFECT, SNOW_EFFECT, WeatherHandler } from "./weather/weather-handler"
 
 export type EngineDeps = {
     canvas: HTMLCanvasElement,
@@ -73,7 +73,7 @@ export class Engine {
         this.camera.setDimensions(canvas.width, canvas.height)
         this.camera.scale = 3
 
-        this.weatherHandler.startEffect(this);
+        this.weatherHandler.startEffect(this, RAIN_EFFECT);
 
         const now = Date.now()
         requestAnimationFrame(() => { this.update(now) })

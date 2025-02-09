@@ -1,26 +1,61 @@
 import { Engine } from "../engine";
-import { loadTexture, Texture } from "../texture/texture";
-import { initWeatherLayer, WeatherLayer } from "./weather-layer";
+import { MultiTexture } from "../texture/multi-texture";
+import { loadTexture } from "../texture/texture";
+import { initWeatherLayer, WeatherLayer, WeatherLayerDefinition } from "./weather-layer";
+
+export type WeatherEffectDefinition = {
+    layers: ReadonlyArray<WeatherLayerDefinition>
+};
+
+export const RAIN_EFFECT: Readonly<WeatherEffectDefinition> = {
+    layers: [
+        {
+            texturePosition: [0, 0],
+            speedModifier: [1.0, 2.0],
+            spriteCount: 3
+        },
+        {
+            texturePosition: [1, 0],
+            speedModifier: [0.85, 1.7],
+            spriteCount: 6
+        }
+    ]
+};
+
+export const SNOW_EFFECT: Readonly<WeatherEffectDefinition> = {
+    layers: [
+        {
+            texturePosition: [2, 0],
+            speedModifier: [0, 0.5],
+            spriteCount: 3
+        },
+        {
+            texturePosition: [3, 0],
+            speedModifier: [0, 0.3],
+            spriteCount: 4
+        }
+    ]
+};
+
+const PARTICLE_SIZE = 4;
 
 export const initWeather = async (gl: WebGL2RenderingContext, resPath: string) => {
-    const bgTexture = await loadTexture(gl, `${resPath}/rain_bg.png`);
-    const fgTexture = await loadTexture(gl, `${resPath}/rain_fg.png`);
-    return new WeatherHandler(bgTexture, fgTexture);
+    const particleTexture = await loadTexture(gl, `${resPath}/particle.png`)
+        .then(texture => new MultiTexture(texture, PARTICLE_SIZE, PARTICLE_SIZE));
+    return new WeatherHandler(particleTexture);
 }
 
 export class WeatherHandler {
     private layers: WeatherLayer[]
 
     constructor(
-        private readonly bgTexture: Texture,
-        private readonly fgTexture: Texture,
+        private readonly particleTexture: MultiTexture
     ) { }
 
-    public startEffect(engine: Engine) {
-        const bgEffect = initWeatherLayer(engine, this.bgTexture, [0.85, 1.7])
-        const fgEffect = initWeatherLayer(engine, this.fgTexture, [1.0, 2.0])
-
-        this.layers = [bgEffect, fgEffect]
+    public startEffect(engine: Engine, effect: WeatherEffectDefinition) {
+        this.layers = effect.layers.map(def =>
+            initWeatherLayer(engine, this.particleTexture, def)
+        );
     }
 
     public update(dt: number) {

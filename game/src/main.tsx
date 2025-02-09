@@ -16,7 +16,7 @@ function windowResize(canvas: HTMLCanvasElement, engine: Engine) {
 
 async function setupEngine(canvas: HTMLCanvasElement) {
     const engine = await initEngine(canvas, "res").catch((e) => {
-        alert(e)
+        console.error(e);
         return null
     })
 
