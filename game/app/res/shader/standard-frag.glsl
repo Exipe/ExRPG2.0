@@ -2,6 +2,7 @@
 precision highp float;
 
 uniform bool enableLight;
+uniform vec2 texOffset;
 
 in vec2 texCoords;
 uniform sampler2D tex;
@@ -12,7 +13,7 @@ uniform sampler2D lightMap;
 out vec4 fragColor;
 
 void main() {
-    fragColor = texture(tex, texCoords);
+    fragColor = texture(tex, texCoords + texOffset);
 
     if(enableLight) {
         vec4 light = texture(lightMap, lightCoords);

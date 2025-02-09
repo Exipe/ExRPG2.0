@@ -8,12 +8,14 @@ import { ObjectHandler } from "./object/object-handler"
 import { ShaderHandler } from "./shader/shader-handler"
 import { loadTexture } from "./texture/texture"
 import { TileHandler } from "./tile/tile-handler"
+import { WeatherHandler } from "./weather/weather-handler"
 
 export type EngineDeps = {
     canvas: HTMLCanvasElement,
     gl: WebGL2RenderingContext,
     resPath: string,
     tileHandler: TileHandler,
+    weatherHandler: WeatherHandler,
     shaderHandler: ShaderHandler,
     objectHandler: ObjectHandler,
     npcHandler: NpcHandler,
@@ -29,6 +31,7 @@ export class Engine {
     public readonly inputHandler: InputHandler
     public readonly shaderHandler: ShaderHandler
     public readonly tileHandler: TileHandler
+    public readonly weatherHandler: WeatherHandler
     public readonly objectHandler: ObjectHandler
     public readonly npcHandler: NpcHandler
     public readonly itemHandler: ItemHandler
@@ -45,7 +48,7 @@ export class Engine {
     constructor(deps: EngineDeps) {
         const {
             canvas, gl, resPath,
-            shaderHandler, tileHandler,
+            shaderHandler, tileHandler, weatherHandler,
             objectHandler, npcHandler, itemHandler,
         } = deps;
 
@@ -54,6 +57,7 @@ export class Engine {
 
         this.shaderHandler = shaderHandler
         this.tileHandler = tileHandler
+        this.weatherHandler = weatherHandler
         this.objectHandler = objectHandler
         this.npcHandler = npcHandler
         this.itemHandler = itemHandler
@@ -68,6 +72,8 @@ export class Engine {
         this.lightHandler.brightness = 1
         this.camera.setDimensions(canvas.width, canvas.height)
         this.camera.scale = 3
+
+        this.weatherHandler.startEffect(this);
 
         const now = Date.now()
         requestAnimationFrame(() => { this.update(now) })
@@ -116,6 +122,7 @@ export class Engine {
         const dt = Date.now() - lastUpdate
 
         this.tileHandler.animateWater(dt)
+        this.weatherHandler.update(dt)
 
         if (this.onAnimate != null) {
             this.onAnimate(dt)
@@ -133,6 +140,8 @@ export class Engine {
             this.lightHandler.render(this, this.scene)
             this.scene.draw()
         }
+
+        this.weatherHandler.draw(this);
 
         if (this.onDraw != null) {
             this.onDraw()

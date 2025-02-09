@@ -6,6 +6,7 @@ import { LIGHT_TEXTURE_ID } from "../light/light-handler";
 export class StandardShader extends Shader {
 
     private readonly enableLightLoc: WebGLUniformLocation
+    private readonly texOffsetLoc: WebGLUniformLocation
     private readonly modelLoc: WebGLUniformLocation
 
     get textureId() {
@@ -19,6 +20,9 @@ export class StandardShader extends Shader {
         this.enableLightLoc = loc(this, "enableLight")
         this.setEnableLight(true)
 
+        this.texOffsetLoc = loc(this, "texOffset")
+        this.setTexOffset([0, 0]);
+
         this.modelLoc = loc(this, "model")
         this.setSampler("tex", this.textureId)
         this.setSampler("lightMap", LIGHT_TEXTURE_ID)
@@ -30,6 +34,10 @@ export class StandardShader extends Shader {
 
     setEnableLight(enableLight: boolean) {
         this.gl.uniform1i(this.enableLightLoc, enableLight ? 1 : 0)
+    }
+
+    setTexOffset(offset: [number, number]) {
+        this.gl.uniform2f(this.texOffsetLoc, offset[0], offset[1])
     }
 
 }

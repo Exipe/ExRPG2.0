@@ -25,6 +25,7 @@ import { OutlineComponent } from "./entity/outline-component"
 import { EngineDeps, Engine } from "./engine"
 import { Camera } from "./camera"
 import { Layer } from "./scene/layer/layer"
+import { initWeather } from "./weather/weather-handler"
 
 export { Engine, Camera }
 export { Scene, Layer, SceneBuilder, loadScene, saveScene, feetCoords }
@@ -36,8 +37,8 @@ export { OutlineComponent }
 
 export const TILE_SIZE = 16
 export const ITEM_SIZE = 16
-export const PLAYER_SIZE = [ 24, 32 ] as [number, number]
-export const SHADOW_OUTLINE = [ 0, 0, 0, 0.20 ] as [number, number, number, number]
+export const PLAYER_SIZE = [24, 32] as [number, number]
+export const SHADOW_OUTLINE = [0, 0, 0, 0.20] as [number, number, number, number]
 export const BACKGROUND = [0.08, 0.06, 0.05] as [number, number, number]
 
 export * from "./matrix"
@@ -48,21 +49,22 @@ export type DrawCallback = () => void
 
 export async function initEngine(canvas: HTMLCanvasElement, resPath: string, previewMode = false) {
     const gl = canvas.getContext("webgl2")
-    if(gl == null) throw "Could not initialize WebGL"
+    if (gl == null) throw "Could not initialize WebGL"
 
     const results = await Promise.all([
-        initTileTextures(gl, resPath + "/tile", previewMode), 
+        initTileTextures(gl, resPath + "/tile", previewMode),
+        initWeather(gl, resPath),
         initShaders(gl, resPath + "/shader"),
         initObjects(resPath),
         initNpcs(resPath),
         initItems(resPath)
     ])
-    
-    const [ tileHandler, shaderHandler, objectHandler, npcHandler, itemHandler ] = results;
+
+    const [tileHandler, weatherHandler, shaderHandler, objectHandler, npcHandler, itemHandler] = results;
 
     const dependencies: EngineDeps = {
         canvas, gl, resPath,
-        tileHandler, shaderHandler,
+        tileHandler, shaderHandler, weatherHandler,
         objectHandler, npcHandler, itemHandler
     }
     return new Engine(dependencies)
