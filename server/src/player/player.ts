@@ -1,6 +1,6 @@
 
 import { Connection } from "../connection/connection"
-import { Packet, MovePlayerPacket, MessagePacket, OutgoingPlayer, UpdatePlayerAppearancePacket, WelcomePacket, DialoguePacket, CloseWindowPacket, SwingItemPacket, HealthPacket, BrightnessPacket, ChatBubblePacket } from "../connection/outgoing-packet"
+import { Packet, MovePlayerPacket, MessagePacket, OutgoingPlayer, UpdatePlayerAppearancePacket, WelcomePacket, DialoguePacket, CloseWindowPacket, SwingItemPacket, HealthPacket, BrightnessPacket, ChatBubblePacket, DynamicWeatherPacket } from "../connection/outgoing-packet"
 import { Character } from "../character/character"
 import { playerHandler, actionHandler, npcHandler, weatherHandler } from "../world"
 import { Equipment, EquipSlot } from "../item/equipment"
@@ -220,6 +220,7 @@ export class Player extends Character {
 
     public ready() {
         this.send(new BrightnessPacket(weatherHandler.brightness))
+        this.send(new DynamicWeatherPacket(weatherHandler.dynamicWeatherActive));
         this.send(new WelcomePacket(this.id, this.name))
         this.sendMessage("Welcome to ExRPG.")
 

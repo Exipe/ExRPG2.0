@@ -3,12 +3,10 @@ import { MultiTexture } from "../texture/multi-texture";
 import { loadTexture } from "../texture/texture";
 import { initWeatherLayer, WeatherLayer, WeatherLayerDefinition } from "./weather-layer";
 
-export type WeatherEffectDefinition = {
-    layers: ReadonlyArray<WeatherLayerDefinition>
-};
+export type WeatherEffect = "rain" | "snow" | "none";
 
-export const RAIN_EFFECT: Readonly<WeatherEffectDefinition> = {
-    layers: [
+const WEATHER_EFFECTS: Record<WeatherEffect, WeatherLayerDefinition[]> = {
+    rain: [
         {
             texturePosition: [0, 0],
             speedModifier: [1.0, 2.0],
@@ -19,11 +17,8 @@ export const RAIN_EFFECT: Readonly<WeatherEffectDefinition> = {
             speedModifier: [0.85, 1.7],
             spriteCount: 6
         }
-    ]
-};
-
-export const SNOW_EFFECT: Readonly<WeatherEffectDefinition> = {
-    layers: [
+    ],
+    snow: [
         {
             texturePosition: [2, 0],
             speedModifier: [0, 0.5],
@@ -34,7 +29,8 @@ export const SNOW_EFFECT: Readonly<WeatherEffectDefinition> = {
             speedModifier: [0, 0.3],
             spriteCount: 4
         }
-    ]
+    ],
+    none: []
 };
 
 const PARTICLE_SIZE = 4;
@@ -52,8 +48,8 @@ export class WeatherHandler {
         private readonly particleTexture: MultiTexture
     ) { }
 
-    public startEffect(engine: Engine, effect: WeatherEffectDefinition) {
-        this.layers = effect.layers.map(def =>
+    public setEffect(engine: Engine, effect: WeatherEffect) {
+        this.layers = WEATHER_EFFECTS[effect].map(def =>
             initWeatherLayer(engine, this.particleTexture, def)
         );
     }

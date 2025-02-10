@@ -1,4 +1,4 @@
-import { BrightnessPacket } from "./connection/outgoing-packet"
+import { BrightnessPacket, DynamicWeatherPacket } from "./connection/outgoing-packet"
 import { playerHandler } from "./world"
 
 const TICK_DELAY = 1000
@@ -28,6 +28,7 @@ export class WeatherHandler {
 
     public enableClock = true
 
+    private _dyamicWeatherActive: boolean
     private _brightness: number
 
     private tickCounter = 0
@@ -39,6 +40,15 @@ export class WeatherHandler {
 
     public get brightness() {
         return this._brightness
+    }
+
+    public set dynamicWeatherActive(active: boolean) {
+        this._dyamicWeatherActive = active
+        playerHandler.broadcast(new DynamicWeatherPacket(active))
+    }
+
+    public get dynamicWeatherActive() {
+        return this._dyamicWeatherActive
     }
 
     public get timeOfDay(): TimeOfDay {
