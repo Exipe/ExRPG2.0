@@ -14,13 +14,13 @@ import { playerHandler, itemDataHandler, commandHandler, weatherHandler, sceneHa
 import { CommandCallback } from "./command-handler";
 
 function onMeTo(player: Player, args: string[]) {
-    if(args.length == 0) {
+    if (args.length == 0) {
         player.sendNotification("Correct usage: '/meto player_name'")
         return
     }
 
     const other = playerHandler.getName(args[0])
-    if(other == null) {
+    if (other == null) {
         player.sendNotification(`Could not find player: ${args[0]}`)
         return
     }
@@ -29,13 +29,13 @@ function onMeTo(player: Player, args: string[]) {
 }
 
 function onToMe(player: Player, args: string[]) {
-    if(args.length == 0) {
+    if (args.length == 0) {
         player.sendNotification("Correct usage: '/tome player_name'")
         return
     }
 
     const other = playerHandler.getName(args[0])
-    if(other == null) {
+    if (other == null) {
         player.sendNotification(`Could not find player: ${args[0]}`)
         return
     }
@@ -44,7 +44,7 @@ function onToMe(player: Player, args: string[]) {
 }
 
 function onItem(player: Player, args: string[]) {
-    if(args.length == 0) {
+    if (args.length == 0) {
         player.sendNotification("Correct usage: '/item [player_name] item_id [amount]'")
         return
     }
@@ -53,11 +53,11 @@ function onItem(player: Player, args: string[]) {
     let itemArg = args[0]
     let amountArg = "1"
 
-    if(args.length == 2) {
+    if (args.length == 2) {
         amountArg = args[1]
-    } else if(args.length > 2) {
+    } else if (args.length > 2) {
         toPlayer = playerHandler.getName(args[0])
-        if(toPlayer == null) {
+        if (toPlayer == null) {
             player.sendNotification(`Could not find player: ${args[0]}`)
             return
         }
@@ -67,18 +67,18 @@ function onItem(player: Player, args: string[]) {
     }
 
     const item = itemDataHandler.get(itemArg)
-    if(item == null) {
+    if (item == null) {
         player.sendNotification(`Could not find item: ${itemArg}`)
         return
     }
 
     const amount = parseInt(amountArg, 10)
-    if(isNaN(amount)) {
+    if (isNaN(amount)) {
         player.sendNotification(`Amount '${amountArg}' is not a valid integer`)
         return
     }
 
-    if(toPlayer != player) {
+    if (toPlayer != player) {
         player.sendNotification(`Gave ${toPlayer.name} ${amount}x ${item.name}`)
         toPlayer.sendNotification(`${player.name} gives you ${amount}x ${item.name}`)
     } else {
@@ -98,7 +98,7 @@ function onPos(player: Player, _: string[]) {
 }
 
 function onSet(player: Player, args: string[]) {
-    if(args.length < 2) {
+    if (args.length < 2) {
         player.sendNotification("Correct usage: /set attrib_id value")
         player.sendNotification(`attrib_ids: ${formatStrings(attributeIds, "[", ", ", "]")}`)
         return
@@ -107,13 +107,13 @@ function onSet(player: Player, args: string[]) {
     const attribId = args[0]
     const value = parseInt(args[1])
 
-    if(!isAttribId(attribId)) {
+    if (!isAttribId(attribId)) {
         player.sendNotification(`attrib_id '${attribId}' is invalid`)
         player.sendNotification(`attrib_ids: ${formatStrings(attributeIds, "[", ", ", "]")}`)
         return
     }
 
-    if(isNaN(value)) {
+    if (isNaN(value)) {
         player.sendNotification(`value '${value}' is not a valid integer`)
         return
     }
@@ -125,7 +125,7 @@ function onSet(player: Player, args: string[]) {
 function onBrightness(player: Player, args: string[]) {
     let brightness: number
 
-    if(args.length < 1 || isNaN(brightness = parseFloat(args[0]))) {
+    if (args.length < 1 || isNaN(brightness = parseFloat(args[0]))) {
         player.sendNotification("Correct usage: /brightness value")
         return
     }
@@ -141,18 +141,23 @@ function onClock(player: Player, _: any) {
     player.sendNotification(`Weather clock ${weatherHandler.enableClock ? "enabled" : "disabled"}`)
 }
 
+function onWeather(player: Player, _: any) {
+    weatherHandler.dynamicWeatherActive = !weatherHandler.dynamicWeatherActive
+    player.sendNotification(`Dynamic weather ${weatherHandler.dynamicWeatherActive ? "activated" : "deactivated"}`)
+}
+
 function onTele(player: Player, args: string[]) {
     let xarg: any
     let yarg: any
 
     let map = player.map
 
-    if(args.length == 2) {
+    if (args.length == 2) {
         xarg = args[0]
         yarg = args[1]
-    } else if(args.length == 3) {
+    } else if (args.length == 3) {
         map = sceneHandler.get(args[0])
-        if(map == null) {
+        if (map == null) {
             player.sendNotification(`map_id ${args[0]} does not exist`)
             return
         }
@@ -170,7 +175,7 @@ function onTele(player: Player, args: string[]) {
     let isNumber = !(isNaN(x) || isNaN(y))
     let isInRange = isNumber && x >= 0 && y >= 0 && x < map.width && y < map.height
 
-    if(!isInRange) {
+    if (!isInRange) {
         player.sendNotification(`Invalid coords (${xarg}, ${yarg})`)
         return
     }
@@ -179,13 +184,13 @@ function onTele(player: Player, args: string[]) {
 }
 
 function onPsim(player: Player, args: string[]) {
-    if(args.length == 0) {
+    if (args.length == 0) {
         player.sendNotification("Correct usage: /psim player_name")
         return
     }
 
     const other = playerHandler.getName(args[0])
-    if(other == null) {
+    if (other == null) {
         player.sendNotification(`Could not find player: ${args[0]}`)
         return
     }
@@ -195,18 +200,18 @@ function onPsim(player: Player, args: string[]) {
 }
 
 function onMsim(player: Player, args: string[]) {
-    if(args.length == 0) {
+    if (args.length == 0) {
         player.sendNotification("Correct usage: /msim monster_id")
         return
     }
 
     const npc = npcDataHandler.get(args[0])
-    if(npc == null) {
+    if (npc == null) {
         player.sendNotification(`Invalid monster_id (${args[0]})`)
         return
     }
 
-    if(npc.combatData == null) {
+    if (npc.combatData == null) {
         player.sendNotification(`Monster (${args[0]}) is not attackable`)
         return
     }
@@ -217,7 +222,7 @@ function onMsim(player: Player, args: string[]) {
 }
 
 function onLevel(player: Player, args: string[]) {
-    if(args.length == 0) {
+    if (args.length == 0) {
         player.sendNotification("Correct usage: /level target_level")
         return
     }
@@ -225,7 +230,7 @@ function onLevel(player: Player, args: string[]) {
     const targetArg = args[0]
     const target = parseInt(targetArg)
 
-    if(isNaN(target) || target <= 0) {
+    if (isNaN(target) || target <= 0) {
         player.sendNotification(`${targetArg} is not a valid level`)
         return
     }
@@ -234,17 +239,17 @@ function onLevel(player: Player, args: string[]) {
     player.level.setLevel(target)
 
     attributeIds.forEach(a => player.attributes.setBase(a, 0, false))
-    player.attributes.setPoints((target-1) * POINTS_PER_LEVEL)
+    player.attributes.setPoints((target - 1) * POINTS_PER_LEVEL)
 }
 
 function onKick(player: Player, args: string[]) {
-    if(args.length == 0) {
+    if (args.length == 0) {
         player.sendNotification("Correct usage: /kick player_name")
         return
     }
 
     const other = playerHandler.getName(args[0])
-    if(other == null) {
+    if (other == null) {
         player.sendNotification(`Could not find player: ${args[0]}`)
         return
     }
@@ -255,13 +260,13 @@ function onKick(player: Player, args: string[]) {
 }
 
 function onBan(player: Player, args: string[]) {
-    if(args.length == 0) {
+    if (args.length == 0) {
         player.sendNotification("Correct usage: /ban player_name")
         return
     }
 
     const other = playerHandler.getName(args[0])
-    if(other == null) {
+    if (other == null) {
         player.sendNotification(`Could not find player: ${args[0]}`)
         return
     }
@@ -273,13 +278,13 @@ function onBan(player: Player, args: string[]) {
 }
 
 function onMute(player: Player, args: string[]) {
-    if(args.length == 0) {
+    if (args.length == 0) {
         player.sendNotification("Correct usage: /mute player_name")
         return
     }
 
     const other = playerHandler.getName(args[0])
-    if(other == null) {
+    if (other == null) {
         player.sendNotification(`Could not find player: ${args[0]}`)
         return
     }
@@ -306,7 +311,7 @@ export function initCommands() {
         p.tradeHandler.acceptRequest()
     })
 
-    devCommand("bank", (p) => { 
+    devCommand("bank", (p) => {
         p.window = new BankWindow(p)
     })
 
@@ -320,6 +325,7 @@ export function initCommands() {
     devCommand("tome", onToMe)
     devCommand("brightness", onBrightness)
     devCommand("clock", onClock)
+    devCommand("weather", onWeather)
     devCommand("tele", onTele)
     devCommand("level", onLevel)
     devCommand("kick", onKick)

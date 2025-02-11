@@ -28,7 +28,7 @@ export class WeatherHandler {
 
     public enableClock = true
 
-    private _dyamicWeatherActive: boolean
+    private _dyamicWeatherActive = false
     private _brightness: number
 
     private tickCounter = 0

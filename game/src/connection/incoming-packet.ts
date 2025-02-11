@@ -40,7 +40,7 @@ function onRemovePlayer(game: Game, id: number) {
 function onMovePlayer(game: Game, data: any) {
     const player = game.getPlayer(data.id)
 
-    if(data.animate) {
+    if (data.animate) {
         player.walkTo(data.x, data.y, data.animationSpeed)
     } else {
         player.place(data.x, data.y)
@@ -68,7 +68,7 @@ function onAddNpc(game: Game, data: any) {
 function onMoveNpc(game: Game, data: any) {
     const npc = game.getNpc(data.id);
 
-    if(data.animate) {
+    if (data.animate) {
         npc.walkTo(data.x, data.y, data.animationSpeed)
     } else {
         npc.place(data.x, data.y)
@@ -145,9 +145,9 @@ function onAttrib(game: Game, data: any) {
 function onSwingItem(game: Game, data: any) {
     const engine = game.engine
     const spritePromise = engine.itemHandler.get(data.itemId).getSprite(engine)
-    const character = data.character == "player" ? game.getPlayer(data.characterId) 
+    const character = data.character == "player" ? game.getPlayer(data.characterId)
         : game.getNpc(data.characterId)
-    
+
     const swingItem = new ItemSwingComponent(spritePromise, character,
         data.offX, data.offY, data.duration)
     character.componentHandler.add(swingItem)
@@ -167,9 +167,9 @@ function onPointItem(game: Game, data: any) {
 
 function onProjectile(game: Game, data: any) {
     const engine = game.engine;
-    const spritePromise = 
+    const spritePromise =
         engine.loadTexture(`projectile/${data.sprite}.png`)
-        .then(texture => new Sprite(engine, texture));
+            .then(texture => new Sprite(engine, texture));
 
     const character = game.getCharacter(data.character.characterType, data.character.id);
     const target = game.getCharacter(data.target.characterType, data.target.id);
@@ -180,7 +180,7 @@ function onProjectile(game: Game, data: any) {
 }
 
 function onCancelPointItem(game: Game, data: any) {
-    const character = data.character.characterType == "player" 
+    const character = data.character.characterType == "player"
         ? game.getPlayer(data.character.id)
         : game.getNpc(data.character.id);
     character.componentHandler.remove(ITEM_POINT_COMPONENT);
@@ -191,7 +191,7 @@ function onCancelPointItem(game: Game, data: any) {
 //#region Overlays
 
 function onHitSplat(game: Game, data: any) {
-    const character = data.character == "player" ? game.getPlayer(data.characterId) 
+    const character = data.character == "player" ? game.getPlayer(data.characterId)
         : game.getNpc(data.characterId)
     let style: HitSplatStyle = data.type
     let hit = data.damage
@@ -204,12 +204,12 @@ function onProgressIndicator(game: Game, data: any) {
     const character = data.character == "player" ? game.getPlayer(data.characterId)
         : game.getNpc(data.characterId)
 
-    if(data.remove) {
+    if (data.remove) {
         character.progressIndicatorComponent
             .removeIndicator()
         return
     }
-        
+
     character.progressIndicatorComponent
         .addIndicator(data.item, data.duration)
 }
@@ -219,14 +219,14 @@ function onChatBubble(game: Game, data: any) {
         : game.getNpc(data.characterId)
 
     const component = character.componentHandler.get(CHAT_BUBBLE_COMPONENT) as ChatBubbleComponent
-    if(component == null) {
+    if (component == null) {
         return
     }
     component.showChatBubble(data.message, data.style)
 }
 
 function onHealthBar(game: Game, data: any) {
-    const character = data.character == "player" ? game.getPlayer(data.characterId) 
+    const character = data.character == "player" ? game.getPlayer(data.characterId)
         : game.getNpc(data.characterId)
 
     character.healthBarComponent.healthRatio = data.ratio
@@ -284,7 +284,7 @@ function onBank(game: Game, data: [string, number][]) {
     ))
     const container = new ContainerModel(items)
 
-    if(game.primaryWindow.value == "Bank") {
+    if (game.primaryWindow.value == "Bank") {
         game.bank.observable.value = container
     } else {
         game.bank.open(container)
@@ -315,9 +315,9 @@ function onUpdateTrade(game: Game, data: any) {
     ))
     const container = new ContainerModel(items)
 
-    if(data.target == 'self') {
+    if (data.target == 'self') {
         game.trade.tradeOffer.observable.value = container
-    } else if(data.target == 'other') {
+    } else if (data.target == 'other') {
         game.trade.otherOffer.value = container
     }
 }
@@ -370,7 +370,7 @@ export function bindIncomingPackets(game: Game) {
     bind("ADD_NPC", onAddNpc)
     bind("MOVE_NPC", onMoveNpc)
     bind("REMOVE_NPC", onRemoveNpc)
-    
+
     bind("ADD_GROUND_ITEM", onAddGroundItem)
     bind("REMOVE_GROUND_ITEM", onRemoveGroundItem)
 
@@ -394,7 +394,7 @@ export function bindIncomingPackets(game: Game) {
 
     bind("LOAD_MAP", onLoadMap)
     bind("SET_OBJECT", onSetObject)
-    
+
     bind("DIALOGUE", onOpenDialogue)
     bind("BANK", onBank)
     bind("OPEN_TRADE", onOpenTrade)
@@ -405,9 +405,12 @@ export function bindIncomingPackets(game: Game) {
     bind("CRAFTING", onOpenCrafting)
     bind("CLOSE_WINDOW", onCloseWindow)
 
-    bind("BRIGHTNESS", (game, brightness: number) => 
+    bind("DYNAMIC_WEATHER", (game, enabled: boolean) =>
+        game.engine.weatherHandler.setEffect(game.engine, enabled ? "rain" : "none"))
+
+    bind("BRIGHTNESS", (game, brightness: number) =>
         game.engine.lightHandler.brightness = brightness)
-    
+
     bind("MESSAGE", (game, message: string[]) =>
         game.chat.addMessage(message))
 }
