@@ -38,10 +38,8 @@ A base for a browser based, online RPG.
  * Command system
 
 ### In-game
-![in-game screenshot](https://www.dropbox.com/s/5xiqsy0nxowwu7d/in-game.png?raw=1)
+![ingame-screenshot](https://github.com/user-attachments/assets/bfc9f5a2-5593-4ac5-8158-dc86bf72b395)
 
-### Menu
-![menu screenshot](https://www.dropbox.com/s/sju8p0r4czhifbl/menu.png?raw=1)
 
 # Running
 
