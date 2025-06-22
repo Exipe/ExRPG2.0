@@ -103,6 +103,14 @@ export function initContent() {
     actionHandler.onObject("door_closed", (player, _action, ox, oy) => {
         player.map.addTempObj("door_open", ox, oy)
     })
+    
+    actionHandler.onObject("fence_open", (player, _action, ox, oy) => {
+        player.map.addTempObj("fence_closed", ox, oy)
+    })
+
+    actionHandler.onObject("fence_closed", (player, _action, ox, oy) => {
+        player.map.addTempObj("fence_open", ox, oy)
+    })
 
     actionHandler.onObject("anvil", player => {
         player.window = craftingHandler.get("Anvil")

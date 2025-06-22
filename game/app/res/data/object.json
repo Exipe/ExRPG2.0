@@ -26,6 +26,33 @@
             "Close"
         ]
     },
+	
+	{
+        "id": "fence_closed",
+        "name": "Fence",
+        "sprite": "door/fence_closed",
+		
+        "door": true,
+		"offsetY": 1,
+
+        "options": [
+            "Open"
+        ]
+    },
+	
+	{
+        "id": "fence_open",
+        "name": "Fence",
+        "sprite": "door/fence_open",
+		
+		"offsetX": -9,
+        "door": true,
+        "block": false,
+
+        "options": [
+            "Close"
+        ]
+    },
 
     {
         "id": "rope",
