@@ -165,59 +165,14 @@
         "name": "Water",
         "sprite": "fishing_spot",
 
-        "options": [
-            "Fish in"
-        ]
-    },
-
-    {
-        "id": "fishing_spot_up",
-        "name": "Water",
-        "sprite": "fishing_spot",
-
-        "offsetY": -8,
+		"depth": 2,
+		"width": 2,
 
         "options": [
             "Fish in"
         ]
     },
-
-    {
-        "id": "fishing_spot_right",
-        "name": "Water",
-        "sprite": "fishing_spot",
-
-        "offsetX": 8,
-
-        "options": [
-            "Fish in"
-        ]
-    },
-
-    {
-        "id": "fishing_spot_down",
-        "name": "Water",
-        "sprite": "fishing_spot",
-
-        "offsetY": 8,
-
-        "options": [
-            "Fish in"
-        ]
-    },
-
-    {
-        "id": "fishing_spot_left",
-        "name": "Water",
-        "sprite": "fishing_spot",
-
-        "offsetX": -8,
-
-        "options": [
-            "Fish in"
-        ]
-    },
-
+    
     {
         "id": "fountain",
         "name": "Fountain",

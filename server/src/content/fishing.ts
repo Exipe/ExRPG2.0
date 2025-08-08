@@ -88,9 +88,11 @@ function addFishingSpot(id: string) {
 }
 
 export function initFishing() {
-    addFishingSpot('fishing_spot')
-    addFishingSpot('fishing_spot_up')
-    addFishingSpot('fishing_spot_right')
-    addFishingSpot('fishing_spot_down')
-    addFishingSpot('fishing_spot_left')
+    const obj = objDataHandler.get('fishing_spot');
+    actionHandler.onObject(obj.id, (p, action, ox, oy) => {
+        if(action == "fish_in") {
+            const task = new Fishing(p, obj, ox, oy)
+            task.start()
+        }
+    });
 }
