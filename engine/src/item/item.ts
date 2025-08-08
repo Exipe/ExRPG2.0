@@ -18,13 +18,13 @@ export class Item implements Hoverable {
         this.y = y
 
         itemData.getSprite(engine)
-        .then(sprite => this.sprite = sprite)
+            .then(sprite => this.sprite = sprite)
     }
 
     startHover(): void {
         this.outline = true
     }
-    
+
     stopHover(): void {
         this.outline = false
     }
@@ -33,22 +33,29 @@ export class Item implements Hoverable {
         return Math.floor(x / TILE_SIZE) == this.x && Math.floor(y / TILE_SIZE) == this.y
     }
 
-    public draw(engine: Engine) {
-        if(this.sprite == null) {
-            return
+    public draw() {
+        if (this.sprite == null) {
+            return;
         }
 
-        const drawX = (this.x + 0.5) * TILE_SIZE - Math.floor(0.5 * this.sprite.width)
-        const drawY = (this.y + 0.5) * TILE_SIZE - Math.floor(0.5 * this.sprite.height)
-        this.sprite.draw(drawX, drawY)
+        this.sprite.draw(this.drawX, this.drawY);
+    }
 
-        if(!this.outline) {
+    public postDraw(engine: Engine) {
+        if (this.sprite == null || !this.outline) {
             return
         }
 
         const shader = engine.shaderHandler.useOutlineShader()
         shader.setColor([1, 1, 1, 1])
-        this.sprite.draw(drawX, drawY, shader)
+        this.sprite.draw(this.drawX, this.drawY, shader)
     }
 
+    private get drawX() {
+        return (this.x + 0.5) * TILE_SIZE - Math.floor(0.5 * this.sprite.width);
+    }
+
+    private get drawY() {
+        return (this.y + 0.5) * TILE_SIZE - Math.floor(0.5 * this.sprite.height);
+    }
 }

@@ -1,5 +1,5 @@
 FROM node:17-alpine
-RUN npm install -g typescript
+RUN npm install -g typescript@latest
 RUN npm install -g http-server
 
 # build engine

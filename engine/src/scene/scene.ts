@@ -107,13 +107,13 @@ export class Scene {
                 return
             }
 
-            if(e.inClickBox(x, y)) {
+            if(e.inClickBox(x, y) && e.interactable) {
                 hovering = e
             }
         })
 
         if(hovering == null) {
-            hovering = this.items.find(i => i.inClickBox(x, y)) || null
+            hovering = this.items.findLast(i => i.inClickBox(x, y)) || null
         }
 
         if(hovering == this.hovering) {
@@ -330,8 +330,9 @@ export class Scene {
         this._wallLayer.draw(this.engine, firstX, firstY, lastX, lastY)
         this._decoLayer.draw(this.engine, firstX, firstY, lastX, lastY)
         
-        this.items.forEach(i => i.draw(this.engine))
+        this.items.forEach(i => i.draw())
         this.entityList.fromBack(e => e.draw())
+        this.items.forEach(i => i.postDraw(this.engine))
         this.entityList.fromBack(e => e.postDraw())
 
         this._attribLayer.draw(this.engine, firstX, firstY, lastX, lastY)
