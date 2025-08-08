@@ -191,9 +191,7 @@ export async function initGame(engine: Engine, connection: Connection) {
     }
 
     engine.inputHandler.onTileContext = (x, y) => {
-        game.ctxMenu.add(["Walk here", () => { 
-            game.walkTo(x, y) 
-        }])
+        game.addTileContext(x, y);
     }
 
     engine.inputHandler.onContext = (x, y) => {

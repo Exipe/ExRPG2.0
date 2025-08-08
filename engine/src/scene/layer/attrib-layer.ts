@@ -14,16 +14,16 @@ export class AttribLayer extends Layer<AttribTile> {
         return new AttribChunk(x, y)
     }
 
-    protected didPut(x: number, y: number, t: AttribTile) {
-        t.put(x, y)
+    protected didPut(x: number, y: number, t: AttribTile, update: boolean) {
+        t.put(x, y, update)
     }
 
-    protected didRemove(x: number, y: number, t: AttribTile) {
-        t.remove(x, y)
+    protected didRemove(x: number, y: number, t: AttribTile, update: boolean) {
+        t.remove(x, y, update)
     }
 
-    protected didReplace(x: number, y: number, t: AttribTile) {
-        this.didRemove(x, y, t)
+    protected didReplace(x: number, y: number, t: AttribTile, update: boolean) {
+        this.didRemove(x, y, t, update)
     }
 
 }

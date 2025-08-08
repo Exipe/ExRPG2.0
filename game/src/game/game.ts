@@ -79,10 +79,10 @@ export class Game {
         const height = map.height
 
         const grid = [] as boolean[][]
-        for(let y = 0; y < height; y++) {
+        for (let y = 0; y < height; y++) {
             let row = []
 
-            for(let x = 0; x < width; x++) {
+            for (let x = 0; x < width; x++) {
                 row.push(map.isBlocked(x, y))
             }
             grid.push(row)
@@ -101,14 +101,14 @@ export class Game {
     private followMouse() {
         const input = this.engine.inputHandler
         const camera = this.engine.camera
-        if(!input.isMouseDown || !input.clickedGround) {
+        if (!input.isMouseDown || !input.clickedGround) {
             return
         }
 
         const [mouseX, mouseY] = camera.translateClick(input.mouseX, input.mouseY)
         const tileX = Math.floor(mouseX / TILE_SIZE)
         const tileY = Math.floor(mouseY / TILE_SIZE)
-        if(tileX == this.targetX && tileY == this.targetY) {
+        if (tileX == this.targetX && tileY == this.targetY) {
             return
         }
 
@@ -119,8 +119,28 @@ export class Game {
         this.followMouse()
     }
 
+    public addTileContext(tileX: number, tileY: number) {
+        if (this.map == null || this.map.isBlocked(tileX, tileY)) {
+            return
+        }
+
+        const player = this.getLocal();
+        const islandMap = this.map.islandMap;
+
+        const playerIsland = islandMap.get(player.tileX, player.tileY);
+        const destinationIsland = islandMap.get(tileX, tileY);
+
+        if (playerIsland === undefined || playerIsland !== destinationIsland) {
+            return;
+        }
+
+        this.ctxMenu.add(["Walk here", () => {
+            this.walkTo(tileX, tileY);
+        }])
+    }
+
     public async walkTo(x: number, y: number) {
-        if(this.map == null || this.map.isBlocked(x, y)) {
+        if (this.map == null || this.map.isBlocked(x, y)) {
             return
         }
 
@@ -138,18 +158,18 @@ export class Game {
         let found = false;
 
         outer:
-        for(let i = 0; i < goal.height; i++) {
-            for(let j = 0; j < goal.width; j++) {
+        for (let i = 0; i < goal.height; i++) {
+            for (let j = 0; j < goal.width; j++) {
                 const island = islandMap.get(goal.x + j, goal.y - i);
 
-                if(playerIsland == island) {
+                if (playerIsland == island) {
                     found = true;
                     break outer;
                 }
             }
         }
 
-        if(!found) {
+        if (!found) {
             return;
         }
 
@@ -158,7 +178,7 @@ export class Game {
         const map = this.map
 
         const path = await this.pathFinderWorker.findPath(player.tileX, player.tileY, goal)
-        if(this.map != map) {
+        if (this.map != map) {
             return
         }
 
@@ -196,21 +216,21 @@ export class Game {
 
     public addPlayer(player: Player) {
         this.players.push(player)
-        
-        if(this.map != null) {
+
+        if (this.map != null) {
             this.map.addEntity(player)
         }
     }
 
     public addNpc(npc: Npc) {
         this.npcs.push(npc)
-        if(this.map != null) {
+        if (this.map != null) {
             this.map.addEntity(npc)
         }
     }
 
     public setObject(objId: string, x: number, y: number) {
-        if(this.map != null) {
+        if (this.map != null) {
             this.map.builder.putObject(x, y, objId)
         } else {
             this.tempObjects.push([objId, x, y])
@@ -219,13 +239,13 @@ export class Game {
 
     public addGroundItem(item: GroundItem) {
         this.groundItems.push(item)
-        if(this.map != null) {
+        if (this.map != null) {
             this.map.addItem(item)
         }
     }
 
     public clear() {
-        if(this.engine.map != null) {
+        if (this.engine.map != null) {
             this.engine.map.destroy()
         }
 
@@ -238,7 +258,7 @@ export class Game {
 
     public removePlayer(id: number) {
         this.players = this.players.filter(p => {
-            if(p.id == id) {
+            if (p.id == id) {
                 p.destroy()
                 return false
             } else {
@@ -249,7 +269,7 @@ export class Game {
 
     public removeNpc(id: number) {
         this.npcs = this.npcs.filter(n => {
-            if(n.id == id) {
+            if (n.id == id) {
                 n.destroy()
                 return false
             } else {
@@ -260,7 +280,7 @@ export class Game {
 
     public removeGroundItem(id: number) {
         this.groundItems = this.groundItems.filter(i => {
-            if(i.id == id) {
+            if (i.id == id) {
                 this.map.removeItem(i)
                 return false
             } else {
@@ -278,8 +298,8 @@ export class Game {
     }
 
     public getCharacter(type: "player" | "npc", id: number): Character {
-        if(type == "player") return this.getPlayer(id);
-        if(type == "npc") return this.getNpc(id);
+        if (type == "player") return this.getPlayer(id);
+        if (type == "npc") return this.getNpc(id);
     }
 
     public getLocal() {

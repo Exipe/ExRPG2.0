@@ -1,14 +1,28 @@
+import { fileOpen, fileSave } from "browser-fs-access";
 
-export const loadFile = async () => {
-    const [fileHandle] = await window.showOpenFilePicker();
-
-    return await (await fileHandle.getFile()).text();
+export type MapFile = {
+    jsonContent: string,
+    fileName: string
 }
 
-export const saveFile = async (contents: string) => {
-    const fileHandle = await window.showSaveFilePicker();
-    const writable = await fileHandle.createWritable();
+export const loadFile = async () => {
+    const file = await fileOpen({
+        mimeTypes: ['application/json'],
+    });
 
-    await writable.write(contents);
-    await writable.close();
+    const jsonContent = await file.text();
+    return {
+        fileName: file.name,
+        jsonContent
+    } as MapFile;
+}
+
+export const saveFile = async (fileName: string, contents: string) => {
+    console.info("fileName", fileName)
+
+    var blob = new Blob([contents], { type: 'application/json' })
+    await fileSave(blob, {
+        fileName,
+        extensions: ['.json']
+    });
 }

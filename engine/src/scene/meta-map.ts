@@ -6,11 +6,13 @@ export abstract class MetaMap<T> {
     protected readonly width: number
     protected readonly height: number
 
-    private readonly grid: T[][] = []
+    private grid: T[][] = []
 
     protected abstract getDefault(): T
 
     protected clear() {
+        this.grid = [];
+
         for(let ri = 0; ri < this.height; ri++) {
             const row = []
             this.grid.push(row)
@@ -95,13 +97,7 @@ export class BlockMap extends MetaMap<number> {
 
 }
 
-interface Island {
-    x: number,
-    y: number,
-    id: string
-}
-
-export class IslandMap extends MetaMap<string> {
+export class IslandMap extends MetaMap<string | undefined> {
 
     private scene: Scene
 
@@ -110,37 +106,8 @@ export class IslandMap extends MetaMap<string> {
         this.scene = scene
     }
 
-    private islands = [] as Island[]
-
-    public resize(width: number, height: number, anchorX: AnchorPoint, anchorY: AnchorPoint) {
-        const resized = this.create(width, height)
-
-        let [offsetX, offsetY] = resizeOffset(width, height, this.width, this.height, anchorX, anchorY)
-        resized.islands = this.islands.map(i => ({
-            x: i.x + offsetX,
-            y: i.y + offsetY,
-            id: i.id
-        }))
-
-        resized.rebuild()
-        return resized
-    }
-
-    public add(x: number, y: number) {
-        const id = String.fromCharCode("A".charCodeAt(0) + this.islands.length + 1)
-        this.islands.push({
-            x: x,
-            y: y,
-            id: id
-        })
-    }
-
-    public remove(x: number, y: number) {
-        this.islands = this.islands.filter(i => i.x != x || i.y != y)
-    }
-
     protected getDefault() {
-        return "A"
+        return undefined
     }
 
     protected create(width: number, height: number) {
@@ -160,14 +127,27 @@ export class IslandMap extends MetaMap<string> {
     }
 
     public rebuild() {
-        this.clear()
-        this.islands.forEach(i => {
-            this.flood(i.id, i.x, i.y)
-        })
+        this.clear();
+
+        let islandCounter = 0;
+        for(let x = 0; x < this.width; x++) {
+            for(let y = 0; y < this.height; y++) {
+                if(this.get(x, y) !== undefined || this.scene.isBlocked(x, y)) {
+                    continue;
+                }
+
+                const islandId = this.getIslandId(islandCounter);
+                islandCounter++;
+
+                this.flood(islandId, x, y);
+            }
+        }
     }
 
     public get(x: number, y: number) {
         return super.get(x, y)
     }
+
+    private getIslandId = (index: number) => String.fromCharCode("A".charCodeAt(0) + index);
 
 }

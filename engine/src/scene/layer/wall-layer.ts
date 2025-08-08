@@ -24,11 +24,11 @@ export class WallLayer extends Layer<WallTile> {
         })
     }
 
-    protected didRemove(tx: number, ty: number, tile: WallTile) {
+    protected didRemove(tx: number, ty: number, tile: WallTile, update: boolean) {
         this.updateShadow(tx, ty)
     }
 
-    protected didPut(tx: number, ty: number, tile: WallTile) {
+    protected didPut(tx: number, ty: number, tile: WallTile, update: boolean) {
         this.updateShadow(tx, ty)
     }
     

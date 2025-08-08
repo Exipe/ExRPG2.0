@@ -48,6 +48,8 @@ export class Scene {
 
     public ambientLight = null as [number, number, number]
 
+    private _loaded = false;
+
     constructor(engine: Engine, width: number, height: number) {
         this.engine = engine
         this.builder = new SceneBuilder(this, engine)
@@ -62,6 +64,10 @@ export class Scene {
 
         this.blockMap = new BlockMap(width, height)
         this.islandMap = new IslandMap(this)
+    }
+
+    public get finishedLoading() {
+        return this._loaded;
     }
 
     public get width() {
@@ -285,7 +291,7 @@ export class Scene {
         this._decoLayer = this._decoLayer.resize(width, height, anchorX, anchorY)
 
         this.blockMap = this.blockMap.resize(width, height, anchorX, anchorY) as BlockMap
-        this.islandMap = this.islandMap.resize(width, height, anchorX, anchorY)
+        this.islandMap = this.islandMap.resize(width, height, anchorX, anchorY) as IslandMap
 
         this._width = width
         this._height = height
@@ -293,11 +299,15 @@ export class Scene {
     }
 
     public update() {
+        this._loaded = true;
+
         this._baseLayer.update(this.engine)
         this._overlayLayer.update(this.engine)
         this._wallLayer.update(this.engine)
         this._attribLayer.update(this.engine)
         this._decoLayer.update(this.engine)
+
+        this.islandMap.rebuild();
     }
 
     public animate(dt: number) {

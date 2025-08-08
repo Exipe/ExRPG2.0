@@ -1,7 +1,7 @@
 
 import { Scene } from "./scene"
 import { SceneBuilder, Engine } from ".."
-import { OBJ_ID_PREFIX, WARP_ID_PREFIX, NPC_ID_PREFIX, ITEM_ID_PREFIX, BLOCK_ID, NPC_AVOID_ID, ISLAND_ID, TRIGGER_ID_PREFIX } from "../tile/attrib-tile"
+import { OBJ_ID_PREFIX, WARP_ID_PREFIX, NPC_ID_PREFIX, ITEM_ID_PREFIX, BLOCK_ID, NPC_AVOID_ID, TRIGGER_ID_PREFIX } from "../tile/attrib-tile"
 import { GROUND_ID } from "../tile/texture-tile"
 import { WATER_ID } from "../tile/water-tile"
 
@@ -13,7 +13,6 @@ export function loadScene(engine: Engine, save: string) {
     }
     
     const builder = scene.builder
-
     parseLayer(parse.baseLayer, parseBase.bind(null, builder))
     parseLayer(parse.overLayer, parseOverlay.bind(null, builder))
     parseLayer(parse.wallLayer, parseWall.bind(null, builder))
@@ -21,7 +20,6 @@ export function loadScene(engine: Engine, save: string) {
     parseLayer(parse.decoLayer, parseDeco.bind(null, builder))
 
     scene.update()
-    scene.islandMap.rebuild()
     return scene
 }
 
@@ -52,8 +50,6 @@ function parseAttrib(builder: SceneBuilder, id: string, x: number, y: number) {
         builder.putBlock(x, y)
     } else if(id == NPC_AVOID_ID) {
         builder.putNpcAvoid(x, y)
-    } else if(id == ISLAND_ID) {
-        builder.putIsland(x, y)
     } else if(id.startsWith(OBJ_ID_PREFIX)) {
         const objId = id.substr(OBJ_ID_PREFIX.length)
         builder.putObject(x, y, objId)

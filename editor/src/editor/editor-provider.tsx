@@ -41,6 +41,8 @@ export type Details = {
 }
 
 export type IEditorContext = {
+    fileName?: string,
+    setFileName: (filename: string) => void,
     tileTextures: TileTextures,
     selectTexture: (id: TextureId, x: number, y: number) => void,
     tool?: ToolId,
@@ -62,6 +64,7 @@ export type IEditorContext = {
 
 const Context = React.createContext<IEditorContext>({
     tileTextures: {},
+    setFileName: () => {},
     selectTexture: () => {},
     setTool: () => {},
     selectToolMode: () => {},
@@ -82,6 +85,8 @@ type AppliedAction = {
 export const EditorProvider: React.FC<{}> = ({
     children
 }) => {
+    const [fileName, setFileName] = React.useState<string | undefined>();
+
     const [tileTextures, tileTextureDispatch] = React.useReducer(
         TileTextureReducer, {});
 
@@ -199,6 +204,7 @@ export const EditorProvider: React.FC<{}> = ({
     };
     
     const context: IEditorContext = {
+        fileName, setFileName,
         tileTextures, selectTexture,
         tool: toolId, setTool: setToolId,
         selectToolMode, toolMode,

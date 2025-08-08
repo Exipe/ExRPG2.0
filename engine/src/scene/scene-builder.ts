@@ -7,13 +7,11 @@ export class SceneBuilder {
     private scene: Scene
     private engine: Engine
 
-    public autoUpdate = false
-
     constructor(scene: Scene, engine: Engine) {
         this.scene = scene
         this.engine = engine
     }
-    
+
     public fillWater(x: number, y: number) {
         const tile = this.engine.tileHandler.waterTile()
         this.scene.baseLayer.fill(x, y, tile)
@@ -87,11 +85,6 @@ export class SceneBuilder {
         this.scene.attribLayer.put(x, y, tile, this.autoUpdate, this.engine)
     }
 
-    public putIsland(x: number, y: number) {
-        const tile = this.engine.tileHandler.islandTile(this.scene)
-        this.scene.attribLayer.put(x, y, tile, this.autoUpdate, this.engine)
-    }
-
     public putWarp(posX: number, posY: number, mapId: string, toX: number, toY: number) {
         const tile = this.engine.tileHandler.warpTile(mapId, toX, toY)
         this.scene.attribLayer.put(posX, posY, tile, this.autoUpdate, this.engine)
@@ -117,4 +110,7 @@ export class SceneBuilder {
         this.scene.attribLayer.put(x, y, tile, this.autoUpdate, this.engine)
     }
 
+    private get autoUpdate() {
+        return this.scene.finishedLoading;
+    }
 }

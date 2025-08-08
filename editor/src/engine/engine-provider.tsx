@@ -18,7 +18,6 @@ export type IEngineContext = {
     resetMap: () => void,
     loadMap: (content: string) => void,
     saveMap: () => string,
-    rebuildIslandMap: () => void,
     resize: (width: number, height: number, 
         anchorX: AnchorPoint, anchorY: AnchorPoint) => void,
     getDimensions: () => Dimensions | undefined,
@@ -33,7 +32,6 @@ const prepare = async (canvas: HTMLCanvasElement): Promise<Exrpg.Engine> => {
     const engine = await Exrpg.initEngine(canvas, __RES_PATH__, true);
 
     engine.map = new Exrpg.Scene(engine, 10, 10);
-    engine.map.builder.autoUpdate = true;
 
     const resize = () => {
         canvas.width = canvas.clientWidth;
@@ -75,11 +73,6 @@ export const EngineProvider: React.FC<{}> = ({
         }
 
         engine.map = map;
-        engine.map.builder.autoUpdate = true;
-    }, [engine]);
-
-    const rebuildIslandMap = React.useCallback(() => {
-        engine.map.islandMap.rebuild();
     }, [engine]);
 
     const resetMap = React.useCallback(() => {
@@ -118,7 +111,6 @@ export const EngineProvider: React.FC<{}> = ({
 
     const context: IEngineContext = {
         engine,
-        rebuildIslandMap,
         resetMap,
         loadMap,
         saveMap,

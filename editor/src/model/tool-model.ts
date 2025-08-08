@@ -216,22 +216,6 @@ export const NpcAvoidTool: Tool = {
     }
 };
 
-export const IslandTool: Tool = {
-    name: "Island",
-    modes: ["Place", "Remove"],
-
-    createAction: (mode, x, y) => (builder) => {
-        switch(mode) {
-            case "Place":
-                builder.putIsland(x, y);
-                break;
-            case "Remove":
-                builder.removeAttrib(x, y);
-                break;
-        }
-    }
-};
-
 export const WarpTool: Tool = {
     name: "Warp",
     modes: ["Place", "Remove"],
@@ -281,7 +265,6 @@ export const Tools: Record<string, Tool> = {
     itemTool: ItemTool,
     BlockTool: BlockTool,
     npcAvoidTool: NpcAvoidTool,
-    islandTool: IslandTool,
     warpTool: WarpTool,
     triggerTool: TriggerTool
 };

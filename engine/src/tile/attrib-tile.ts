@@ -7,14 +7,14 @@ import { NpcEntity } from "../npc/npc-entity";
 import { Item } from "..";
 
 export abstract class AttribTile extends TextureTile {
-    
+
     constructor(id: string, textureQuad: Quad) {
         super(id, textureQuad)
     }
 
-    public put(x: number, y: number) {}
+    public put(x: number, y: number, update: boolean) { }
 
-    public remove(x: number, y: number) {}
+    public remove(x: number, y: number, update: boolean) { }
 
 }
 
@@ -29,12 +29,20 @@ export class BlockTile extends AttribTile {
         this.scene = scene
     }
 
-    public put(x: number, y: number) {
+    public put(x: number, y: number, update: boolean) {
         this.scene.block(x, y)
+
+        if (update) {
+            this.scene.islandMap.rebuild();
+        }
     }
 
-    public remove(x: number, y: number) {
+    public remove(x: number, y: number, update: boolean) {
         this.scene.unBlock(x, y)
+
+        if (update) {
+            this.scene.islandMap.rebuild();
+        }
     }
 
 }
@@ -67,27 +75,6 @@ export class NpcAvoidTile extends AttribTile {
 
 }
 
-export const ISLAND_ID = "ISLAND"
-
-export class IslandTile extends AttribTile {
-
-    private readonly scene: Scene
-
-    constructor(textureQuad: Quad, scene: Scene) {
-        super(ISLAND_ID, textureQuad)
-        this.scene = scene
-    }
-
-    public put(x: number, y: number) {
-        this.scene.islandMap.add(x, y)
-    }
-
-    public remove(x: number, y: number) {
-        this.scene.islandMap.remove(x, y)
-    }
-
-}
-
 export const OBJ_ID_PREFIX = "OBJECT: "
 
 export class ObjectTile extends AttribTile {
@@ -107,12 +94,12 @@ export class ObjectTile extends AttribTile {
         const obj = this.scene.addObject(this.objId, x, y)
         this.objectEntity = obj
 
-        if(!obj.data.block) {
+        if (!obj.data.block) {
             return
         }
 
-        for(let i = 0; i < obj.data.width; i++) {
-            for(let j = 1-obj.data.depth; j < 1; j++) {
+        for (let i = 0; i < obj.data.width; i++) {
+            for (let j = 1 - obj.data.depth; j < 1; j++) {
                 this.scene.block(x + i, y + j)
             }
         }
@@ -123,12 +110,12 @@ export class ObjectTile extends AttribTile {
         this.objectEntity = null
         obj.destroy()
 
-        if(!obj.data.block) {
+        if (!obj.data.block) {
             return
         }
 
-        for(let i = 0; i < obj.data.width; i++) {
-            for(let j = 1-obj.data.depth; j < 1; j++) {
+        for (let i = 0; i < obj.data.width; i++) {
+            for (let j = 1 - obj.data.depth; j < 1; j++) {
                 this.scene.unBlock(x + i, y + j)
             }
         }

@@ -86,11 +86,11 @@ export abstract class Layer<T extends Tile> {
         return this.chunks[chunkY][chunkX]
     }
 
-    protected didReplace(x: number, y: number, tile: T) {}
+    protected didReplace(x: number, y: number, tile: T, update: boolean) {}
 
-    protected didRemove(x: number, y: number, tile: T) {}
+    protected didRemove(x: number, y: number, tile: T, update: boolean) {}
 
-    protected didPut(x: number, y: number, tile: T) {}
+    protected didPut(x: number, y: number, tile: T, update: boolean) {}
 
     public put(x: number, y: number, tile: T, update = false, engine: Engine = null) {
         const chunk = this.getChunk(x, y)
@@ -98,9 +98,9 @@ export abstract class Layer<T extends Tile> {
 
         const replaced = chunk.put(x % CHUNK_SIZE, y % CHUNK_SIZE, tile)
         if(replaced != null) {
-            this.didReplace(x, y, replaced)
+            this.didReplace(x, y, replaced, update)
         }
-        this.didPut(x, y, tile)
+        this.didPut(x, y, tile, update)
 
         if(update) chunk.update(engine)
     }
@@ -111,7 +111,7 @@ export abstract class Layer<T extends Tile> {
 
         const removed = chunk.remove(x % CHUNK_SIZE, y % CHUNK_SIZE)
         if(removed != null) {
-            this.didRemove(x, y, removed)
+            this.didRemove(x, y, removed, update)
         }
 
         if(update) chunk.update(engine)
