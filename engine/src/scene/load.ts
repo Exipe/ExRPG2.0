@@ -22,7 +22,6 @@ export function loadScene(engine: Engine, save: string) {
     parseLayer(parse.attribLayer, parseAttrib.bind(null, builder))
     parseLayer(parse.decoLayer, parseDeco.bind(null, builder))
 
-    scene.update()
     return scene
 }
 

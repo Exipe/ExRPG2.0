@@ -85,6 +85,8 @@ export class Engine {
     }
 
     public set map(map: Scene) {
+        map.update();
+
         this.scene = map
         this.inputHandler.scene = map
 
