@@ -7,6 +7,8 @@ export function saveScene(scene: Scene) {
     obj.width = scene.width
     obj.height = scene.height
     obj.ambient = scene.ambientLight
+    obj.dynamicWeather = scene.dynamicWeather;
+    obj.weatherEffect = scene.weatherEffect;
 
     obj.baseLayer = saveLayer(scene.baseLayer)
     obj.overLayer = saveLayer(scene.overlayLayer)

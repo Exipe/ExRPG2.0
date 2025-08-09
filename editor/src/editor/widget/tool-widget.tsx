@@ -8,6 +8,7 @@ import { TileWindow } from "./tile-window";
 import { ToolSelectionWindow } from "./tool-selection-window";
 import { TriggerWindow } from "./trigger-window";
 import { WarpWindow } from "./warp-window";
+import { WeatherWindow } from "./weather-window";
 
 type ToolWindow = {
     id: string;
@@ -25,6 +26,11 @@ const toolWindows: ToolWindow[] = [
         id: "light",
         title: "Light",
         body: <LightWindow />
+    },
+    {
+        id: "weather",
+        title: "Weather",
+        body: <WeatherWindow />
     },
     {
         id: "tool",

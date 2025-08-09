@@ -1,4 +1,5 @@
-import { BrightnessPacket, DynamicWeatherPacket } from "./connection/outgoing-packet"
+import { WeatherPacket } from "./connection/outgoing-packet"
+import { randomChance } from "./util/util"
 import { playerHandler } from "./world"
 
 const TICK_DELAY = 1000
@@ -11,6 +12,10 @@ const DAY_END = TICKS_PER_CYCLE / 2
 const NIGHT_START = TICKS_PER_CYCLE / 2 + SUNSET_DURATION
 
 const MIN_BRIGHTNESS = 0.25, MAX_BRIGHTNESS = 0.75
+
+const DYNAMIC_WEATHER_ACTIVATE_PROBABILITY = 1000
+const DYNAMIC_WEATHER_DEACTIVATE_PROBABILITY = 60
+const DYNAMIC_WEATHER_MINIMUM_DURATION = 120
 
 export function initWeather() {
     const weatherHandler = new WeatherHandler()
@@ -28,14 +33,15 @@ export class WeatherHandler {
 
     public enableClock = true
 
-    private _dyamicWeatherActive = false
+    private _dynamicWeatherActive = false
     private _brightness: number
 
+    private dynamicWeatherActivatedTick = -Infinity;
     private tickCounter = 0
 
     public set brightness(brightness: number) {
-        this._brightness = brightness
-        playerHandler.broadcast(new BrightnessPacket(brightness))
+        this._brightness = brightness;
+        this.sendUpdatePacket();
     }
 
     public get brightness() {
@@ -43,12 +49,16 @@ export class WeatherHandler {
     }
 
     public set dynamicWeatherActive(active: boolean) {
-        this._dyamicWeatherActive = active
-        playerHandler.broadcast(new DynamicWeatherPacket(active))
+        this._dynamicWeatherActive = active
+        if (active) {
+            this.dynamicWeatherActivatedTick = this.tickCounter;
+        }
+
+        this.sendUpdatePacket();
     }
 
     public get dynamicWeatherActive() {
-        return this._dyamicWeatherActive
+        return this._dynamicWeatherActive
     }
 
     public get timeOfDay(): TimeOfDay {
@@ -65,11 +75,28 @@ export class WeatherHandler {
 
     public tick() {
         if (!this.enableClock) {
-            return
+            return;
         }
 
-        this.tickCounter++
-        this.updateBrightness()
+        this.tickCounter++;
+        this.updateWeather();
+        this.updateBrightness();
+        this.sendUpdatePacket();
+    }
+
+    private updateWeather() {
+        if (this.dynamicWeatherActive) {
+            const activeDuration = this.tickCounter - this.dynamicWeatherActivatedTick;
+
+            if (activeDuration >= DYNAMIC_WEATHER_MINIMUM_DURATION && randomChance(DYNAMIC_WEATHER_DEACTIVATE_PROBABILITY)) {
+                this._dynamicWeatherActive = false;
+            }
+        } else {
+            if (randomChance(DYNAMIC_WEATHER_ACTIVATE_PROBABILITY)) {
+                this._dynamicWeatherActive = true;
+                this.dynamicWeatherActivatedTick = this.tickCounter;
+            }
+        }
     }
 
     public updateBrightness() {
@@ -85,7 +112,11 @@ export class WeatherHandler {
         } else {
             brightness = 0
         }
-        this.brightness = MIN_BRIGHTNESS + (MAX_BRIGHTNESS - MIN_BRIGHTNESS) * brightness
+        this._brightness = MIN_BRIGHTNESS + (MAX_BRIGHTNESS - MIN_BRIGHTNESS) * brightness
+    }
+
+    private sendUpdatePacket() {
+        playerHandler.broadcast(new WeatherPacket(this._dynamicWeatherActive, this._brightness));
     }
 
     private get tickInCycle() {

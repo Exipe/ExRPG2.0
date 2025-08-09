@@ -11,7 +11,10 @@ export function loadScene(engine: Engine, save: string) {
     if(parse.ambient) {
         scene.ambientLight = parse.ambient
     }
-    
+
+    scene.dynamicWeather = parse.dynamicWeather ?? false;
+    scene.weatherEffect = parse.weatherEffect ?? "none";
+
     const builder = scene.builder
     parseLayer(parse.baseLayer, parseBase.bind(null, builder))
     parseLayer(parse.overLayer, parseOverlay.bind(null, builder))

@@ -1,6 +1,6 @@
 
 import { Connection } from "../connection/connection"
-import { Packet, MovePlayerPacket, MessagePacket, OutgoingPlayer, UpdatePlayerAppearancePacket, WelcomePacket, DialoguePacket, CloseWindowPacket, SwingItemPacket, HealthPacket, BrightnessPacket, ChatBubblePacket, DynamicWeatherPacket } from "../connection/outgoing-packet"
+import { Packet, MovePlayerPacket, MessagePacket, OutgoingPlayer, UpdatePlayerAppearancePacket, WelcomePacket, DialoguePacket, CloseWindowPacket, WeatherPacket } from "../connection/outgoing-packet"
 import { Character } from "../character/character"
 import { playerHandler, actionHandler, npcHandler, weatherHandler } from "../world"
 import { Equipment, EquipSlot } from "../item/equipment"
@@ -15,7 +15,7 @@ import { MapId } from "../scene/map-id"
 import { PlayerLevel } from "./player-level"
 import { FoodHandler } from "../item/food-handler"
 import { PrimaryWindow, WindowId } from "./window/p-window"
-import { Color, Colors, cyan, yellow } from "../util/color"
+import { Colors, cyan, yellow } from "../util/color"
 import { currentTime, formatStrings, timeSince } from "../util/util"
 import { Container } from "../item/container/container"
 import { Bank } from "../item/container/bank"
@@ -28,7 +28,7 @@ export function isPlayer(character: Character): character is Player {
     return character.type == "player"
 }
 
-export const SPAWN_POINT = [ "newbie_village", 11, 10 ] as [ MapId, number, number ]
+export const SPAWN_POINT = ["newbie_village", 11, 10] as [MapId, number, number]
 
 export class Player extends Character {
 
@@ -57,7 +57,7 @@ export class Player extends Character {
     }
 
     public windowInventory(win: WindowId) {
-        if(this._window == null || this._window.id != win) {
+        if (this._window == null || this._window.id != win) {
             throw new Error(`Window '${win}' was not open`)
         }
 
@@ -88,7 +88,7 @@ export class Player extends Character {
 
         connection.player = this
         this.connection = connection
-        
+
         this.id = id
         this.name = name
         this.progress = progress
@@ -105,7 +105,7 @@ export class Player extends Character {
     }
 
     public setVar<T>(key: string, value: T) {
-        if(typeof value != "number" && typeof value != "string" && typeof value != "boolean") {
+        if (typeof value != "number" && typeof value != "string" && typeof value != "boolean") {
             throw new Error("Value must be of type 'number', 'string' or 'boolean'");
         }
 
@@ -121,7 +121,7 @@ export class Player extends Character {
     private actionTimeStamp = 0
 
     public inTimeLimit(limit: number) {
-        if(timeSince(this.actionTimeStamp) < limit) {
+        if (timeSince(this.actionTimeStamp) < limit) {
             return false
         }
 
@@ -130,7 +130,7 @@ export class Player extends Character {
     }
 
     public get title() {
-        switch(this.rank) {
+        switch (this.rank) {
             case 1:
                 return "dev"
             default:
@@ -139,7 +139,7 @@ export class Player extends Character {
     }
 
     public getContainer(id: string): Container {
-        switch(id) {
+        switch (id) {
             case "inventory":
                 return this._inventory
             case "bank":
@@ -154,7 +154,7 @@ export class Player extends Character {
     }
 
     public set window(window: PrimaryWindow) {
-        if(this._window != null) {
+        if (this._window != null) {
             this.closeWindow()
         }
 
@@ -163,14 +163,14 @@ export class Player extends Character {
     }
 
     public closeWindow(id: WindowId | "Any" = "Any") {
-        if(this._window == null || (id != "Any" && this._window.id != id)) {
+        if (this._window == null || (id != "Any" && this._window.id != id)) {
             return
         }
 
         const win = this._window
         this._window = null
 
-        if(win.close) {
+        if (win.close) {
             win.close(this)
         }
 
@@ -190,12 +190,12 @@ export class Player extends Character {
     }
 
     public handleDialogueOption(dialogueId: number, index: number) {
-        if(this.dialogueId != dialogueId || !(this.window instanceof Dialogue)) {
+        if (this.dialogueId != dialogueId || !(this.window instanceof Dialogue)) {
             return
         }
 
         const next = this.window.handleOption(index)
-        if(next != null) {
+        if (next != null) {
             this.window = next
         } else {
             this.closeWindow("Dialogue")
@@ -219,12 +219,11 @@ export class Player extends Character {
     }
 
     public ready() {
-        this.send(new BrightnessPacket(weatherHandler.brightness))
-        this.send(new DynamicWeatherPacket(weatherHandler.dynamicWeatherActive));
+        this.send(new WeatherPacket(weatherHandler.dynamicWeatherActive, weatherHandler.brightness))
         this.send(new WelcomePacket(this.id, this.name))
         this.sendMessage("Welcome to ExRPG.")
 
-        if(this.progress != null) {
+        if (this.progress != null) {
             loadProgress(this, this.progress)
         } else {
             this.inventory.add("beta_hat", 1)
@@ -247,7 +246,7 @@ export class Player extends Character {
     }
 
     public initWalking() {
-        if(!this.taskHandler.interruptible) {
+        if (!this.taskHandler.interruptible) {
             return false;
         }
 
@@ -256,7 +255,7 @@ export class Player extends Character {
     }
 
     public set goal(goal: () => void) {
-        if(!this.taskHandler.interruptible) {
+        if (!this.taskHandler.interruptible) {
             return;
         }
 
@@ -277,20 +276,20 @@ export class Player extends Character {
 
     public takeItem(id: number) {
         const item = this.map.getItem(id)
-        
-        if(item != null && item.isVisible(this) && item.x == this.x && item.y == this.y) {
+
+        if (item != null && item.isVisible(this) && item.x == this.x && item.y == this.y) {
             item.remove()
             const remaining = this.inventory.addData(item.itemData, item.amount)
 
-            if(remaining > 0) {
-                this.map.dropItem(item.itemData, remaining, 
+            if (remaining > 0) {
+                this.map.dropItem(item.itemData, remaining,
                     this.x, this.y, [this])
             }
         }
     }
 
     public objectAction(obj: ObjectData, x: number, y: number, action: string) {
-        if(!this.map.reachesObject(this.x, this.y, obj, x, y)) {
+        if (!this.map.reachesObject(this.x, this.y, obj, x, y)) {
             return
         }
 
@@ -301,7 +300,7 @@ export class Player extends Character {
         this.unfollow()
         const npc = npcHandler.get(id)
 
-        if(npc == null || !this.isAdjacent(npc)) {
+        if (npc == null || !this.isAdjacent(npc)) {
             return
         }
 
@@ -310,7 +309,7 @@ export class Player extends Character {
 
     public walk(x: number, y: number) {
         const trigger = this.map.getTrigger(x, y)
-        if(trigger != null) {
+        if (trigger != null) {
             trigger.walked(this)
             return
         } else {
@@ -339,14 +338,14 @@ export class Player extends Character {
             .filter(r => r[1] > this.attributes.getBase(r[0]))
             .map(r => `at least ${r[1]} ${properAttrib(r[0])}`) // at least x attrib_name
 
-        if(missingReqs.length > 0) {
+        if (missingReqs.length > 0) {
             this.sendMessage(formatStrings(missingReqs, 'You need ', ' & ', ' to equip this item.'))
             return
         }
 
         this.inventory.emptySlot(slot)
         const unequipped = this.equipment.set(item.equipSlot, item)
-        if(unequipped != null) {
+        if (unequipped != null) {
             this.inventory.addData(unequipped, 1)
             this.attributes.unsetArmor(unequipped, false)
         }
@@ -357,7 +356,7 @@ export class Player extends Character {
     }
 
     public unequipItem(slot: EquipSlot) {
-        if(!this.inventory.hasSpace()) {
+        if (!this.inventory.hasSpace()) {
             return
         }
 
@@ -375,7 +374,7 @@ export class Player extends Character {
     }
 
     public say(message: string) {
-        if(this.mute) {
+        if (this.mute) {
             this.sendMessage(Colors.yellow, "You are muted")
             return
         }
@@ -384,7 +383,7 @@ export class Player extends Character {
 
         let format = this.rank == 1 ? '/sprite(ui/crown)' : ''
         format += ` ${yellow} {}`
-        playerHandler.globalMessage(format, this.name+":", message)
+        playerHandler.globalMessage(format, this.name + ":", message)
     }
 
     public sendMessage(...message: string[]) {

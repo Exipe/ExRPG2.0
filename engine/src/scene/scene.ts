@@ -1,5 +1,5 @@
 
-import { Engine, TILE_SIZE, Item } from ".."
+import { Engine, TILE_SIZE, Item, WeatherEffect } from ".."
 import { SceneBuilder } from "./scene-builder"
 import { BaseLayer } from "./layer/base-layer"
 import { OverlayLayer } from "./layer/overlay-layer"
@@ -49,6 +49,9 @@ export class Scene {
     public ambientLight = null as [number, number, number]
 
     private _loaded = false;
+
+    public weatherEffect: WeatherEffect = "none";
+    public dynamicWeather = false;
 
     constructor(engine: Engine, width: number, height: number) {
         this.engine = engine

@@ -8,6 +8,7 @@ import { ObjectHandler } from "./object/object-handler"
 import { ShaderHandler } from "./shader/shader-handler"
 import { loadTexture } from "./texture/texture"
 import { TileHandler } from "./tile/tile-handler"
+import { WeatherEffectHandler } from "./weather/weather-effect-handler"
 import { WeatherHandler } from "./weather/weather-handler"
 
 export type EngineDeps = {
@@ -15,7 +16,7 @@ export type EngineDeps = {
     gl: WebGL2RenderingContext,
     resPath: string,
     tileHandler: TileHandler,
-    weatherHandler: WeatherHandler,
+    weatherEffectHandler: WeatherEffectHandler,
     shaderHandler: ShaderHandler,
     objectHandler: ObjectHandler,
     npcHandler: NpcHandler,
@@ -31,7 +32,8 @@ export class Engine {
     public readonly inputHandler: InputHandler
     public readonly shaderHandler: ShaderHandler
     public readonly tileHandler: TileHandler
-    public readonly weatherHandler: WeatherHandler
+    public readonly weatherEffectHandler: WeatherEffectHandler
+    public readonly weatherHandler: WeatherHandler;
     public readonly objectHandler: ObjectHandler
     public readonly npcHandler: NpcHandler
     public readonly itemHandler: ItemHandler
@@ -48,7 +50,7 @@ export class Engine {
     constructor(deps: EngineDeps) {
         const {
             canvas, gl, resPath,
-            shaderHandler, tileHandler, weatherHandler,
+            shaderHandler, tileHandler, weatherEffectHandler: weatherHandler,
             objectHandler, npcHandler, itemHandler,
         } = deps;
 
@@ -57,13 +59,14 @@ export class Engine {
 
         this.shaderHandler = shaderHandler
         this.tileHandler = tileHandler
-        this.weatherHandler = weatherHandler
+        this.weatherEffectHandler = weatherHandler
         this.objectHandler = objectHandler
         this.npcHandler = npcHandler
         this.itemHandler = itemHandler
-
+        
         this.lightHandler = new LightHandler(gl)
         this.camera = new Camera(this)
+        this.weatherHandler = new WeatherHandler(this);
         this.inputHandler = new InputHandler(canvas, this.camera)
 
         gl.enable(gl.BLEND)
@@ -97,7 +100,8 @@ export class Engine {
             maxY = map.height * TILE_SIZE
         }
 
-        this.camera.setBoundaries(minX, minY, maxX, maxY)
+        this.camera.setBoundaries(minX, minY, maxX, maxY);
+        this.weatherHandler.update();
     }
 
     public get map() {
@@ -120,7 +124,7 @@ export class Engine {
         const dt = Date.now() - lastUpdate
 
         this.tileHandler.animateWater(dt)
-        this.weatherHandler.update(dt)
+        this.weatherEffectHandler.update(dt)
 
         if (this.onAnimate != null) {
             this.onAnimate(dt)
@@ -139,7 +143,7 @@ export class Engine {
             this.scene.draw()
         }
 
-        this.weatherHandler.draw(this);
+        this.weatherEffectHandler.draw(this);
 
         if (this.onDraw != null) {
             this.onDraw()

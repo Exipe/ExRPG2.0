@@ -1,7 +1,13 @@
 {
 	"width": 24,
 	"height": 24,
-	"ambient": null,
+	"ambient": [
+		0.66,
+		0.66,
+		0.88
+	],
+	"dynamicWeather": false,
+	"weatherEffect": "snow",
 	"baseLayer": {
 		"ids": [
 			"GROUND_3_1",

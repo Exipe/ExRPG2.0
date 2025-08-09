@@ -5,6 +5,7 @@ import { Graphics } from "./graphics";
 import { LightSettings, useLightSettings } from "./light-settings";
 import { HoverData, useTileHover } from "./tile-hover";
 import { LayerOptions, useLayerOptions } from "./layer-options";
+import { useWeatherSettings, WeatherSettings } from "./weather-settings";
 
 declare var __RES_PATH__: string;
 
@@ -23,6 +24,7 @@ export type IEngineContext = {
     getDimensions: () => Dimensions | undefined,
     hoverData: HoverData,
     lightSettings: LightSettings,
+    weatherSettings: WeatherSettings,
     layerOptions: LayerOptions
 };
 
@@ -65,6 +67,7 @@ export const EngineProvider: React.FC<{}> = ({
     const [engine, setEngine] = React.useState<Exrpg.Engine | undefined>();
 
     const lightSettings = useLightSettings(engine);
+    const weatherSettings = useWeatherSettings(engine);
     const layerOptions = useLayerOptions(engine);
 
     const setMap = React.useCallback((map: Exrpg.Scene) => {
@@ -117,6 +120,7 @@ export const EngineProvider: React.FC<{}> = ({
         resize,
         getDimensions,
         lightSettings,
+        weatherSettings,
         layerOptions,
         hoverData
     }

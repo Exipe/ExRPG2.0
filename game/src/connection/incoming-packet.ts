@@ -15,6 +15,20 @@ import { GroundItem } from "../game/ground-item";
 import { ItemPointComponent, ITEM_POINT_COMPONENT } from "../game/character/component/item-point";
 import { ProjectileComponent } from "../game/character/component/projectile";
 
+//#region Global
+
+function onWeather(game: Game, data: any) {
+    const engine = game.engine;
+    engine.lightHandler.brightness = data.brightness;
+    engine.weatherHandler.dynamicWeatherActive = data.dynamicWeatherActive;
+}
+
+function onMessage(game: Game, message: string[]) {
+    game.chat.addMessage(message);
+}
+
+//#endregion
+
 //#region Player packets
 
 function onWelcome(game: Game, data: any) {
@@ -361,6 +375,9 @@ export function bindIncomingPackets(game: Game) {
         connection.on(packet, data => listener(game, data))
     }
 
+    bind("WEATHER", onWeather);
+    bind("MESSAGE", onMessage);
+
     bind("WELCOME", onWelcome)
     bind("ADD_PLAYER", onAddPlayer)
     bind("PLAYER_APPEARANCE", onPlayerAppearance)
@@ -404,13 +421,4 @@ export function bindIncomingPackets(game: Game) {
     bind("SELECT_SELL", onSelectSell)
     bind("CRAFTING", onOpenCrafting)
     bind("CLOSE_WINDOW", onCloseWindow)
-
-    bind("DYNAMIC_WEATHER", (game, enabled: boolean) =>
-        game.engine.weatherHandler.setEffect(game.engine, enabled ? "rain" : "none"))
-
-    bind("BRIGHTNESS", (game, brightness: number) =>
-        game.engine.lightHandler.brightness = brightness)
-
-    bind("MESSAGE", (game, message: string[]) =>
-        game.chat.addMessage(message))
 }

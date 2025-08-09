@@ -8,21 +8,15 @@ export interface Packet {
     data: any
 }
 
-export class DynamicWeatherPacket implements Packet {
-    public readonly id = "DYNAMIC_WEATHER"
+export class WeatherPacket implements Packet {
+    public readonly id = "WEATHER"
     public readonly data: any
 
-    constructor(active: boolean) {
-        this.data = active
-    }
-}
-
-export class BrightnessPacket implements Packet {
-    public readonly id = "BRIGHTNESS"
-    public readonly data: any
-
-    constructor(brightness: number) {
-        this.data = brightness
+    constructor(dynamicWeatherActive: boolean, brightness: number) {
+        this.data = {
+            dynamicWeatherActive,
+            brightness
+        }
     }
 }
 

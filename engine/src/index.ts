@@ -25,7 +25,7 @@ import { OutlineComponent } from "./entity/outline-component"
 import { EngineDeps, Engine } from "./engine"
 import { Camera } from "./camera"
 import { Layer } from "./scene/layer/layer"
-import { initWeather } from "./weather/weather-handler"
+import { initWeather, WEATHER_EFFECTS, WeatherEffect } from "./weather/weather-effect-handler"
 
 export { Engine, Camera }
 export { Scene, Layer, SceneBuilder, loadScene, saveScene, feetCoords }
@@ -34,6 +34,7 @@ export { Entity, NpcEntity, NpcData, ObjectEntity, EntityShadow }
 export { Item, ItemData, EquipmentData }
 export { Light, LightComponent }
 export { OutlineComponent }
+export { WeatherEffect, WEATHER_EFFECTS }
 
 export const TILE_SIZE = 16
 export const ITEM_SIZE = 16
@@ -60,11 +61,11 @@ export async function initEngine(canvas: HTMLCanvasElement, resPath: string, pre
         initItems(resPath)
     ])
 
-    const [tileHandler, weatherHandler, shaderHandler, objectHandler, npcHandler, itemHandler] = results;
+    const [tileHandler, weatherEffectHandler, shaderHandler, objectHandler, npcHandler, itemHandler] = results;
 
     const dependencies: EngineDeps = {
         canvas, gl, resPath,
-        tileHandler, shaderHandler, weatherHandler,
+        tileHandler, shaderHandler, weatherEffectHandler,
         objectHandler, npcHandler, itemHandler
     }
     return new Engine(dependencies)
