@@ -63,7 +63,7 @@ export class Engine {
         this.objectHandler = objectHandler
         this.npcHandler = npcHandler
         this.itemHandler = itemHandler
-        
+
         this.lightHandler = new LightHandler(gl)
         this.camera = new Camera(this)
         this.weatherHandler = new WeatherHandler(this);
@@ -85,7 +85,9 @@ export class Engine {
     }
 
     public set map(map: Scene) {
-        map.update();
+        if (map != null) {
+            map.update();
+        }
 
         this.scene = map
         this.inputHandler.scene = map

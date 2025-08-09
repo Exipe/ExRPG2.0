@@ -26,7 +26,7 @@ export class NpcCombatHandler extends CombatHandler {
         this.accuracy = data.accuracy
         this.defence = data.defence
 
-        this.strategy = npcStrategies[npc.data.id] ?? new MeleeStrategy(data.weapon)
+        this.strategy = npcStrategies[npc?.data?.id] ?? new MeleeStrategy(data.weapon)
     }
 
     protected retaliate(other: Character) {
