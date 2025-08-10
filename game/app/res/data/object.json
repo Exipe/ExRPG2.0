@@ -359,8 +359,15 @@
     {
         "id": "torch_common",
         "name": "Torch",
-        "sprite": "torch",
-        "light": 32,
+        "sprite": "torch/torch",
+        "light": {
+			"radius": 32,
+			"offsetY": -12,
+			"pulsate": {
+				"factor": 0.90,
+				"duration": 800
+			}
+		},
 
         "animation": {
             "frames": 3,
@@ -371,8 +378,14 @@
     {
         "id": "torch_wall",
         "name": "Torch",
-        "sprite": "wall_torch",
-        "light": 24
+        "sprite": "torch/wall_torch",
+        "light": {
+			"radius": 24,
+			"pulsate": {
+				"factor": 0.95,
+				"duration": 400
+			}
+		}
     },
 
     {

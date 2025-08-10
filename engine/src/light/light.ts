@@ -3,6 +3,16 @@ import { scaling } from "../matrix"
 import { Quad } from "../quad"
 import { LightShader } from "../shader/light-shader"
 
+export interface LightData {
+    radius: number,
+    offsetX: number,
+    offsetY: number,
+    pulsate?: {
+        factor: number,
+        duration: number
+    }
+}
+
 export interface Light {
     x: number,
     y: number,

@@ -29,8 +29,8 @@ export class Player extends Character {
         this.componentHandler.add(
             new NameTagComponent(this, game.overlayArea, info.rank, info.name)
         )
-        this.componentHandler.add(new LightComponent(this, game.engine.lightHandler, 48))
-        if(info.id != game.localId) {
+        this.componentHandler.add(new LightComponent(this, game.engine.lightHandler, { radius: 48, offsetX: 0, offsetY: 0 }))
+        if (info.id != game.localId) {
             this.componentHandler.add(new OutlineComponent(playerSprite.sprite, game.engine.shaderHandler))
         }
         this.id = info.id

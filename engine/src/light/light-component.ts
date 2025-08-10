@@ -1,6 +1,7 @@
 
 import { Entity, Light } from "..";
 import { Component } from "../entity/component";
+import { LightData } from "./light";
 import { LightHandler } from "./light-handler";
 
 export const LIGHT_COMPONENT = "LIGHT"
@@ -10,27 +11,29 @@ export class LightComponent extends Component {
     private readonly entity: Entity
     private readonly lightHandler: LightHandler
 
-    private _radius: number
+    private lightData: LightData;
     private light: Light
 
-    constructor(entity: Entity, lightHandler: LightHandler, radius: number) {
+    private pulsateTimer = 0;
+
+    constructor(entity: Entity, lightHandler: LightHandler, lightData: LightData) {
         super(LIGHT_COMPONENT)
         this.entity = entity
         this.lightHandler = lightHandler
-        this._radius = radius
+        this.lightData = { ...lightData };
     }
 
     public set radius(value: number) {
-        this.light.radius = this._radius = value
+        this.light.radius = this.lightData.radius = value;
     }
 
     public initialize() {
         const [x, y] = this.entity.centerCoords
 
         this.light = {
-            x: x,
-            y: y,
-            radius: this._radius
+            x: x + this.lightData.offsetX,
+            y: y + this.lightData.offsetY,
+            radius: this.lightData.radius
         }
         this.lightHandler.addLight(this.light)
     }
@@ -40,13 +43,24 @@ export class LightComponent extends Component {
     }
 
     public movePx() {
-        const [x, y] = this.entity.centerCoords
-        this.light.x = x
-        this.light.y = y
+        const [x, y] = this.entity.centerCoords;
+        this.light.x = x + this.lightData.offsetX;
+        this.light.y = y + this.lightData.offsetY;
     }
 
-    public moveTile() {}
-    public animate(_dt: number) {}
-    public draw() {}
+    public animate(dt: number) {
+        if (!this.lightData.pulsate) return;
+
+        this.pulsateTimer = (this.pulsateTimer + dt) % this.lightData.pulsate.duration;
+        const animationProgress = this.pulsateTimer / this.lightData.pulsate.duration;
+
+        const t = 1 - Math.abs(2 * animationProgress - 1);
+        const scale = 1 + (this.lightData.pulsate.factor - 1) * t;
+
+        this.light.radius = this.lightData.radius * scale;
+    }
+
+    public moveTile() { }
+    public draw() { }
 
 }

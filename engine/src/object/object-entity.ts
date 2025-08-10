@@ -19,14 +19,14 @@ export class ObjectEntity extends Entity {
         this.flat = objectData.flat;
 
         this.data = objectData
-        
-        if(objectData.light > 0) {
-            const lightComp = new LightComponent(this, engine.lightHandler, objectData.light)
-            this.componentHandler.add(lightComp)
+
+        if (objectData.lightData !== undefined) {
+            const lightComp = new LightComponent(this, engine.lightHandler, objectData.lightData);
+            this.componentHandler.add(lightComp);
         }
 
         const getAnimation = objectData.getAnimation(engine);
-        if(getAnimation !== null) {
+        if (getAnimation !== null) {
             getAnimation.then((animation) => {
                 this.setDimensions(animation.sprite.width, animation.sprite.height);
                 this.componentHandler.add(new StaticAnimationComponent(animation));
@@ -36,18 +36,18 @@ export class ObjectEntity extends Entity {
         }
 
         objectData.getSprite(engine)
-        .then(sprite => {
-            this.sprite = sprite
-            this.setDimensions(sprite.width, sprite.height)
+            .then(sprite => {
+                this.sprite = sprite
+                this.setDimensions(sprite.width, sprite.height)
 
-            if(objectData.options.length > 0) {
-                this.componentHandler.add(new OutlineComponent(sprite, engine.shaderHandler))
-            }
+                if (objectData.options.length > 0) {
+                    this.componentHandler.add(new OutlineComponent(sprite, engine.shaderHandler))
+                }
 
-            if(objectData.shadowData != null) {
-                this.shadow = new EntityShadow(this, sprite, objectData.shadowData)
-            }
-        })
+                if (objectData.shadowData != null) {
+                    this.shadow = new EntityShadow(this, sprite, objectData.shadowData)
+                }
+            })
     }
 
     public get interactable() {
@@ -55,7 +55,7 @@ export class ObjectEntity extends Entity {
     }
 
     protected onClick(inputHandler: InputHandler) {
-        if(inputHandler.onObjectClick != null) {
+        if (inputHandler.onObjectClick != null) {
             inputHandler.onObjectClick(this)
             return true
         }
@@ -64,7 +64,7 @@ export class ObjectEntity extends Entity {
     }
 
     protected onContext(inputHandler: InputHandler) {
-        if(inputHandler.onObjectContext != null) {
+        if (inputHandler.onObjectContext != null) {
             inputHandler.onObjectContext(this)
         }
     }
@@ -72,7 +72,7 @@ export class ObjectEntity extends Entity {
     public draw() {
         super.draw()
 
-        if(this.sprite == null) {
+        if (this.sprite == null) {
             return
         }
 

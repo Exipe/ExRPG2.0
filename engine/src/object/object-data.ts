@@ -1,15 +1,11 @@
 
 import { Sprite } from "../texture/sprite"
 import { Engine } from ".."
-import { loadTexture } from "../texture/texture"
 import { ShadowData } from "../entity/entity-shadow"
 import { loadStaticAnimation, StaticAnimationData } from "../animation/static-animation"
+import { LightData } from "../light/light"
 
 export type ObjectOption = [string, string]
-
-function ifPresent(value: any, def: any) {
-    return value != undefined ? value: def
-}
 
 export class ObjectData {
 
@@ -17,16 +13,16 @@ export class ObjectData {
     public readonly name: string
 
     public readonly spritePath: string
-    
+
     private sprite: Sprite = null
 
     public readonly options: ObjectOption[]
 
-    public readonly light: number
     public readonly width: number
     public readonly depth: number
     public readonly flat: boolean
 
+    public lightData?: LightData
     public readonly shadowData = null as ShadowData
     public readonly animationData = null as StaticAnimationData
 
@@ -41,34 +37,47 @@ export class ObjectData {
         this.spritePath = spritePath
         this.options = options
 
-        this.light = ifPresent(definition.light, 0)
-        this.width = ifPresent(definition.width, 1)
-        this.depth = ifPresent(definition.depth, 1)
-        this.flat = ifPresent(definition.flat, false)
+        this.width = definition.width ?? 1;
+        this.depth = definition.depth ?? 1;
+        this.flat = definition.flat ?? false;
 
-        if(definition.shadow) {
+        if (definition.light !== undefined) {
+            this.lightData = {
+                offsetX: definition.light.offsetX ?? 0,
+                offsetY: definition.light.offsetY ?? 0,
+                radius: definition.light.radius,
+                pulsate: definition.light.pulsate !== undefined
+                    ? {
+                        factor: definition.light.pulsate.factor,
+                        duration: definition.light.pulsate.duration
+                    }
+                    : undefined
+            }
+        }
+
+        if (definition.shadow) {
             this.shadowData = {
-                offsetX: ifPresent(definition.shadow.offsetX, 0),
-                offsetY: ifPresent(definition.shadow.offsetY, 0)
+                offsetX: definition.shadow.offsetX ?? 0,
+                offsetY: definition.shadow.offsetY ?? 0
             }
         }
 
-        if(definition.animation) {
+        if (definition.animation) {
             this.animationData = {
-                frames: ifPresent(definition.animation.frames, 0),
-                duration: ifPresent(definition.animation.duration, Infinity)
+                frames: definition.animation.frames ?? 0,
+                duration: definition.animation.duration ?? Infinity
             }
         }
 
-        this.offsetX = ifPresent(definition.offsetX, 0)
-        this.offsetY = ifPresent(definition.offsetY, 0)
+        this.offsetX = definition.offsetX ?? 0
+        this.offsetY = definition.offsetY ?? 0
 
         // if the object is a door, consider it unblocked
-        this.block = !ifPresent(definition.door, false) && ifPresent(definition.block, true)
+        this.block = !(definition.door ?? false) && (definition.block ?? true);
     }
 
     public async getSprite(engine: Engine) {
-        if(this.sprite == null) {
+        if (this.sprite == null) {
             const texture = await engine.loadTexture(this.spritePath + ".png");
             this.sprite = new Sprite(engine, texture)
         }
@@ -77,7 +86,7 @@ export class ObjectData {
     }
 
     public getAnimation(engine: Engine) {
-        if(this.animationData === null) {
+        if (this.animationData === null) {
             return null;
         }
 
