@@ -43,6 +43,10 @@ export class Player extends Character {
         return this.sprite.sprite
     }
 
+    public getDepth() {
+        return 1;
+    }
+
     protected onContext(_: any) {
         this._onContext(this)
     }

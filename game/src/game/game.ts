@@ -51,6 +51,8 @@ export class Game {
     public readonly bank: BankModel
     public readonly trade: TradeModel
 
+    public readonly debugMode = new Observable(false);
+
     public readonly primaryWindow = new Observable<PrimaryWindow>("None")
 
     public createPlayer: (equipment: string[], info: PlayerInfo) => Player;

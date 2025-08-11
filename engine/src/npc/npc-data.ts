@@ -18,17 +18,34 @@ export class NpcData {
 
     public readonly options: NpcOption[]
 
-    public equip = [] as [string, number][] // [sheet, slot]
+    public readonly width: number;
+    public readonly depth: number;
+    public readonly flat: boolean;
 
-    public shadowData = null as ShadowData
+    public readonly equip: [string, number][]; // [sheet, slot]
 
-    public raw: any
+    public readonly shadowData: ShadowData = null
 
-    constructor(id: string, name: string, spritePath: string, options: NpcOption[]) {
-        this.id = id
-        this.name = name
-        this.spritePath = spritePath
-        this.options = options
+    public readonly rawDefinition: any;
+
+    constructor(definition: any, spritePath: string, options: NpcOption[]) {
+        this.rawDefinition = definition;
+        this.id = definition.id;
+        this.name = definition.name;
+        this.spritePath = spritePath;
+        this.options = options;
+        this.equip = definition.equip ?? []
+
+        this.width = definition.width ?? 1;
+        this.depth = definition.depth ?? 1;
+        this.flat = definition.flat ?? false;
+
+        if (definition.shadow) {
+            this.shadowData = {
+                offsetX: definition.shadow.offsetX ?? 0,
+                offsetY: definition.shadow.offsetY ?? 0
+            }
+        }
     }
 
     private async getPlayerSprite(engine: Engine, baseSprite: Sprite) {
@@ -44,14 +61,14 @@ export class NpcData {
     }
 
     public async getSprite(engine: Engine) {
-        if(this.sprite != null) {
+        if (this.sprite != null) {
             return this.sprite
         }
 
         const texture = await loadTexture(engine.gl, this.spritePath)
         const baseSprite = new Sprite(engine, texture)
 
-        if(this.equip.length == 0) {
+        if (this.equip.length == 0) {
             this.sprite = baseSprite;
             return baseSprite;
         }

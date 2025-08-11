@@ -5,17 +5,20 @@ import { Observable } from "../../util/observable"
 export class OverlayModel {
 
     public readonly id: number
-    
+
     private _x: number
     private _y: number
 
-    private readonly camera: Camera
+    protected readonly camera: Camera
+
+    public readonly scale: Observable<number>;
 
     constructor(id: number, camera: Camera, x: number, y: number) {
         this.id = id
         this.camera = camera
         this._x = x
         this._y = y
+        this.scale = new Observable(camera.scale);
     }
 
     public get x() {
@@ -29,7 +32,9 @@ export class OverlayModel {
     public onMove = null as (x: number, y: number) => void
 
     public update() {
-        if(this.onMove != null) {
+        this.scale.value = this.camera.scale;
+
+        if (this.onMove != null) {
             this.onMove(this.x, this.y)
         }
     }
@@ -41,6 +46,22 @@ export class OverlayModel {
         this.update()
     }
 
+}
+
+export type TileOverlayTile = {
+    offsetX: number,
+    offsetY: number
+}
+
+export class TileOverlayModel extends OverlayModel {
+    public readonly tiles: ReadonlyArray<TileOverlayTile>;
+    public readonly tileSize: number;
+
+    constructor(id: number, camera: Camera, x: number, y: number, tiles: ReadonlyArray<TileOverlayTile>, tileSize: number) {
+        super(id, camera, x, y);
+        this.tiles = tiles;
+        this.tileSize = tileSize;
+    }
 }
 
 export class HealthBarModel extends OverlayModel {
@@ -61,7 +82,7 @@ export class HealthBarModel extends OverlayModel {
     public set ratio(value: number) {
         this._ratio = value
 
-        if(this.onRatioUpdate != null) {
+        if (this.onRatioUpdate != null) {
             this.onRatioUpdate(value)
         }
     }
@@ -167,9 +188,15 @@ export class OverlayAreaModel {
         return model
     }
 
+    public addTileOverlay(tiles: ReadonlyArray<TileOverlayTile>, tileSize: number, x: number, y: number) {
+        const model = new TileOverlayModel(this.idCount++, this.camera, x, y, tiles, tileSize);
+        this.addOverlay(model);
+        return model;
+    }
+
     public addOverlay(overlay: OverlayModel, duration: number = undefined) {
         this.overlayModels.value = this.overlayModels.value.concat(overlay)
-        if(duration != undefined) {
+        if (duration != undefined) {
             setTimeout(() => this.removeOverlay(overlay), duration)
         }
     }

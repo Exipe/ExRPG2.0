@@ -1,14 +1,9 @@
 
-import { Game } from "../../game/game";
-
 import { InventoryTab } from "./inventory";
 import React = require("react");
 import { Equipment } from "./equipment";
 import { Settings } from "./settings";
-
-export interface TabAreaProps {
-    game: Game,
-}
+import { useGame } from "../game-provider";
 
 type TabId = "inventory" | "equipment" | "settings"
 
@@ -26,9 +21,9 @@ function Tab(props: TabProps) {
     />
 }
 
-export function TabArea(props: TabAreaProps) {
+export function TabArea() {
     const [tab, setTab] = React.useState("" as TabId | "")
-    const game = props.game
+    const game = useGame();
 
     let openTab = (id: TabId) => {
         if(tab != id) {

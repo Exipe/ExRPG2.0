@@ -7,6 +7,7 @@ import { ReadyPacket } from "./connection/packet";
 import { initGame } from "./game/init-game";
 import { useConnection } from "./connection/connection-provider";
 import { useNavigate } from "react-router-dom";
+import { GameProvider } from "./ui/game-provider";
 
 function windowResize(canvas: HTMLCanvasElement, engine: Engine) {
     canvas.width = canvas.clientWidth
@@ -32,7 +33,7 @@ export function Main(_: any) {
     const navigate = useNavigate();
 
     React.useEffect(() => {
-        if(connection == null) {
+        if (connection == null) {
             navigate("/", { replace: true })
             return
         }
@@ -60,14 +61,16 @@ export function Main(_: any) {
     }, [])
 
     React.useEffect(
-        () => () => connection?.close(), 
+        () => () => connection?.close(),
         [])
 
     return <>
         <canvas ref={canvas}></canvas>
 
         {game != null &&
-            <UiContainer  game={game} />
+            <GameProvider game={game}>
+                <UiContainer />
+            </GameProvider>
         }
     </>
 }

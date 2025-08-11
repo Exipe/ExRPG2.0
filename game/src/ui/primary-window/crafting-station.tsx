@@ -1,10 +1,10 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React = require("react");
-import { CraftingModel, Recipe } from "../../game/model/window/crafting-model";
-import { InventoryModel } from "../../game/model/tab/inventory-model";
+import { Recipe } from "../../game/model/window/crafting-model";
 import { ContainerModel } from "../../game/model/container-model";
 import { DisplayItem, ItemContainer, MAX_SELECT_AMOUNT, SelectDialog } from "../container/container";
+import { useCrafting, useInventory, useObservable } from "../hooks";
 
 type RecipeFilter = "All" | "Unlocked" | "Craftable"
 
@@ -28,11 +28,6 @@ function filterRecipe(filter: RecipeFilter, inventory: ContainerModel, recipe: R
                 return count >= m[1]
             })
     }
-}
-
-interface CraftingStationProps {
-    model: CraftingModel,
-    inventory: InventoryModel
 }
 
 interface CraftSelectProps {
@@ -78,30 +73,22 @@ export function CraftSelectDialog(props: CraftSelectProps) {
     </SelectDialog>
 }
 
-export function CraftingStation(props: CraftingStationProps) {
-    const stationObservable = props.model.observable
-    const inventoryObservable = props.inventory.observable
-    const [station, setStation] = useState(stationObservable.value)
+export function CraftingStation() {
+    const model = useCrafting();
+    const inventoryModel = useInventory();
+
+    const station = useObservable(model.observable);
+    const inventory = useObservable(inventoryModel.observable);
+
     const [filter, setFilter] = useState(filterOrder[0])
-    const [inventory, setInventory] = useState(inventoryObservable.value)
     const [select, setSelect] = useState(null as Recipe)
 
-    useEffect(() => {
-        stationObservable.register(setStation)
-        inventoryObservable.register(setInventory)
-
-        return () => {
-            stationObservable.unregister(setStation)
-            inventoryObservable.unregister(setInventory)
-        }
-    }, [])
-
     const selectCraft = (recipe: Recipe) => {
-        setSelect(props.model.select(recipe))
+        setSelect(model.select(recipe))
     }
 
     const close = () => {
-        props.model.close()
+        model.close()
     }
 
     const closeSelect = () => {
@@ -114,7 +101,7 @@ export function CraftingStation(props: CraftingStationProps) {
 
     const craft = (amount: number) => {
         setSelect(null)
-        props.model.craft(select, amount)
+        model.craft(select, amount)
     }
 
     let found = false

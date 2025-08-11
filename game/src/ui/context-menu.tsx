@@ -1,15 +1,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import React = require("react");
-import { ContextMenuModel, OpenContextMenu } from "../game/model/context-menu-model";
+import { OpenContextMenu } from "../game/model/context-menu-model";
 import { FormatText } from "./format-text";
+import { useContextMenu } from "./hooks";
 
-interface ContextMenuProps {
-    contextMenu: ContextMenuModel
-}
-
-export function ContextMenu(props: ContextMenuProps) {
-    const observable = props.contextMenu.observable
+export function ContextMenu() {
+    const contextMenu = useContextMenu();
+    const observable = contextMenu.observable
     const [entries, setEntries] = useState(observable.value.entries)
     const [position, setPosition] = useState([0, 0] as [number, number])
     const listRef = useRef<HTMLUListElement>()

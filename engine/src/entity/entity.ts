@@ -12,7 +12,7 @@ export function feetCoords(entity: Entity, tileX = entity.tileX, tileY = entity.
 
 export abstract class Entity implements Hoverable {
 
-    protected readonly tileSpan: number
+    public readonly tileSpan: number
 
     public drawX = 0
     public drawY = 0

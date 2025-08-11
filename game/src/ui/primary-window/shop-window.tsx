@@ -1,8 +1,9 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import React = require("react");
-import { ShopSelect, ShopModel } from "../../game/model/window/shop-model";
+import { ShopSelect } from "../../game/model/window/shop-model";
 import { DisplayItem, ItemContainer, MAX_SELECT_AMOUNT, SelectDialog } from "../container/container";
+import { useObservable, useShop } from "../hooks";
 
 export interface ShopSelectProps {
     select: ShopSelect
@@ -35,39 +36,25 @@ export function ShopSelectDialog(props: ShopSelectProps) {
     </SelectDialog>
 }
 
-interface ShopWindowProps {
-    model: ShopModel
-}
-
-export function ShopWindow(props: ShopWindowProps) {
-    const shopObservable = props.model.observable
-    const selectObservable = props.model.selectedBuy
-    const [shop, setShop] = useState(shopObservable.value)
-    const [select, setSelect] = useState(selectObservable.value)
-
-    useEffect(() => {
-        shopObservable.register(setShop)
-        selectObservable.register(setSelect)
-        return () => {
-            shopObservable.unregister(setShop)
-            selectObservable.unregister(setSelect)
-        }
-    }, [])
+export function ShopWindow() {
+    const model = useShop();
+    const shop = useObservable(model.observable);
+    const select = useObservable(model.selectedBuy);
 
     const selectBuy = (slot: number) => {
-        props.model.selectBuy(slot)
+        model.selectBuy(slot)
     }
 
     const close = () => {
-        props.model.close()
+        model.close()
     }
 
     const closeSelect = () => {
-        props.model.selectedBuy.value = null
+        model.selectedBuy.value = null
     }
 
     const buy = (amount: number) => {
-        props.model.confirmBuy(amount)
+        model.confirmBuy(amount)
     }
 
     const displayItems = shop.items.map((item, idx) => {

@@ -1,45 +1,36 @@
 import { ItemData } from "exrpg";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import React = require("react");
 import { StorageId } from "../../game/model/container-model";
-import { ContextMenuModel, MenuEntry } from "../../game/model/context-menu-model";
-import { TradeModel } from "../../game/model/window/trade-model";
+import { MenuEntry } from "../../game/model/context-menu-model";
 import { ContainerSelectDialog, DisplayItem, ItemContainer } from "../container/container";
 import { ItemOverlay, StorageContainer } from "../container/storage-container";
-
-interface TradeWindowProps {
-    model: TradeModel,
-    ctxMenu: ContextMenuModel
-}
+import { useContextMenu, useObservable, useTrade } from "../hooks";
 
 interface SelectData { item: ItemData, slot: number }
 
-export function TradeWindow(props: TradeWindowProps) {
+export function TradeWindow() {
+    const model = useTrade();
+    const contextMenuModel = useContextMenu();
+
     const [select, setSelect] = React.useState(null as SelectData)
     const [accepted, setAccepted] = React.useState(false)
     const [recentChange, setRecentChange] = React.useState(false)
-    const model = props.model
 
-    const otherOfferObservable = model.otherOffer
-    const otherPlayerObservable = model.otherPlayer
-    const [otherOffer, setOtherOffer] = useState(otherOfferObservable.value)
-    const [otherPlayer, setOtherPlayer] = useState(model.otherPlayer.value)
+    const otherOffer = useObservable(model.otherOffer);
+    const otherPlayer = useObservable(model.otherPlayer);
 
     useEffect(() => {
-        otherOfferObservable.register(setOtherOffer)
-        otherPlayerObservable.register(setOtherPlayer)
         const onChange = (recentChange: boolean) => {
             setRecentChange(recentChange)
 
-            if(recentChange) {
+            if (recentChange) {
                 setAccepted(false)
             }
         }
         model.recentChange.register(onChange)
 
         return () => {
-            otherOfferObservable.unregister(setOtherOffer)
-            otherPlayerObservable.unregister(setOtherPlayer)
             model.recentChange.unregister(onChange)
         }
     }, [])
@@ -65,7 +56,7 @@ export function TradeWindow(props: TradeWindowProps) {
             }
         ])
 
-        props.ctxMenu.show(ctxMenu, mouseX, mouseY)
+        contextMenuModel.show(ctxMenu, mouseX, mouseY)
     }
 
     const onShiftClick = (item: ItemData, slot: number) => {
@@ -73,7 +64,7 @@ export function TradeWindow(props: TradeWindowProps) {
     }
 
     const onDrag = (item: ItemData, slot: number, source: StorageId) => {
-        if(source == "inventory") {
+        if (source == "inventory") {
             model.offer(item.id, slot)
         }
     }
@@ -93,7 +84,7 @@ export function TradeWindow(props: TradeWindowProps) {
     }
 
     let itemOverlay: ItemOverlay
-    if(select != null) {
+    if (select != null) {
         const element = <ContainerSelectDialog
             button={'Remove'}
             item={select.item}
@@ -109,12 +100,12 @@ export function TradeWindow(props: TradeWindowProps) {
     }
 
     let buttons: JSX.Element
-    if(recentChange) {
+    if (recentChange) {
         buttons = <>
             <p>Please review the trade.</p></>
     } else {
         let acceptButton: JSX.Element
-        if(accepted) {
+        if (accepted) {
             acceptButton = <div className="tradeButton" id="tradeAccepted" onClick={accept}>Accepted</div>
         } else {
             acceptButton = <div className="tradeButton" id="tradeAccept" onClick={accept}>Accept</div>
@@ -133,8 +124,8 @@ export function TradeWindow(props: TradeWindowProps) {
             onContext={onContext}
             onShiftClick={onShiftClick}
             onDrag={onDrag}
-            model={props.model.tradeOffer}/>
-        
+            model={model.tradeOffer} />
+
         <p className="tradeHeader">Their offer:</p>
         <ItemContainer>
             {otherOffer.items.map((i, idx) => <DisplayItem key={idx} item={i} />)}

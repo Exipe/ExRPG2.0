@@ -1,22 +1,17 @@
 import { ItemData } from "exrpg";
 import React = require("react");
 import { StorageId } from "../../game/model/container-model";
-import { ContextMenuModel, MenuEntry } from "../../game/model/context-menu-model";
-import { InventoryModel } from "../../game/model/tab/inventory-model";
-import { TradeModel } from "../../game/model/window/trade-model";
+import { MenuEntry } from "../../game/model/context-menu-model";
 import { ContainerSelectDialog } from "../container/container";
 import { ItemOverlay, StorageContainer } from "../container/storage-container"
-
-interface TradeInventoryProps {
-    model: TradeModel,
-    inventory: InventoryModel,
-    ctxMenu: ContextMenuModel
-}
+import { useTrade, useContextMenu, useInventory } from "../hooks";
 
 interface SelectData { item: ItemData, slot: number }
 
-export function TradeInventory(props: TradeInventoryProps) {
-    const model = props.model
+export function TradeInventory() {
+    const model = useTrade();
+    const contextMenuModel = useContextMenu();
+    const inventoryModel = useInventory();
     const [select, setSelect] = React.useState(null as SelectData)
 
     const onContext = (item: ItemData, slot: number, mouseX: number, mouseY: number) => {
@@ -39,7 +34,7 @@ export function TradeInventory(props: TradeInventoryProps) {
                 })
             }
         ])
-        props.ctxMenu.show(ctxMenu, mouseX, mouseY)
+        contextMenuModel.show(ctxMenu, mouseX, mouseY)
     }
 
     const closeSelect = () => { setSelect(null) }
@@ -78,7 +73,7 @@ export function TradeInventory(props: TradeInventoryProps) {
     return <StorageContainer
         id="inventory"
         className="box-gradient secondary-window"
-        model={props.inventory}
+        model={inventoryModel}
         overlay={itemOverlay}
         onContext={onContext}
         onDrag={onDrag}

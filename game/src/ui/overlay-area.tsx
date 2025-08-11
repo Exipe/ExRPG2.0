@@ -1,11 +1,8 @@
 import { useRef } from "react";
-import { ChatBubbleModel, HealthBarModel, HitSplatModel, HitSplatStyle, NameTagModel, OverlayAreaModel, OverlayModel, ProgressIndicatorModel } from "../game/model/overlay-model";
+import { ChatBubbleModel, HealthBarModel, HitSplatModel, HitSplatStyle, NameTagModel, OverlayAreaModel, OverlayModel, ProgressIndicatorModel, TileOverlayModel } from "../game/model/overlay-model";
 import React = require("react")
 import "./overlay.scss"
-
-export interface OverlayAreaProps {
-    overlayAreaModel: OverlayAreaModel
-}
+import { useDebugMode, useObservable, useOverlayArea } from "./hooks";
 
 interface OverlayProps {
     overlayModel: OverlayModel
@@ -33,12 +30,40 @@ function Overlay(props: OverlayProps) {
         }
     }, [])
 
-    return <div 
-    className={"overlay " + props.className} 
-    style={{ visibility: 'hidden', left: overlayModel.x, top: overlayModel.y }}
-    ref={domRef}>
+    return <div
+        className={"overlay " + props.className}
+        style={{ visibility: 'hidden', left: overlayModel.x, top: overlayModel.y }}
+        ref={domRef}>
         {props.children}
     </div>
+}
+
+interface TileOverlayProps {
+    tileOverlayModel: TileOverlayModel
+}
+
+function TileOverlay(props: TileOverlayProps) {
+    const model = props.tileOverlayModel;
+    const scale = useObservable(model.scale);
+
+    const width = React.useMemo(() => Math.max(...model.tiles.map(tile => tile.offsetX + model.tileSize)) * scale, [model.tiles, scale]);
+    const height = React.useMemo(() => Math.max(...model.tiles.map(tile => tile.offsetY + model.tileSize)) * scale, [model.tiles, scale]);
+
+    return <Overlay overlayModel={model} className="tile-overlay">
+        <div className="tile-container" style={{ width, height }}>
+            {model.tiles.map((tile, i) =>
+                <div key={i}
+                    style={{
+                        left: tile.offsetX * scale,
+                        top: tile.offsetY * scale,
+                        width: model.tileSize * scale,
+                        height: model.tileSize * scale
+                    }}
+                    className="tile-overlay-tile">
+                </div>
+            )}
+        </div>
+    </Overlay>
 }
 
 interface NameTagProps {
@@ -50,7 +75,7 @@ function NameTag(props: NameTagProps) {
     let content = <>{model.name}</>
     let className: string
 
-    switch(model.style) {
+    switch (model.style) {
         case "player":
             className = "playerName"
             break
@@ -77,7 +102,7 @@ function HitSplat(props: HitSplatProps) {
     let text: string
     let className: string
 
-    switch(model.style) {
+    switch (model.style) {
         case "hit":
             text = `-${model.hit}`
             className = "hitSplat"
@@ -115,23 +140,23 @@ function ProgressIndicator(props: ProgressIndicatorProps) {
 
     React.useEffect(() => {
         setProgress(0)
-    }, [ resetCounter ])
+    }, [resetCounter])
 
     React.useEffect(() => {
         const interval = window.setTimeout(() => {
-            setProgress(progress+1)
-        }, model.duration / (TIMER_TICKS+1))
+            setProgress(progress + 1)
+        }, model.duration / (TIMER_TICKS + 1))
 
         return () => {
             window.clearTimeout(interval)
         }
-    }, [ progress, resetCounter ])
+    }, [progress, resetCounter])
 
     return <Overlay overlayModel={model} className="progressIndicator">
         <img src={model.sprite}></img>
 
         {Array(TIMER_TICKS).fill(undefined).map((_, i) => (
-            <div className={"progressCircle " + 
+            <div className={"progressCircle " +
                 (i < progress ? "circleOn" : "circleOff")}></div>
         ))}
     </Overlay>
@@ -167,7 +192,7 @@ interface ChatBubbleProps {
 }
 
 function ChatBubble(props: ChatBubbleProps) {
-    const { chatBubbleModel }= props
+    const { chatBubbleModel } = props
     const [message, setMessage] = React.useState(chatBubbleModel.message.value)
     const [style, setStyle] = React.useState(chatBubbleModel.style.value)
 
@@ -186,36 +211,35 @@ function ChatBubble(props: ChatBubbleProps) {
     </Overlay>
 }
 
-export function OverlayArea(props: OverlayAreaProps) {
-    const overlayAreaModel = props.overlayAreaModel
-
-    const [overlayModels, setOverlayModels] = React.useState(overlayAreaModel.overlayModels.value)
-
-    React.useEffect(() => {
-        overlayAreaModel.overlayModels.register(setOverlayModels)
-
-        return () => overlayAreaModel.overlayModels.unregister(setOverlayModels)
-    }, [])
+export function OverlayArea() {
+    const overlayAreaModel = useOverlayArea();
+    const debugModeObservable = useDebugMode();
+    const isDebugMode = useObservable(debugModeObservable);
+    const overlayModels = useObservable(overlayAreaModel.overlayModels);
 
     const overlays = overlayModels.map(model => {
-        if(model instanceof HitSplatModel) {
+        if (model instanceof HitSplatModel) {
             return <HitSplat key={model.id} model={model} />
         }
 
-        if(model instanceof ProgressIndicatorModel) {
+        if (model instanceof ProgressIndicatorModel) {
             return <ProgressIndicator key={model.id} model={model} />
         }
 
-        if(model instanceof NameTagModel) {
+        if (model instanceof NameTagModel) {
             return <NameTag key={model.id} model={model} />
         }
 
-        if(model instanceof HealthBarModel) {
+        if (model instanceof HealthBarModel) {
             return <HealthBar key={model.id} healthBarModel={model} />
         }
 
-        if(model instanceof ChatBubbleModel) {
+        if (model instanceof ChatBubbleModel) {
             return <ChatBubble key={model.id} chatBubbleModel={model} />
+        }
+
+        if (model instanceof TileOverlayModel) {
+            return isDebugMode && <TileOverlay key={model.id} tileOverlayModel={model}></TileOverlay>
         }
     })
 

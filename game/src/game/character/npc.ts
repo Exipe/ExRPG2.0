@@ -5,7 +5,7 @@ import { Character } from "./character";
 import { NameTagComponent } from "./component/name-tag";
 
 function combatLevel(npcData: NpcData) {
-    const cb = npcData.raw.combat
+    const cb = npcData.rawDefinition.combat
 
     if(!cb) {
         return -1
@@ -38,8 +38,8 @@ export class Npc extends Character {
     public readonly contextListener: Listener
     public readonly clickListener: Listener
 
-    constructor(game: Game, info: NpcInfo, contextListener: Listener, clickListener: Listener) {
-        super(game, info.x, info.y)
+    constructor(game: Game, info: NpcInfo, definition: any, contextListener: Listener, clickListener: Listener) {
+        super(game, info.x, info.y, 0, 0, definition.width);
         this.contextListener = contextListener;
         this.clickListener = clickListener;
         this.id = info.id
@@ -76,6 +76,10 @@ export class Npc extends Character {
 
     public getSprite() {
         return this.sprite
+    }
+
+    public getDepth() {
+        return this.data.depth;
     }
 
     protected onContext(_: any) {

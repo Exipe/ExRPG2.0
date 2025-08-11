@@ -127,6 +127,23 @@
     height: 100%;
 }
 
+.tile-overlay {
+
+    .tile-container {
+        border: 1px solid black;
+        border-bottom: none;
+        border-right: none;
+    }
+
+    .tile-overlay-tile {
+        position: absolute;
+        border: 1px solid black;
+        border-top: none;
+        border-left: none;
+        background-color: rgba(0, 255, 0, 0.133);
+    }
+}
+
 .overlay {
     position: absolute;
     margin: 0;

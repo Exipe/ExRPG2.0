@@ -40,6 +40,25 @@
     },
 	
 	{
+		"id": "giant_slime",
+		"name": "Giant slime",
+		"sprite": "giant_slime",
+		"walkSpeed": 0.33,
+		"width": 3,
+		"depth": 2,
+		
+		"options": ["Poke"],
+		
+		"combat": {
+			"health": 10000,
+			"damage": 0,
+			"attackSpeed": 0,
+			"accuracy": -10,
+			"defence": 1000
+		}
+	},
+	
+	{
         "id": "pig",
         "name": "Pig",
         "sprite": "pig",

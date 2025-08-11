@@ -1,24 +1,20 @@
-import { Item, ItemData } from "exrpg";
+import { ItemData } from "exrpg";
 import React = require("react");
-import { BankModel } from "../../game/model/window/bank-model";
 import { StorageId } from "../../game/model/container-model";
-import { ContextMenuModel, MenuEntry } from "../../game/model/context-menu-model";
-import { ContainerSelectDialog, SelectDialog } from "../container/container";
+import { MenuEntry } from "../../game/model/context-menu-model";
+import { ContainerSelectDialog } from "../container/container";
 import { StorageContainer, ItemOverlay } from "../container/storage-container";
-
-interface BankWindowProps {
-    model: BankModel,
-    ctxMenu: ContextMenuModel
-}
+import { useBank, useContextMenu } from "../hooks";
 
 interface SelectData { item: ItemData, slot: number }
 
-export function BankWindow(props: BankWindowProps) {
+export function BankWindow() {
+    const model = useBank();
+    const contextMenuModel = useContextMenu();
     const [select, setSelect] = React.useState(null as SelectData)
-    const model = props.model
 
     const close = () => {
-        props.model.close()
+        model.close()
     }
 
     const onContext = (item: ItemData, slot: number, mouseX: number, mouseY: number) => {
@@ -42,7 +38,7 @@ export function BankWindow(props: BankWindowProps) {
             }
         ])
 
-        props.ctxMenu.show(ctxMenu, mouseX, mouseY)
+        contextMenuModel.show(ctxMenu, mouseX, mouseY)
     }
 
     const onShiftClick = (item: ItemData, slot: number) => {

@@ -2,10 +2,7 @@
 import React = require("react")
 import { ChatModel } from "../game/model/chat-model"
 import { FormatText } from "./format-text"
-
-export interface ChatAreaProps {
-    chat: ChatModel
-}
+import { useChat } from "./hooks"
 
 interface ChatButtonProps {
     onOpenChat: () => void
@@ -69,13 +66,14 @@ function ChatBox(props: ChatProps) {
     </div>
 }
 
-export function ChatArea(props: ChatAreaProps) {
+export function ChatArea() {
+    const chat = useChat();
     const [viewChat, setViewChat] = React.useState(true)
 
     let content = <OpenChatButton onOpenChat={() => { setViewChat(true) }} />
 
     if(viewChat) {
-        content = <ChatBox chat={props.chat} onCloseChat={() => { setViewChat(false) }} />
+        content = <ChatBox chat={chat} onCloseChat={() => { setViewChat(false) }} />
     }
 
     return <div id="chatArea">

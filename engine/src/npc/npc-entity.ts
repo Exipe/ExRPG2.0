@@ -12,9 +12,9 @@ export class NpcEntity extends Entity {
     private sprite: Sprite = null
 
     constructor(engine: Engine, npcData: NpcData, tileX: number, tileY: number) {
-        super(tileX, tileY)
-
-        this.data = npcData
+        super(tileX, tileY, 0, 0, npcData.width);
+        this.flat = npcData.flat;
+        this.data = npcData;
 
         npcData.getSprite(engine)
         .then(sprite => {

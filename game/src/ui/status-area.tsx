@@ -1,11 +1,7 @@
 
 import React = require("react");
-import { StatusModel } from "../game/model/status-model";
 import { Observable } from "../util/observable";
-
-export interface StatusProps {
-    model: StatusModel
-}
+import { useObservable, useStatus } from "./hooks";
 
 interface HealthProps {
     health: Observable<number>,
@@ -59,26 +55,13 @@ function ExperienceBar(props: ExperienceProps) {
     </div>
 }
 
-export function StatusArea(props: StatusProps) {
-    const [name, setName] = React.useState(props.model.name.value)
-
-    const [level, setLevel] = React.useState(props.model.level.value)
-    const [xp, setXp] = React.useState(props.model.experience.value)
-    const [reqXp, setReqXp] = React.useState(props.model.requiredExperience.value)
-
-    React.useEffect(() => {
-        props.model.name.register(setName)
-
-        props.model.level.register(setLevel)
-        props.model.experience.register(setXp)
-        props.model.requiredExperience.register(setReqXp)
-
-        return () => {
-            props.model.level.unregister(setLevel)
-            props.model.experience.unregister(setXp)
-            props.model.requiredExperience.unregister(setReqXp)
-        }
-    })
+export function StatusArea() {
+    const model = useStatus();
+    
+    const name = useObservable(model.name);
+    const level = useObservable(model.level);
+    const xp = useObservable(model.experience);
+    const reqXp = useObservable(model.requiredExperience);
 
     return <div id="statusArea" className="box-standard">
         <div id="nameAndLevel">
@@ -87,8 +70,8 @@ export function StatusArea(props: StatusProps) {
         </div>
 
         <HealthBar 
-            health={props.model.health}
-            totalHealth={props.model.totalHealth}
+            health={model.health}
+            totalHealth={model.totalHealth}
         />
 
         <ExperienceBar

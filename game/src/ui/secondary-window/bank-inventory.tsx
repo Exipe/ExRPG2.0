@@ -1,23 +1,18 @@
 
 import { ItemData } from "exrpg";
 import React = require("react");
-import { BankModel } from "../../game/model/window/bank-model";
 import { StorageId } from "../../game/model/container-model";
-import { InventoryModel } from "../../game/model/tab/inventory-model";
-import { ContextMenuModel, MenuEntry } from "../../game/model/context-menu-model";
+import { MenuEntry } from "../../game/model/context-menu-model";
 import { StorageContainer, ItemOverlay } from "../container/storage-container";
 import { ContainerSelectDialog } from "../container/container";
-
-interface BankInventoryProps {
-    bank: BankModel
-    inventory: InventoryModel
-    ctxMenu: ContextMenuModel
-}
+import { useBank, useInventory, useContextMenu } from "../hooks";
 
 interface SelectData { item: ItemData, slot: number }
 
-export function BankInventory(props: BankInventoryProps) {
-    const bank = props.bank
+export function BankInventory() {
+    const bankModel = useBank();
+    const inventoryModel = useInventory();
+    const contextMenuModel = useContextMenu();
     const [select, setSelect] = React.useState(null as SelectData)
 
     const onContext = (item: ItemData, slot: number, mouseX: number, mouseY: number) => {
@@ -27,7 +22,7 @@ export function BankInventory(props: BankInventoryProps) {
         ctxMenu.push([
             "Quick-deposit " + name,
             () => {
-                bank.deposit(item.id, slot)
+                bankModel.deposit(item.id, slot)
             }
         ])
 
@@ -40,23 +35,23 @@ export function BankInventory(props: BankInventoryProps) {
                 })
             }
         ])
-        props.ctxMenu.show(ctxMenu, mouseX, mouseY)
+        contextMenuModel.show(ctxMenu, mouseX, mouseY)
     }
 
     const closeSelect = () => { setSelect(null) }
 
     const deposit = (amount: number) => {
-        bank.deposit(select.item.id, select.slot, amount)
+        bankModel.deposit(select.item.id, select.slot, amount)
         setSelect(null)
     }
 
     const onShiftClick = (item: ItemData, slot: number) => {
-        bank.deposit(item.id, slot)
+        bankModel.deposit(item.id, slot)
     }
 
     const onDrag = (item: ItemData, slot: number, source: StorageId) => {
         if(source == "bank") {
-            bank.withdraw(item.id, slot)
+            bankModel.withdraw(item.id, slot)
         }
     }
 
@@ -79,7 +74,7 @@ export function BankInventory(props: BankInventoryProps) {
     return <StorageContainer 
         id="inventory"
         className="box-gradient secondary-window"
-        model={props.inventory} 
+        model={inventoryModel} 
         overlay={itemOverlay}
         onContext={onContext} 
         onShiftClick={onShiftClick}

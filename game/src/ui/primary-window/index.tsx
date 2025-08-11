@@ -1,19 +1,15 @@
 
 import { useEffect, useState } from "react";
 import React = require("react");
-import { Game } from "../../game/game";
 import { BankWindow } from "./bank-window";
 import { CraftingStation } from "./crafting-station";
 import { DialogueBox } from "./dialogue-box";
 import { ShopWindow } from "./shop-window";
 import { TradeWindow } from "./trade-window";
+import { useGame } from "../game-provider";
 
-export interface PrimaryWindowProps {
-    game: Game
-}
-
-export function PrimaryWindow(props: PrimaryWindowProps) {
-    const game = props.game
+export function PrimaryWindow() {
+    const game = useGame();
     const pwObserver = game.primaryWindow
     const [pw, setPw] = useState(pwObserver.value)
 
@@ -26,14 +22,14 @@ export function PrimaryWindow(props: PrimaryWindowProps) {
         case "None":
             return <></>
         case "Dialogue":
-            return <DialogueBox model={game.dialogue} />
+            return <DialogueBox />
         case "Shop":
-            return <ShopWindow model={game.shop} />
+            return <ShopWindow />
         case "Crafting":
-            return <CraftingStation model={game.crafting} inventory={game.inventory} />
+            return <CraftingStation />
         case "Bank":
-            return <BankWindow model={game.bank} ctxMenu={game.ctxMenu} />
+            return <BankWindow />
         case "Trade":
-            return <TradeWindow model={game.trade} ctxMenu={game.ctxMenu} />
+            return <TradeWindow />
     }
 }

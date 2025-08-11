@@ -13,13 +13,13 @@ async function initPlayers(game: Game) {
     const connection = game.connection
     const engine = game.engine
 
-    const baseSprite = 
+    const baseSprite =
         await engine.loadTexture("char/man.png")
-        .then(texture => 
-            new Sprite(engine, texture))
+            .then(texture =>
+                new Sprite(engine, texture))
 
     const onContext = (player: Player) => {
-        if(player.id == game.localId) {
+        if (player.id == game.localId) {
             return
         }
 
@@ -49,7 +49,7 @@ async function initPlayers(game: Game) {
         const appearanceValues = []
         equipment.forEach(id => {
             const equipData = engine.itemHandler.get(id).equipData
-            if(equipData.drawable) {
+            if (equipData.drawable) {
                 appearanceValues.push(equipData.sprite)
             }
         })
@@ -57,11 +57,11 @@ async function initPlayers(game: Game) {
     }
 
     game.createPlayer = (equipment: string[], info: PlayerInfo) => {
-        const sprite = new PlayerSprite(engine, baseSprite, 
+        const sprite = new PlayerSprite(engine, baseSprite,
             getAppearanceValues(equipment));
         return new Player(game, sprite, onContext, info);
     };
-    
+
     game.updatePlayerAppearance = (id: number, equipment: string[]) => {
         const playerSprite = game.getPlayer(id).sprite;
         playerSprite.setAppearanceValues(
@@ -73,16 +73,17 @@ function initNpcs(game: Game): void {
     const connection = game.connection
 
     const npcAction = (npc: Npc, action: string) => {
+        const data = npc.data;
         const goal: Goal = {
             x: npc.tileX,
             y: npc.tileY,
-            width: 1,
-            height: 1,
+            width: data.width,
+            height: data.depth,
             distance: 1
         }
 
         game.walkToGoal(goal).then(() => {
-            if(action != null) {
+            if (action != null) {
                 connection.send(new NpcActionPacket(npc.id, action))
             }
         })
@@ -104,9 +105,10 @@ function initNpcs(game: Game): void {
     }
 
     game.createNpc = (info: NpcInfo) => {
-        const npc = new Npc(game, info,
+        const data = game.engine.npcHandler.get(info.dataId);
+        const npc = new Npc(game, info, data,
             onNpcContext,
-            onNpcClick,);
+            onNpcClick);
         return npc;
     };
 }
@@ -125,7 +127,7 @@ function initObjects(game: Game) {
         }
 
         game.walkToGoal(goal).then(() => {
-            if(action != null) {
+            if (action != null) {
                 game.connection.send(new ObjectActionPacket(data.id, action, obj.tileX, obj.tileY))
             }
         })
@@ -151,7 +153,7 @@ function initGroundItems(game: Game): void {
     const engine = game.engine
 
     const takeItem = (item: Item) => {
-        if(!(item instanceof GroundItem)) {
+        if (!(item instanceof GroundItem)) {
             return
         }
 
@@ -172,11 +174,15 @@ function initGroundItems(game: Game): void {
 
 export async function initGame(engine: Engine, connection: Connection) {
     const pathFinderWorker = new PathFinderWorker() // start path finder thread
-    const game = new Game(engine, connection, 
+    const game = new Game(engine, connection,
         pathFinderWorker);
 
     (window as any).hideLocal = () => {
         game.getLocal().destroy()
+    }
+    
+    (window as any).debugMode = () => {
+        game.debugMode.value = !game.debugMode.value
     }
 
     await initPlayers(game)

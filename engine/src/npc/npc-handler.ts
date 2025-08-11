@@ -12,28 +12,15 @@ export async function initNpcs(resPath: string) {
             option, option.toLowerCase().replace(" ", "_")
         ]) : []
 
-        if(npcMap.has(id)) {
-            throw "IMPORTANT - duplicate NPC id: " + id
-        }
-
         if(npcData.combat != null) {
             options.unshift(["Attack", "__attack"])
         }
 
-        const npc = new NpcData(id, npcData.name, resPath + "/char/" + sprite + ".png", options)
-        npc.raw = npcData
-
-        if(npcData.equip != null) {
-            npc.equip = npcData.equip
+        if(npcMap.has(id)) {
+            throw "IMPORTANT - duplicate NPC id: " + id
         }
 
-        if(npcData.shadow) {
-            npc.shadowData = {
-                offsetX: npcData.shadow.offsetX ? npcData.shadow.offsetX : 0,
-                offsetY: npcData.shadow.offsetY ? npcData.shadow.offsetY : 0
-            }
-        }
-
+        const npc = new NpcData(npcData, resPath + "/char/" + sprite + ".png", options)
         npcMap.set(id, npc)
     })
 

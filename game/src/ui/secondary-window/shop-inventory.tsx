@@ -1,46 +1,32 @@
 
-import { useEffect, useState } from "react"
 import React = require("react")
-import { InventoryModel } from "../../game/model/tab/inventory-model"
-import { ShopModel } from "../../game/model/window/shop-model"
 import { DisplayItem, ItemContainer } from "../container/container"
 import { ShopSelectDialog } from "../primary-window/shop-window"
+import { useInventory, useObservable, useShop } from "../hooks"
 
-interface ShopInventoryProps {
-    shop: ShopModel
-    inventory: InventoryModel
-}
+export function ShopInventory() {
+    const inventoryModel = useInventory();
 
-export function ShopInventory(props: ShopInventoryProps) {
-    const observable = props.inventory.observable
-    const selectObservable = props.shop.selectedSell
-    const [inventory, setInventory] = useState(observable.value)
+    const inventory = useObservable(inventoryModel.observable);
     const items = inventory.items
-    const [select, setSelect] = useState(selectObservable.value)
 
-    useEffect(() => {
-        observable.register(setInventory)
-        selectObservable.register(setSelect)
-        return () => {
-            observable.unregister(setInventory)
-            selectObservable.unregister(setSelect)
-        }
-    }, [])
+    const shopModel = useShop();
+    const select = useObservable(shopModel.selectedSell)
 
     const selectSell = (slot: number) => {
         if(items[slot] == null) {
             return
         }
 
-        props.shop.selectSell(slot)
+        shopModel.selectSell(slot)
     }
 
     const closeSelect = () => {
-        selectObservable.value = null
+        shopModel.selectedSell.value = null
     }
 
     const sell = (amount: number) => {
-        props.shop.confirmSell(amount)
+        shopModel.confirmSell(amount)
     }
 
     const displayItems = items.map((item, idx) => {

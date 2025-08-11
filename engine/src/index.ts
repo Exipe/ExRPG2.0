@@ -26,11 +26,12 @@ import { EngineDeps, Engine } from "./engine"
 import { Camera } from "./camera"
 import { Layer } from "./scene/layer/layer"
 import { initWeather, WEATHER_EFFECTS, WeatherEffect } from "./weather/weather-effect-handler"
+import { Component } from "./entity/component"
 
 export { Engine, Camera }
 export { Scene, Layer, SceneBuilder, loadScene, saveScene, feetCoords }
 export { Sprite, PlayerSprite, MergeTexture }
-export { Entity, NpcEntity, NpcData, ObjectEntity, EntityShadow }
+export { Entity, NpcEntity, NpcData, ObjectEntity, EntityShadow, Component }
 export { Item, ItemData, EquipmentData }
 export { Light, LightComponent }
 export { OutlineComponent }
