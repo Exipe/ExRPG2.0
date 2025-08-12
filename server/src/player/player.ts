@@ -96,6 +96,15 @@ export class Player extends Character {
         this.attributes.onChange('speed_move', value => this.walkSpeed = speedBonus(value))
     }
 
+    public get bounds() {
+        return {
+            x: this.x,
+            y: this.y,
+            width: 1,
+            depth: 1
+        };
+    }
+
     public get varKeys() {
         return [...this.vars.keys()];
     }

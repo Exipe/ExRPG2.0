@@ -43,6 +43,7 @@
 		"id": "giant_slime",
 		"name": "Giant slime",
 		"sprite": "giant_slime",
+		"walkRadius": 10,
 		"walkSpeed": 0.33,
 		"width": 3,
 		"depth": 2,
@@ -152,6 +153,7 @@
         "id": "scorpion",
         "name": "Scorpion",
         "sprite": "scorpion",
+		"width": 2,
 
         "walkRadius": 5,
 

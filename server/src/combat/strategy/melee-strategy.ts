@@ -18,8 +18,8 @@ export class MeleeStrategy implements CombatStrategy {
         const damage = calculateDamage(cb.maxDamage, cb.accuracy, targetCb.defence);
         
         if(weaponId != "") {
-            const distX = target.x - self.x;
-            const distY = target.y - self.y;
+            const distX = Math.sign(target.centerX - self.centerX);
+            const distY = Math.sign(target.centerY - self.centerY);
             self.swingItem(weaponId, distX, distY, delay / 5);
         }
         cb.damage(targetCb, damage);

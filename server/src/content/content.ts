@@ -63,6 +63,10 @@ export function initContent() {
         player.taskHandler.setTask(sequence.build(), false);
     });
 
+    actionHandler.onNpc("giant_slime", (player) => {
+        player.sendMessage("You poke the giant slime. Icky.")
+    });
+
     actionHandler.onObject("cactus", (player) => {
         player.sendChatBubble("Ow! >.<")
         player.combatHandler.applyDamage(1, "hit")

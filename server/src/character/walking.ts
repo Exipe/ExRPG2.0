@@ -29,7 +29,7 @@ export class Walking implements Task {
         return this.character.walkDelay
     }
 
-    private checkGoal() {
+    public checkGoal() {
         if(this._goal == null || !this._goal.criteriaMet()) {
             return;
         }

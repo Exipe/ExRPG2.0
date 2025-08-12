@@ -32,6 +32,8 @@ export interface NpcData {
     name: string
     walkRadius: number
     walkSpeed: number
+    width: number
+    depth: number
     actions: string[]
     combatData: NpcCombatData
 }
@@ -59,23 +61,25 @@ export async function loadNpcData(resPath: string) {
             const maxHit = maxDamage(combatAttrib(cb.damage))
 
             combatData = {
-                weapon: cb.weapon ? cb.weapon : "",
-                respawnTime: cb.respawnTime ? cb.respawnTime : DEFAULT_RESPAWN_TIME,
+                weapon: cb.weapon ?? "",
+                respawnTime: cb.respawnTime ?? DEFAULT_RESPAWN_TIME,
                 health: cb.health,
                 attackSpeed: attackSpeed,
                 maxHit: maxHit,
                 accuracy: combatAttrib(cb.accuracy),
                 defence: combatAttrib(cb.defence),
                 agressive: isAgressive(npc.id),
-                experience: cb.experience ? cb.experience : cb.health
+                experience: cb.experience ?? cb.health
             }
         }
 
         const npcData = {
             id: npc.id,
             name: npc.name,
-            walkRadius: npc.walkRadius ? npc.walkRadius : DEFAULT_WALK_RADIUS,
-            walkSpeed: npc.walkSpeed ? npc.walkSpeed : DEFAULT_WALK_SPEED,
+            walkRadius: npc.walkRadius ?? DEFAULT_WALK_RADIUS,
+            walkSpeed: npc.walkSpeed ?? DEFAULT_WALK_SPEED,
+            width: npc.width ?? 1,
+            depth: npc.depth ?? 1,
             actions: actions,
             combatData: combatData
         }

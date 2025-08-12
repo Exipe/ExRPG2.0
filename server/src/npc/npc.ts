@@ -63,6 +63,15 @@ export class Npc extends Character {
         }
     }
 
+    public get bounds() {
+        return {
+            x: this.x,
+            y: this.y,
+            width: this.data.width,
+            depth: this.data.depth
+        }
+    }
+
     public get alive() {
         return this.map != null
     }

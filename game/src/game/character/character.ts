@@ -37,9 +37,10 @@ export abstract class Character extends Entity {
     }
 
     public walkTo(x: number, y: number, animationSpeed: number) {
-        this.tileX = x
-        this.tileY = y
-        this.walking = new Walking(this, x, y, animationSpeed)
+        this.tileX = x;
+        this.tileY = y;
+        this.componentHandler.forEach(c => c.moveTile());
+        this.walking = new Walking(this, x, y, animationSpeed);
     }
 
     public place(x: number, y: number) {
