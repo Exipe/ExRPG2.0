@@ -50,6 +50,15 @@ export type Bounds = {
     depth: number;
 }
 
+export function getSides(entity: Bounds) {
+    return {
+        left: entity.x,
+        bottom: entity.y,
+        top: entity.y - entity.depth + 1,
+        right: entity.x + entity.width - 1
+    }
+};
+
 export function reachable(entityA: Bounds, entityB: Bounds, allowDiagonal = false) {
     const getCenter = (entity: Bounds) => ({
         x: entity.x + (entity.width - 1) / 2,
@@ -63,7 +72,7 @@ export function reachable(entityA: Bounds, entityB: Bounds, allowDiagonal = fals
     const reqX = (entityA.width + entityB.width + 1) / 2
     const reqY = (entityA.depth + entityB.depth + 1) / 2
 
-    if(allowDiagonal) {
+    if (allowDiagonal) {
         return distX < reqX && distY < reqY;
     } else {
         return ((distX < reqX && distY < reqY - 1) || (distX < reqX - 1 && distY < reqY))
@@ -71,19 +80,13 @@ export function reachable(entityA: Bounds, entityB: Bounds, allowDiagonal = fals
 }
 
 export function intersects(entityA: Bounds, entityB: Bounds) {
-    const getSides = (entity: Bounds) => ({
-        left: entity.x,
-        bottom: entity.y,
-        top: entity.y - entity.depth + 1,
-        right: entity.x + entity.width - 1
-    });
     const sidesA = getSides(entityA);
     const sidesB = getSides(entityB);
 
-    if(sidesA.right < sidesB.left)  return false;
-    else if(sidesA.left > sidesB.right) return false;
-    else if(sidesA.top > sidesB.bottom) return false;
-    else if(sidesA.bottom < sidesB.top) return false;
+    if (sidesA.right < sidesB.left) return false;
+    else if (sidesA.left > sidesB.right) return false;
+    else if (sidesA.top > sidesB.bottom) return false;
+    else if (sidesA.bottom < sidesB.top) return false;
 
     return true;
 }

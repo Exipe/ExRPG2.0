@@ -6,7 +6,7 @@ import { TaskHandler } from "./task-handler"
 import { CancelPointItemPacket, ChatBubblePacket, ChatBubbleStyle, PointItemPacket, ProgressIndicatorPacket, RemoveProgressIndicatorPacket, SwingItemPacket } from "../connection/outgoing-packet"
 import { CombatHandler } from "../combat/combat"
 import { MapId } from "../scene/map-id"
-import { Bounds, intersects, reachable } from "../util/util"
+import { Bounds, getSides, intersects, reachable } from "../util/util"
 
 export type CharacterType = "player" | "npc"
 export type CharacterIdentifier = {
@@ -150,13 +150,15 @@ export abstract class Character {
         const deltaX = Math.sign(diffX);
         const deltaY = Math.sign(diffY);
 
-        const bounds = this.bounds;
+        const bounds = { ...this.bounds, x, y };
         const otherBounds = other.bounds;
+
+        const isReachable = reachable(bounds, otherBounds) ||
+            (reachable(bounds, otherBounds, true) && this.walkable(x, y, deltaX, deltaY));
 
         return this.map === other.map
             && !intersects(bounds, otherBounds)
-            && reachable(bounds, otherBounds, true)
-            && this.walkable(x, y, deltaX, deltaY);
+            && isReachable;
     }
 
     public isInFieldOfVision(other: Character, distance: number) {
@@ -194,10 +196,10 @@ export abstract class Character {
     }
 
     private getBehind(other: Character, x = this.walking.goalX, y = this.walking.goalY) {
-        if(!this.isAdjacent(other, x, y)) {
+        if (!this.isAdjacent(other, x, y)) {
             this.walking.followStep(other.lastX, other.lastY);
         }
-        
+
         this.walking.checkGoal();
     }
 
@@ -344,8 +346,15 @@ export abstract class Character {
     protected abstract onMove(delay: number): void
 
     public move(x: number, y: number, animate = false, delay?: number) {
-        this.lastX = this._x
-        this.lastY = this._y
+        const diffX = x - this._x;
+        const diffY = y - this._y;
+        const bounds = this.bounds;
+        const sideX = Math.floor((1 - Math.sign(diffX)) / 2);
+        const sideY = Math.floor((1 - Math.sign(diffY)) / 2);
+        const sides = getSides(bounds);
+
+        this.lastX = sides.left + (bounds.width - 1) * sideX;
+        this.lastY = sides.top + (bounds.depth - 1) * sideY;
         this._x = x
         this._y = y
 

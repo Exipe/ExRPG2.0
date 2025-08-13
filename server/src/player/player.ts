@@ -228,8 +228,8 @@ export class Player extends Character {
     }
 
     public ready() {
-        this.send(new WeatherPacket(weatherHandler.dynamicWeatherActive, weatherHandler.brightness))
         this.send(new WelcomePacket(this.id, this.name))
+        this.send(new WeatherPacket(weatherHandler.dynamicWeatherActive, weatherHandler.brightness))
         this.sendMessage("Welcome to ExRPG.")
 
         if (this.progress != null) {
