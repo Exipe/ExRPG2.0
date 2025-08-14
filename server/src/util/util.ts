@@ -91,6 +91,6 @@ export function intersects(entityA: Bounds, entityB: Bounds) {
     return true;
 }
 
-export function formatStrings(strings: string[], prefix: string, separator: string, suffix: string) {
+export function formatStrings(strings: ReadonlyArray<string>, prefix: string, separator: string, suffix: string) {
     return prefix + strings.join(separator) + suffix
 }

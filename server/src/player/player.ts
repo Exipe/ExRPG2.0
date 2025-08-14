@@ -23,6 +23,7 @@ import { Inventory } from "../item/container/inventory"
 import { TradeHandler } from "./trade/trade-handler"
 import { TradeScreen } from "./trade/trade-screen"
 import { BankWindow } from "./window/bank-window"
+import { Skills } from "./skills"
 
 export function isPlayer(character: Character): character is Player {
     return character.type == "player"
@@ -69,6 +70,7 @@ export class Player extends Character {
     private dialogueId = -1
 
     public readonly level = new PlayerLevel(this)
+    public readonly skills = new Skills(this);
     public readonly foodHandler = new FoodHandler(this)
 
     public readonly playerCombat: PlayerCombatHandler
@@ -240,6 +242,7 @@ export class Player extends Character {
         }
 
         this.level.update()
+        this.skills.update();
 
         this.playerCombat.updateHealth()
 

@@ -1,0 +1,205 @@
+@import "variables.scss";
+
+$tab-container-width: calc(6 * var(--standard-icon));
+$tab-container-height: calc(7 * var(--standard-icon));
+
+#tabArea {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+
+    width: fit-content;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#tabArea>* {
+    pointer-events: initial;
+    margin: 2px;
+}
+
+#tabs {
+    width: $tab-container-width;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-around;
+    padding: 4px;
+}
+
+.tab {
+    width: var(--standard-icon);
+    height: var(--standard-icon);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: pixelated;
+
+    opacity: 0.66;
+    transition: opacity 0.1s;
+}
+
+.tab-content {
+    width: $tab-container-width;
+    height: $tab-container-height;
+    box-sizing: border-box;
+}
+
+.tab:hover,
+.tab.openTab {
+    opacity: 1;
+}
+
+#inventory-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#inventory {
+    grid-template-columns: repeat(5, var(--standard-icon));
+    grid-template-rows: repeat(6, var(--standard-icon));
+}
+
+#equipment {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px;
+}
+
+#equipmentAttribs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#attribs {
+    margin: 0;
+    padding: 8px 0;
+    text-align: center;
+    list-style-type: none;
+    max-height: calc(3 * var(--standard-icon));
+    overflow: auto;
+}
+
+#attribs>* {
+    color: white;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.positiveBonus {
+    color: greenyellow
+}
+
+.negativeBonus {
+    color: coral
+}
+
+#openPointSpend {
+    text-align: center;
+}
+
+#equipmentGrid {
+    display: grid;
+    grid-template-columns: repeat(3, var(--standard-icon));
+    grid-template-rows: repeat(3, var(--standard-icon));
+}
+
+#pointSpendContainer {
+    width: 100%;
+    color: white;
+}
+
+#pointSpendHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 2px solid $accent-color;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+}
+
+#point-spend-grid {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 4px 12px;
+    padding: 0px 12px 4px;
+    max-height: calc(2 * var(--standard-icon));
+    overflow: auto;
+    text-align: center;
+}
+
+.point-spend-button {
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    background-color: $base-opaque;
+    border-radius: 50%;
+}
+
+#point-spend-confirm {
+    text-align: center;
+}
+
+#settings {
+    padding: 4px;
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#skills {
+    padding: 12px;
+    overflow: auto;
+}
+
+.skill-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px;
+}
+
+#skill-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.skill-item-details {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+}
+
+.skill-item-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.skill-experience-bar {
+    position: relative;
+    text-align: center;
+    background-color: $accent-color;
+    border-radius: 12px;
+
+    .experience-label {
+        position: relative;
+        color: white;
+        font-size: 12px;
+    }
+}
+
+.skill-experience-bar-fill {
+    border-radius: 12px;
+    position: absolute;
+    height: 100%;
+    background-color: $accent-bright;
+}

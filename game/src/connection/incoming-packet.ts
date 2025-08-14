@@ -261,6 +261,10 @@ function onLevel(game: Game, data: any) {
     game.status.requiredExperience.value = data.requiredExperience
 }
 
+function onSkills(game: Game, skills: any[]) {
+    game.status.skills.value = skills;
+}
+
 //#endregion
 
 //#region Scene
@@ -408,6 +412,7 @@ export function bindIncomingPackets(game: Game) {
 
     bind("HEALTH", onHealth)
     bind("LEVEL", onLevel)
+    bind("SKILLS", onSkills)
 
     bind("LOAD_MAP", onLoadMap)
     bind("SET_OBJECT", onSetObject)

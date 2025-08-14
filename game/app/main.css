@@ -1,11 +1,8 @@
-
 :root {
     --bg-color: rgba(100, 50, 0, 0.85);
     --bg-solid: rgb(100, 50, 0);
     --fg-color: rgb(50, 25, 0);
     --fg-color-bright: rgb(125, 75, 0);
-
-    --standard-icon: 48px;
 }
 
 #ui {
@@ -36,26 +33,6 @@
     right: 4px;
 }
 
-.box-standard {
-    border-radius: 5px;
-    background-color: var(--bg-color);
-    border: 3px solid var(--fg-color);
-    border-top-color: var(--fg-color-bright);
-    border-left-color: var(--fg-color-bright);
-}
-
-.box-solid {
-    border-radius: 5px;
-    background-color: var(--bg-solid);
-    border: 3px solid var(--fg-color);
-}
-
-.box-gradient {
-    border-radius: 5px;
-    background: radial-gradient(rgb(75, 50, 25), rgb(60, 35, 10));
-    border: 3px solid var(--fg-color);
-}
-
 #ctxMenu {
     cursor: default;
 
@@ -73,13 +50,13 @@
     padding: 0;
 }
 
-#ctxMenu > * {
+#ctxMenu>* {
     padding: 8px;
     font-size: 15px;
     text-shadow: -1px -1px black, 1px -1px black, -1px 1px black, 1px 1px black;
 }
 
-#ctxMenu > *:hover {
+#ctxMenu>*:hover {
     color: lightgray;
 }
 
@@ -99,7 +76,7 @@
     left: 4px;
 }
 
-#statusArea > * {
+#statusArea>* {
     margin: 8px;
 }
 
@@ -109,7 +86,7 @@
     flex-direction: row;
 }
 
-#nameAndLevel > * {
+#nameAndLevel>* {
     color: white;
     margin: 0;
 }
@@ -145,68 +122,6 @@
     background: linear-gradient(180deg, rgb(255, 0, 255) 0%, rgb(100, 0, 100) 100%);
 }
 
-#tabArea {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-
-    width: fit-content;
-
-    display: flex;
-    flex-direction: column;
-    /*align-items: flex-end;*/
-}
-
-#tabArea > * {
-    pointer-events: initial;
-    margin: 2px;
-}
-
-#tabs {
-    width: fit-content;
-    align-self: flex-end;
-    display: flex;
-    justify-content: space-around;
-    padding: 4px;
-}
-
-.tab {
-    width: var(--standard-icon);
-    height: var(--standard-icon);
-
-    background-repeat: no-repeat;
-    background-size: cover;
-    image-rendering: pixelated;
-
-    margin: 4px 12px;
-    opacity: 0.66;
-    transition: opacity 0.1s;
-}
-
-.tab:hover, .tab.openTab {
-    opacity: 1;
-}
-
-.uiButton {
-    background-color: var(--bg-solid);
-    width: 100%;
-    padding: 2px;
-    box-sizing: border-box;
-    border-radius: 2px;
-    color: white;
-}
-
-#settings {
-    width: 200px;
-    height: 200px;
-    padding: 4px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-}
-
 #fullscreenButton {
     margin-top: auto;
 }
@@ -219,11 +134,12 @@
     grid-auto-rows: var(--standard-icon);
 }
 
-.itemContainer > * {
+.itemContainer>* {
     position: relative;
 }
 
-.scaleIcon, .itemContainer > * {
+.scaleIcon,
+.itemContainer>* {
     background-repeat: no-repeat;
     background-size: cover;
     image-rendering: pixelated;
@@ -318,7 +234,8 @@
     grid-template-rows: repeat(6, var(--standard-icon));
 }
 
-.shopItem:hover, .recipeUnlocked:hover {
+.shopItem:hover,
+.recipeUnlocked:hover {
     cursor: pointer;
 }
 
@@ -343,7 +260,7 @@
     margin-bottom: 12px;
 }
 
-.selectDialogRow > *:nth-child(2) {
+.selectDialogRow>*:nth-child(2) {
     margin: auto;
 }
 
@@ -374,14 +291,6 @@
     text-align: center;
 }
 
-#inventory {
-    width: fit-content;
-    height: fit-content;
-
-    grid-template-columns: repeat(6, var(--standard-icon));
-    grid-template-rows: repeat(5, var(--standard-icon));
-}
-
 .itemAmount {
     position: absolute;
     top: 2px;
@@ -394,111 +303,13 @@
     font-size: 14px;
 }
 
-#equipmentAttribs {
-    display: flex;
-    flex-direction: column;
-}
-
-#attribs {
-    margin: 0;
-    padding: 0;
-    text-align: center;
-    list-style-type: none;
-}
-
-#attribs > * {
-    color: white;
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-.positiveBonus {
-    color: greenyellow
-}
-
-.negativeBonus {
-    color: coral
-}
-
-#openPointSpend {
-    margin-top: auto;
-    text-align: center;
-}
-
-#equipment {
-    display: flex;
-    width: 18em;
-    justify-content: space-between;
-    padding: 4px;
-}
-
-#equipmentGrid {
-    display: grid;
-    grid-template-columns: repeat(3, var(--standard-icon));
-    grid-template-rows: repeat(3, var(--standard-icon));
-}
-
-#helmSlot {
-    background-image: url('ui/equip/helm.png');
-}
-
-#swordSlot {
-    background-image: url('ui/equip/sword.png');
-}
-
-#plateSlot {
-    background-image: url('ui/equip/plate.png');
-}
-
-#shieldSlot {
-    background-image: url('ui/equip/shield.png');
-}
-
-#legsSlot {
-    background-image: url('ui/equip/legs.png');
-}
-
-#pointSpendContainer {
-    padding: 4px;
-    color: sandybrown;
-}
-
-#pointSpendContainer .uiButton {
-    text-align: center;
-}
-
-#pointSpendHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    border-bottom: 2px solid saddlebrown;
-    padding-bottom: 4px;
-    margin-bottom: 4px;
-}
-
-#pointSpendAttribs {
-    display: grid;
-    grid-template-columns: repeat(6, auto);
-    column-gap: 4px;
-    row-gap: 4px;
-}
-
-.pointSpendAttrib {
-    padding-top: 2px;
-}
-
-#pointSpendConfirm {
-    grid-column: span 3;
-}
-
 #chatArea {
     /*
     Needed to allow scrolling in chat-box
     See: https://stackoverflow.com/a/29699728
     */
     pointer-events: initial;
-    
+
     position: absolute;
     bottom: 4px;
     left: 4px;
@@ -555,7 +366,7 @@
     background-color: transparent;
 }
 
-#chatBoxMessageArea > p {
+#chatBoxMessageArea>p {
     margin: 6px;
 }
 
@@ -624,11 +435,11 @@
     align-items: center;
 }
 
-#dialogueOptions > * {
+#dialogueOptions>* {
     cursor: default;
 }
 
-#dialogueOptions > *:hover {
+#dialogueOptions>*:hover {
     color: lightgray;
 }
 
@@ -651,11 +462,7 @@ body {
     margin: 0;
 }
 
-@media (max-width:1000px)  {
-    :root {
-        --standard-icon: 32px;
-    }
-
+@media (max-width:1000px) {
     #chatBoxMessageArea {
         width: 20rem;
         height: 6rem;

@@ -1,0 +1,46 @@
+
+@import "variables.scss";
+
+:root {
+    --standard-icon: #{$standard-icon-size-large};
+}
+
+@media (max-width:$breakpoint-md) {
+    :root {
+        --standard-icon: #{$standard-icon-size-small};
+    }
+}
+
+.box-standard {
+    border-radius: 5px;
+    background-color: $base-color;
+    border: 3px solid $accent-color;
+    border-top-color: $accent-bright;
+    border-left-color: $accent-bright;
+}
+
+.box-solid {
+    border-radius: 5px;
+    background-color: $base-opaque;
+    border: 3px solid $accent-color;
+}
+
+.box-gradient {
+    border-radius: 5px;
+    background: radial-gradient(rgb(75, 50, 25), rgb(60, 35, 10));
+    border: 3px solid $accent-color;
+}
+
+.uiButton {
+    background-color: $base-color;
+    width: 100%;
+    padding: 2px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    color: white;
+
+    &.thick {
+        padding: 8px;
+        border-radius: 4px;
+    }
+}

@@ -62,6 +62,7 @@ export class Fishing extends PrimaryTask {
         }
 
         player.inventory.add('fish', 1)
+        player.skills.addExperience('fishing', 10);
         const cont = player.inventory.hasItem('fishing_rod') && player.inventory.hasSpace()
         if(!cont) {
             player.taskHandler.stopTask(this)
@@ -71,20 +72,6 @@ export class Fishing extends PrimaryTask {
         this.indicator()
     }
 
-}
-
-function addFishingSpot(id: string) {
-    const obj = objDataHandler.get(id)
-    if(obj == null) {
-        throw `[Invalid fishing data] unknown object: ${id}`
-    }
-
-    actionHandler.onObject(id, (p, action, ox, oy) => {
-        if(action == "fish_in") {
-            const task = new Fishing(p, obj, ox, oy)
-            task.start()
-        }
-    })
 }
 
 export function initFishing() {

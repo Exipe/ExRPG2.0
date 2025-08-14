@@ -20,12 +20,12 @@ function EquipmentSlot(props: EquipmentSlotProps) {
     let style = {} as React.CSSProperties
     let onClick: () => void
 
-    if(item != null) {
-        style.backgroundImage = `url('${ item.spritePath }')`
+    if (item != null) {
+        style.backgroundImage = `url('${item.spritePath}')`
         onClick = () => { props.unequip(item.id) }
     } else {
-        style.backgroundImage = `url('ui/equip/${ props.slot }.png')`
-        onClick = () => {}
+        style.backgroundImage = `url('ui/equip/${props.slot}.png')`
+        onClick = () => { }
     }
 
     return <div className="scaleIcon"
@@ -44,7 +44,7 @@ function PointSpendContainer(props: PointSpendProps) {
     const [points, setPoints] = React.useState(props.attributes.points)
     const [attribValues, setAttribValues] = React.useState(ATTRIBUTES.map(attribType => {
         const attrib = props.attributes.get(attribType[0])
-        
+
         return {
             name: attribType[1],
             title: attribType[2],
@@ -61,13 +61,13 @@ function PointSpendContainer(props: PointSpendProps) {
     }
 
     function plus(idx: number) {
-        if(points <= 0) {
+        if (points <= 0) {
             return
         }
 
-        setPoints(points-1)
+        setPoints(points - 1)
         setAttribValues(attribValues.map((attrib, idx2) => {
-            if(idx != idx2) {
+            if (idx != idx2) {
                 return attrib
             }
 
@@ -80,13 +80,13 @@ function PointSpendContainer(props: PointSpendProps) {
     }
 
     function minus(idx: number) {
-        if(attribValues[idx].points <= 0) {
+        if (attribValues[idx].points <= 0) {
             return
         }
 
-        setPoints(points+1)
+        setPoints(points + 1)
         setAttribValues(attribValues.map((attrib, idx2) => {
-            if(idx != idx2) {
+            if (idx != idx2) {
                 return attrib
             }
 
@@ -98,23 +98,23 @@ function PointSpendContainer(props: PointSpendProps) {
         }))
     }
 
-    return <div id="pointSpendContainer" className="box-standard">
+    return <div id="pointSpendContainer">
         <div id="pointSpendHeader">
             <div>Remaining points: {points}</div>
             <div onClick={props.onClose} className="closeButton" />
         </div>
 
-        <div id="pointSpendAttribs">
-            { attribValues.map((attrib, idx) =>
-                <React.Fragment key={attrib.name}>
-                    <div className="pointSpendAttrib">{attrib.name}: {attrib.value}</div> 
-                    <div onClick={() => plus(idx)} className="uiButton">+</div> 
-                    <div onClick={() => minus(idx)} className="uiButton">-</div>
+        <div id="point-spend-grid">
+            {attribValues.map((attrib, idx) =>
+                <React.Fragment>
+                    <div>{attrib.name}: {attrib.value}</div>
+                    <div onClick={() => plus(idx)} className="point-spend-button">+</div>
+                    <div onClick={() => minus(idx)} className="point-spend-button">-</div>
                 </React.Fragment>
             )}
 
-            <div onClick={() => confirm()} id="pointSpendConfirm" className="uiButton">Confirm</div>
         </div>
+        <div onClick={() => confirm()} id="point-spend-confirm" className="uiButton">Confirm</div>
     </div>
 }
 
@@ -133,21 +133,21 @@ export function Equipment(props: EquipmentProps) {
             equipment.attributes.unregister(setAttributes)
         }
     }, [])
-    
+
     const unequip = (id: string, slot: string) => props.equipment.unequipItem(id, slot)
 
     const attribValues = ATTRIBUTES.map(attribType => {
         const attrib = attributes.get(attribType[0])
 
         let suffix = ""
-        if(attrib.armor > 0) {
+        if (attrib.armor > 0) {
             suffix = " (+" + attrib.armor + ")"
-        } else if(attrib.armor < 0) {
+        } else if (attrib.armor < 0) {
             suffix = " (" + attrib.armor + ")"
         }
 
         let title = attribType[2]
-        if(attribType[0] == "speed_move") {
+        if (attribType[0] == "speed_move") {
             const percentage = (attributes.walkSpeed * 100).toFixed(2)
             title += ` (${percentage}%)`
         }
@@ -161,13 +161,12 @@ export function Equipment(props: EquipmentProps) {
     })
 
     const createSlot = (slot: string) => (
-        <EquipmentSlot slot={slot} item={equippedItems.get(slot)} unequip={ id => unequip(id, slot) } />
+        <EquipmentSlot slot={slot} item={equippedItems.get(slot)} unequip={id => unequip(id, slot)} />
     )
 
-    return <>
-    <div id="equipment" className="box-standard">
+    return <div id="equipment" className="box-standard tab-content">
         <div id="equipmentGrid">
-            <div /> 
+            <div />
             {createSlot("helm")}
             <div />
 
@@ -175,26 +174,28 @@ export function Equipment(props: EquipmentProps) {
             {createSlot("plate")}
             {createSlot("shield")}
 
-            <div /> 
+            <div />
             {createSlot("legs")}
             <div />
         </div>
 
-        <div id="equipmentAttribs">
-            <ul id="attribs">
-                { attribValues.map(attrib =>
-                    <li key={attrib.name} title={attrib.title}>
-                        {attrib.name}: <span className={attrib.className}>{attrib.value}</span>
-                    </li>
-                )}
-            </ul>
+        {!showSpendPoints &&
+            <div id="equipmentAttribs">
+                <ul id="attribs">
+                    {attribValues.map(attrib =>
+                        <li key={attrib.name} title={attrib.title}>
+                            {attrib.name}: <span className={attrib.className}>{attrib.value}</span>
+                        </li>
+                    )}
+                </ul>
 
+            </div>
+        }
+        {!showSpendPoints &&
             <div onClick={() => setShowSpendPoints(true)} id="openPointSpend" className="uiButton">Assign points ({attributes.points})</div>
-        </div>
+        }
+        {showSpendPoints &&
+            <PointSpendContainer equipment={props.equipment} onClose={() => setShowSpendPoints(false)} attributes={attributes} />
+        }
     </div>
-
-    {showSpendPoints && 
-        <PointSpendContainer equipment={props.equipment} onClose={() => setShowSpendPoints(false)} attributes={attributes} />
-    }
-    </>
 }

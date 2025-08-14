@@ -6,16 +6,17 @@ import { isEquipSlot } from "../../item/equipment";
 import { isAttribId } from "../attrib";
 import { isMapId } from "../../scene/map-id";
 import { Container } from "../../item/container/container";
+import { isSkill } from "../skills";
 
 function loadContainer(container: Container, save: SaveItem[]) {
-    if(!save) { return }
+    if (!save) { return }
 
-    for(let i = 0; i < save.length; i++) {
+    for (let i = 0; i < save.length; i++) {
         const saveItem = save[i]
-        if(saveItem == null) {
+        if (saveItem == null) {
             continue
         }
-        
+
         container.set(i, saveItem.id, saveItem.amount, false)
     }
 }
@@ -32,9 +33,17 @@ export function loadProgress(player: Player, progress: Progress) {
     loadContainer(player.inventory, progress.inventory)
     loadContainer(player.bank, progress.bank)
 
-    for(let equip of progress.equipment) {
+    for (let skill of progress.skills ?? []) {
+        if (!isSkill(skill.id)) {
+            continue;
+        }
+
+        player.skills.setProgress(skill.id, skill.level, skill.experience, false);
+    }
+
+    for (let equip of progress.equipment) {
         const item = itemDataHandler.get(equip.id)
-        if(item == null || !isEquipSlot(equip.slot)) {
+        if (item == null || !isEquipSlot(equip.slot)) {
             continue
         }
 
@@ -44,31 +53,31 @@ export function loadProgress(player: Player, progress: Progress) {
 
     player.attributes.setPoints(progress.points, false)
 
-    for(let attrib of progress.attributes) {
-        if(!isAttribId(attrib.id)) {
+    for (let attrib of progress.attributes) {
+        if (!isAttribId(attrib.id)) {
             continue
         }
 
         player.attributes.setBase(attrib.id, attrib.base, false)
     }
 
-    for(let saveVar of progress.vars ?? []) {
+    for (let saveVar of progress.vars ?? []) {
         player.setVar(saveVar.key, saveVar.value)
     }
 
     player.inventory.update()
     player.equipment.update()
     player.attributes.update()
-    
+
     const position = progress.position
 
-    if(isMapId(position.map)) {
+    if (isMapId(position.map)) {
         player.goTo(position.map, position.x, position.y)
     } else {
         player.goTo(...SPAWN_POINT)
     }
 
-    if(progress.unlockedRecipes) {
+    if (progress.unlockedRecipes) {
         player.unlockedRecipes = progress.unlockedRecipes
     }
 }

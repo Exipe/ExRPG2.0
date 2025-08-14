@@ -1,9 +1,10 @@
 
 import { Player } from "../player";
-import { Progress, SaveAttrib, SaveEquip, SaveItem, SaveVar } from "./progress";
+import { Progress, SaveAttrib, SaveEquip, SaveItem, SaveSkill, SaveVar } from "./progress";
 import { equipSlots } from "../../item/equipment";
 import { attributeIds } from "../attrib";
 import { Container } from "../../item/container/container";
+import { skills } from "../skills";
 
 const saveContainer = (container: Container): SaveItem[] => Array.from(
     { length: container.size }, (_, slot) => {
@@ -24,6 +25,15 @@ export function saveProgress(player: Player): Progress {
     const inventory = saveContainer(player.inventory)
     const bank = saveContainer(player.bank)
     
+    const saveSkills: SaveSkill[] = skills.map(skill => {
+        const progress = player.skills.getProgress(skill);
+        return {
+            id: skill,
+            level: progress.level,
+            experience: progress.experience
+        };
+    });
+
     const equipment: SaveEquip[] = equipSlots.map(slot => ({
         slot: slot,
         id: player.equipment.idOf(slot)
@@ -42,6 +52,7 @@ export function saveProgress(player: Player): Progress {
     return {
         level: player.level.level,
         experience: player.level.experience,
+        skills: saveSkills,
         rank: player.rank,
         mute: player.mute,
         health: player.combatHandler.health,

@@ -14,22 +14,22 @@ function openContext(inventory: InventoryModel, item: ItemData, idx: number) {
     let ctxMenu = [] as MenuEntry[]
     const buildEntryText = (option: string) => [`${option} /rgb(155,255,255,{})`, item.name];
 
-    if(item.equipable) {
+    if (item.equipable) {
         ctxMenu.push([
-            buildEntryText("Equip"), 
+            buildEntryText("Equip"),
             () => { inventory.useItem("equip", item.id, idx) }
         ])
     }
 
     item.options.forEach(option => {
         ctxMenu.push([
-            buildEntryText(option[0]), 
+            buildEntryText(option[0]),
             () => { inventory.useItem(option[1], item.id, idx) }
         ])
     })
 
     ctxMenu.push([
-        buildEntryText("Drop"), 
+        buildEntryText("Drop"),
         () => { inventory.useItem("drop", item.id, idx) }
     ])
 
@@ -38,22 +38,23 @@ function openContext(inventory: InventoryModel, item: ItemData, idx: number) {
 
 export function InventoryTab(props: InventoryProps) {
     const inventory = props.inventory
-    
+
     const onContext = (item: ItemData, idx: number, mouseX: number, mouseY: number) => {
         const ctxMenu = openContext(inventory, item, idx)
         props.showCtxMenu(ctxMenu, mouseX, mouseY)
     }
 
     const onShiftClick = (item: ItemData, idx: number) => {
-        if(item.equipable) {
+        if (item.equipable) {
             inventory.useItem("equip", item.id, idx)
         }
     }
 
-    return <StorageContainer 
-        className="box-standard"
-        id="inventory"
-        onContext={onContext} 
-        onShiftClick={onShiftClick} 
-        model={inventory} />
+    return <div id="inventory-container" className="box-standard tab-content">
+        <StorageContainer
+            id="inventory"
+            onContext={onContext}
+            onShiftClick={onShiftClick}
+            model={inventory} />
+    </div>
 }

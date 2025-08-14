@@ -17,7 +17,7 @@ export function Settings(props: SettingsProps) {
 
     function onZoom(e: MouseEvent) {
         for(let i = 1; i <= 5; i++) {
-            const text = `Set: ${i}x`
+            const text = `Set zoom level: ${i}x`
             ctxMenu.add([text, () => { 
                 settings.zoom = i
                 setZoom(i)
@@ -28,12 +28,12 @@ export function Settings(props: SettingsProps) {
     }
 
     function onCamera(e: MouseEvent) {
-        ctxMenu.add(["Set: clip", () => {
+        ctxMenu.add(["Set camera mode: clip", () => {
             settings.cameraMode = "clip"
             setCamera("clip")
         }])
 
-        ctxMenu.add(["Set: center", () => {
+        ctxMenu.add(["Set camera mode: center", () => {
             settings.cameraMode = "center"
             setCamera("center")
         }])
@@ -46,10 +46,10 @@ export function Settings(props: SettingsProps) {
         container.requestFullscreen()
     }
 
-    return <div id="settings" className="box-standard">
-        <div className="uiButton" onClick={e => { onZoom(e.nativeEvent) }}>Zoom: {zoom}x</div>
-        <div className="uiButton" onClick={e => { onCamera(e.nativeEvent) }}>Camera: {camera}</div>
+    return <div id="settings" className="box-standard tab-content">
+        <div className="uiButton thick" onClick={e => { onZoom(e.nativeEvent) }}>Zoom: {zoom}x</div>
+        <div className="uiButton thick" onClick={e => { onCamera(e.nativeEvent) }}>Camera: {camera}</div>
 
-        <div id="fullscreenButton" className="uiButton" onClick={onFullscreen}>Fullscreen</div>
+        <div id="fullscreenButton" className="uiButton thick" onClick={onFullscreen}>Enable fullscreen</div>
     </div>
 }

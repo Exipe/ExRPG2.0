@@ -1,11 +1,11 @@
 
 import { CombatSimulation } from "../combat/combat-simulation";
 import { NpcCombatHandler } from "../combat/npc-combat";
-import { ProgressIndicatorPacket, ShopPacket } from "../connection/outgoing-packet";
 import { db } from "../db/db";
-import { attributeIds, isAttribId, PlayerAttribHandler } from "../player/attrib";
+import { attributeIds, isAttribId } from "../player/attrib";
 import { Player } from "../player/player";
 import { POINTS_PER_LEVEL } from "../player/player-level";
+import { isSkill, MAX_SKILL_LEVEL, skills } from "../player/skills";
 import { BankWindow } from "../player/window/bank-window";
 import { SceneInstance } from "../scene/scene-instance";
 import { Colors } from "../util/color";
@@ -242,6 +242,52 @@ function onLevel(player: Player, args: string[]) {
     player.attributes.setPoints((target - 1) * POINTS_PER_LEVEL)
 }
 
+function onSkill(player: Player, args: string[]) {
+    if (args.length < 2) {
+        player.sendNotification("Correct usage: /skill skill_id target_level");
+        return;
+    }
+
+    const skillId = args[0];
+    if (!isSkill(skillId)) {
+        player.sendNotification(`skill_id '${skillId}' is invalid`);
+        player.sendNotification(`skill_ids: ${formatStrings(skills, "[", ", ", "]")}`);
+        return
+    }
+
+    const targetArg = args[1];
+    const target = parseInt(targetArg);
+    if (isNaN(target) || target <= 0 || target > MAX_SKILL_LEVEL) {
+        player.sendNotification(`'${targetArg}' is not a valid skill level`)
+        return
+    }
+
+    player.skills.setProgress(skillId, target, 0);
+}
+
+function onSkillXp(player: Player, args: string[]) {
+    if (args.length < 2) {
+        player.sendNotification("Correct usage: /skillxp skill_id experience");
+        return;
+    }
+
+    const skillId = args[0];
+    if (!isSkill(skillId)) {
+        player.sendNotification(`skill_id '${skillId}' is invalid`);
+        player.sendNotification(`skill_ids: ${formatStrings(skills, "[", ", ", "]")}`);
+        return
+    }
+
+    const xpArg = args[1];
+    const xp = parseInt(xpArg);
+    if (isNaN(xp) || xp <= 0) {
+        player.sendNotification(`'${xpArg}' is not a valid, positive integer`)
+        return
+    }
+
+    player.skills.addExperience(skillId, xp);
+}
+
 function onKick(player: Player, args: string[]) {
     if (args.length == 0) {
         player.sendNotification("Correct usage: /kick player_name")
@@ -328,6 +374,8 @@ export function initCommands() {
     devCommand("weather", onWeather)
     devCommand("tele", onTele)
     devCommand("level", onLevel)
+    devCommand("skill", onSkill);
+    devCommand("skillxp", onSkillXp);
     devCommand("kick", onKick)
     devCommand("ban", onBan)
     devCommand("mute", onMute)

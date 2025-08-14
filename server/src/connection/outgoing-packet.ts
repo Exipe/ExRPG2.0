@@ -2,6 +2,7 @@
 import { CharacterIdentifier, CharacterType } from "../character/character"
 import { EquipSlot } from "../item/equipment"
 import { AttribId } from "../player/attrib"
+import { Skill } from "../player/skills"
 
 export interface Packet {
     id: string,
@@ -375,6 +376,23 @@ export class UpdateLevelPacket implements Packet {
             experience: experience,
             requiredExperience: requiredExperience
         }
+    }
+}
+
+export interface OutgoingSkill {
+    skillId: Skill,
+    skillName: string,
+    level: number,
+    experience: number,
+    requiredExperience: number
+}
+
+export class UpdateSkillsPacket implements Packet {
+    public readonly id = "SKILLS";
+    public readonly data: any;
+
+    constructor(skills: OutgoingSkill[]) {
+        this.data = skills;
     }
 }
 

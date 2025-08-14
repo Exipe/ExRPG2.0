@@ -1,6 +1,5 @@
 
 import { ChatArea } from "./chat-box"
-import { Game } from "../game/game"
 import { useState } from "react"
 import React = require("react")
 import { ContextMenu } from "./context-menu"
@@ -9,6 +8,7 @@ import { StatusArea } from "./status-area"
 import { PrimaryWindow } from "./primary-window"
 import { SecondaryWindow } from "./secondary-window"
 import { HeldItem, HeldItemContext, HeldItemPointer } from "./held-item"
+import "./ui.scss";
 
 export function UiContainer() {
     const [heldItem, setHeldItem] = useState(null as HeldItem)
