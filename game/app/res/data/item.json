@@ -335,6 +335,14 @@
         ]
     },
 
+	{
+		"id": "essence_gold",
+		"name": "Aurium essence",
+		"sprite": "gold/essence",
+		"value": 1200,
+		"stack": 16
+	},
+
     {
         "id": "ore_gold",
         "name": "Gold ore",
