@@ -14,20 +14,25 @@ function SkillItem(props: SkillItemProps) {
         backgroundImage: `url('ui/skill/${props.skill}.png')`
     };
 
-    const percentage = props.experience / props.requiredExperience * 100;
+    const percentage = props.requiredExperience !== undefined
+        ? props.experience / props.requiredExperience * 100
+        : 0;
     const style: React.CSSProperties = {
         width: `${percentage}%`
     };
+    const experienceLabel = props.requiredExperience !== undefined
+        ? `(XP) ${props.experience} / ${props.requiredExperience}`
+        : 'Completed';
 
     return <div className="skill-item box-gradient">
         <div className="skill-item-details">
             <div className="scaleIcon skill-item-icon" style={iconStyle}></div>
             <div>{props.skillName}</div>
-            <div>{props.level}</div>
+            <div>Lv.{props.level}</div>
         </div>
         <div className="skill-experience-bar">
             <div className="skill-experience-bar-fill" style={style} />
-            <span className="experience-label">{props.experience} / {props.requiredExperience}</span>
+            <span className="experience-label">{experienceLabel}</span>
         </div>
     </div>;
 }

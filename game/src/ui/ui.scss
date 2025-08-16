@@ -9,6 +9,11 @@
     :root {
         --standard-icon: #{$standard-icon-size-small};
     }
+
+    #ui {
+        font-size: 0.9rem;
+        line-height: 0.9rem;
+    }
 }
 
 .box-standard {

@@ -21,7 +21,9 @@ export class TileOverlayComponent extends Component {
     }
 
     moveTile(): void {
-        this.tileOverlay.move(...this.coords);
+        if (this.tileOverlay !== undefined) {
+            this.tileOverlay.move(...this.coords);
+        }
     }
 
     destroy(): void {

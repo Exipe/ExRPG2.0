@@ -188,7 +188,7 @@
             },
             
             {
-                "unlockable": true,
+                "unlockable": false,
                 "delay": 2000,
                 "item": "pickaxe_copper",
                 "materials": [
@@ -198,7 +198,7 @@
             },
 
             {
-                "unlockable": true,
+                "unlockable": false,
                 "delay": 1500,
                 "item": "axe_copper",
                 "materials": [
@@ -208,7 +208,7 @@
             },
 
             {
-                "unlockable": true,
+                "unlockable": false,
                 "delay": 3000,
                 "item": "pickaxe_iron",
                 "materials": [
@@ -218,7 +218,7 @@
             },
 
             {
-                "unlockable": true,
+                "unlockable": false,
                 "delay": 2500,
                 "item": "axe_iron",
                 "materials": [

@@ -2,6 +2,8 @@
 	"width": 48,
 	"height": 48,
 	"ambient": null,
+	"dynamicWeather": true,
+	"weatherEffect": "rain",
 	"baseLayer": {
 		"ids": [
 			"GROUND_0_0",

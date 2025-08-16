@@ -52,9 +52,4 @@ export function initCraftingUnlocks() {
     addCraftingUnlock('recipe_plate_gold', 'plate_gold')
     addCraftingUnlock('recipe_legs_gold', 'legs_gold')
     addCraftingUnlock('recipe_shield_gold', 'shield_gold')
-
-    addCraftingUnlock('recipe_pickaxe_copper', 'pickaxe_copper')
-    addCraftingUnlock('recipe_axe_copper', 'axe_copper')
-    addCraftingUnlock('recipe_pickaxe_iron', 'pickaxe_iron')
-    addCraftingUnlock('recipe_axe_iron', 'axe_iron')
 }

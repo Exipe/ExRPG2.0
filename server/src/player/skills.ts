@@ -62,7 +62,7 @@ export class Skills {
         this.skillProgressMap.set(skill, {
             level,
             experience,
-            requiredExperience: experienceRequired(level)
+            requiredExperience: experienceRequiredSkill(level)
         });
 
         if (update) this.update();

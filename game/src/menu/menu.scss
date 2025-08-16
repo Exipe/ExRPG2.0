@@ -1,11 +1,10 @@
-
 @import "variables.scss";
 
 #menu {
     font-family: 'Roboto Slab';
     color: white;
     display: grid;
-    
+
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr 2fr;
     grid-template-areas:
@@ -42,7 +41,8 @@
     flex: auto;
 }
 
-#menuContainer, #updateContainer {
+#menuContainer,
+#updateContainer {
     padding: 1rem;
 
     background-color: $base-color;
@@ -89,7 +89,7 @@
     align-items: center;
     width: fit-content;
 
-    > * {
+    >* {
         box-sizing: border-box;
         width: 100%;
     }
@@ -100,7 +100,7 @@
     flex-direction: row;
     justify-content: space-between;
 
-    > * {
+    >* {
         width: 40% !important;
     }
 }
@@ -134,8 +134,12 @@
 }
 
 #error {
-    margin-top: auto;
-    color: coral
+    position: absolute;
+    top: -3rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 4px;
+    border-radius: 4px;
+    color: white;
 }
 
 #links {
@@ -143,7 +147,7 @@
     width: 100%;
     justify-content: end;
 
-    > * {
+    >* {
         margin-left: 1rem;
     }
 }
@@ -152,7 +156,8 @@
     color: skyblue
 }
 
-#header, #footer {
+#header,
+#footer {
     background-color: var(--fg-color);
     height: 3rem;
     width: 100%;
@@ -171,7 +176,8 @@
     text-align: center;
 }
 
-@media (max-height: 30rem), (max-width: 50rem) {
+@media (max-height: 30rem),
+(max-width: 50rem) {
     #updateContainer {
         display: none
     }

@@ -295,46 +295,6 @@
         ]
     },
 
-    {
-        "id": "recipe_pickaxe_copper",
-        "name": "[Recipe] Copper pickaxe",
-        "sprite": "scroll",
-
-        "options": [
-            "Learn"
-        ]
-    },
-
-    {
-        "id": "recipe_axe_copper",
-        "name": "[Recipe] Copper axe",
-        "sprite": "scroll",
-
-        "options": [
-            "Learn"
-        ]
-    },
-
-    {
-        "id": "recipe_pickaxe_iron",
-        "name": "[Recipe] Iron pickaxe",
-        "sprite": "scroll",
-
-        "options": [
-            "Learn"
-        ]
-    },
-
-    {
-        "id": "recipe_axe_iron",
-        "name": "[Recipe] Iron axe",
-        "sprite": "scroll",
-
-        "options": [
-            "Learn"
-        ]
-    },
-
 	{
 		"id": "essence_gold",
 		"name": "Aurium essence",

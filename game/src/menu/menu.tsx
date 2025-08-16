@@ -29,10 +29,10 @@ export function MenuContainer() {
     const [online, setOnline] = React.useState(false)
 
     React.useEffect(() => {
-        switch(serverStatus) {
+        switch (serverStatus) {
             case "Offline":
                 setOnline(false)
-                if(online) {
+                if (online) {
                     setErrorMessage("Lost connection to server")
                 }
                 break
@@ -44,20 +44,20 @@ export function MenuContainer() {
     }, [serverStatus])
 
     React.useEffect(
-        () => connect(), 
+        () => connect(),
         [])
 
     React.useEffect(() => {
-        if(connection == null) {
+        if (connection == null) {
             return
         }
 
-        connection.on("CONNECT_RESPONSE", ({message, accepted}) => {
-            if(message != undefined) {
+        connection.on("CONNECT_RESPONSE", ({ message, accepted }) => {
+            if (message != undefined) {
                 setErrorMessage(message)
             }
 
-            if(accepted) {
+            if (accepted) {
                 navigate("play")
             }
         })
@@ -66,11 +66,11 @@ export function MenuContainer() {
     }, [connection])
 
     let displayForm = <></>
-    if(serverStatus == 'Online') {
+    if (serverStatus == 'Online') {
         displayForm = <FormContainer />
-    } else if(serverStatus == 'Offline') {
+    } else if (serverStatus == 'Offline') {
         displayForm = <a className="link"
-            onClick={() => connect() }>Refresh</a>
+            onClick={() => connect()}>Refresh</a>
     }
 
     return <div id="menuContainer">
@@ -78,7 +78,7 @@ export function MenuContainer() {
 
         {displayForm}
 
-        <p id="error">{errorMessage}</p>
+        {errorMessage !== "" && <p id="error">{errorMessage}</p>}
 
         <div id="links">
             <a className="link" href="#">Discord</a>

@@ -12,9 +12,11 @@ export class PlayerHandler {
     private players: Player[] = []
 
     public broadcast(packet: Packet) {
-        this.players.forEach(player => {
-            player.send(packet)
-        })
+        this.players
+            .filter(player => player.connectionState === "playing")
+            .forEach(player => {
+                player.send(packet)
+            })
     }
 
     public globalMessage(...message: string[]) {
@@ -34,7 +36,7 @@ export class PlayerHandler {
     }
 
     public remove(removePlayer: Player) {
-        if(removePlayer.connectionState == "playing") {
+        if (removePlayer.connectionState == "playing") {
             const progress = saveProgress(removePlayer)
             db.users.save(removePlayer.persistentId, progress)
         }
@@ -43,7 +45,7 @@ export class PlayerHandler {
     }
 
     private preparePlayer(connection: Connection, persistentId: string, name: string, progress = null as Progress) {
-        if(this.getName(name) != null) {
+        if (this.getName(name) != null) {
             connection.send(new ConnectResponse(false, "User is already signed in."))
             return
         }
@@ -59,7 +61,7 @@ export class PlayerHandler {
     public async register(username: string, password: string, connection: Connection) {
         const status = await db.users.register(username, password)
         const [success, error] = status
-        if(!success) {
+        if (!success) {
             connection.send(new ConnectResponse(false, error))
             return
         }
@@ -71,7 +73,7 @@ export class PlayerHandler {
 
     public async login(username: string, password: string, connection: Connection) {
         const [success, user, error] = await db.users.authenticate(username, connection.ip, password)
-        if(!success) {
+        if (!success) {
             connection.send(new ConnectResponse(false, error))
             return
         }
