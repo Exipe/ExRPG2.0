@@ -99,7 +99,10 @@ export function initMining() {
         "hitPoints": 15,
         "levelReq": 1,
         "experience": 30,
-        "rareDrop": null
+        "rareDrop": {
+            "item": "essence_miner",
+            "chance": 100
+        }
     })
 
     addOre('ore_iron', {
@@ -108,7 +111,10 @@ export function initMining() {
         "hitPoints": 30,
         "levelReq": 10,
         "experience": 65,
-        "rareDrop": null
+        "rareDrop": {
+            "item": "essence_miner",
+            "chance": 50
+        }
     })
 
     addOre('ore_gold', {

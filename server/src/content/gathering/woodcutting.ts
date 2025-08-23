@@ -102,7 +102,10 @@ export function initWoodcutting() {
         "hitPoints": 5,
         "levelReq": 1,
         "experience": 15,
-        "rareDrop": null
+        "rareDrop": {
+            "item": "essence_woodcutter",
+            "chance": 100
+        }
     }
 
     addTree('tree_common', commonData)
@@ -115,6 +118,9 @@ export function initWoodcutting() {
         "hitPoints": 10,
         "levelReq": 10,
         "experience": 35,
-        "rareDrop": null
+        "rareDrop": {
+            "item": "essence_woodcutter",
+            "chance": 50
+        }
     })
 }

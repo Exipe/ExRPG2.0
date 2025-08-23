@@ -22,7 +22,7 @@ function report(message: string) {
 REGISTER packet
 */
 function onRegister(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid REGISTER data ${data}`)
         return
     }
@@ -30,12 +30,12 @@ function onRegister(conn: Connection, data: any) {
     const username = data.username
     const password = data.password
 
-    if(typeof username != "string") {
+    if (typeof username != "string") {
         console.log(`Invalid REGISTER username: ${username}`)
         return
     }
 
-    if(typeof password != "string") {
+    if (typeof password != "string") {
         console.log(`Invalid REGISTER password: ${password}`)
         return
     }
@@ -47,7 +47,7 @@ function onRegister(conn: Connection, data: any) {
 LOGIN packet
 */
 function onLogin(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid LOGIN data ${data}`)
         return
     }
@@ -55,12 +55,12 @@ function onLogin(conn: Connection, data: any) {
     const username = data.username
     const password = data.password
 
-    if(typeof username != "string") {
+    if (typeof username != "string") {
         console.log(`Invalid LOGIN username: ${username}`)
         return
     }
 
-    if(typeof password != "string") {
+    if (typeof password != "string") {
         console.log(`Invalid LOGIN password: ${password}`)
         return
     }
@@ -79,23 +79,23 @@ function onReady(conn: Connection, _: any) {
 WALK packet
 */
 function onWalk(conn: Connection, data: any) {
-    if(!Array.isArray(data)) {
+    if (!Array.isArray(data)) {
         report("Invalid WALK path: " + data)
         return
     }
 
     let player = conn.player
-    if(!player.initWalking()) {
+    if (!player.initWalking()) {
         return;
     }
 
-    for(const step of data) {
-        if(!Array.isArray(step) || isNaN(step[0]) || isNaN(step[1])) {
+    for (const step of data) {
+        if (!Array.isArray(step) || isNaN(step[0]) || isNaN(step[1])) {
             report("Invalid WALK step: " + step)
             continue
         }
 
-        if(!player.addSteps(step[0], step[1])) {
+        if (!player.addSteps(step[0], step[1])) {
             break
         }
     }
@@ -105,12 +105,12 @@ function onWalk(conn: Connection, data: any) {
 SAY packet
 */
 function onSay(conn: Connection, message: any) {
-    if(typeof message != "string") {
+    if (typeof message != "string") {
         report(`Invalid SAY message: ${message}`)
         return
     }
 
-    if(message.length == 0 || message.length > 100) {
+    if (message.length == 0 || message.length > 100) {
         report(`SAY message too long: ${message}`)
         return
     }
@@ -122,12 +122,12 @@ function onSay(conn: Connection, message: any) {
 COMMAND packet
 */
 function onCommand(conn: Connection, command: string) {
-    if(typeof command != "string") {
+    if (typeof command != "string") {
         report(`Invalid COMMAND command: ${command}`)
         return
     }
 
-    if(command.length == 0) {
+    if (command.length == 0) {
         return
     }
 
@@ -152,7 +152,7 @@ function onMoveItem(conn: Connection, data: any) {
     let container: Container
     container = conn.player.getContainer(data.container)
 
-    if(!verifySlot(fromSlot, container.size) || !verifySlot(toSlot, container.size)) {
+    if (!verifySlot(fromSlot, container.size) || !verifySlot(toSlot, container.size)) {
         report(`Invalid MOVE_ITEM slots: ${fromSlot} -> ${toSlot}`)
         return
     }
@@ -168,7 +168,7 @@ function onUseItem(conn: Connection, data: any) {
     const id = data.id
     const slot = data.slot
 
-    if(!verifySlot(slot, INVENTORY_SIZE)) {
+    if (!verifySlot(slot, INVENTORY_SIZE)) {
         report(`Invalid USE_ITEM slot: ${slot}`)
         return
     }
@@ -176,15 +176,15 @@ function onUseItem(conn: Connection, data: any) {
     const player = conn.player
     const item = player.inventory.get(slot)
 
-    if(item == null || item.id != id) {
+    if (item == null || item.id != id) {
         return
     }
 
-    if(action == "drop") {
+    if (action == "drop") {
         player.dropItem(slot)
         return
-    } else if(action == "equip") {
-        if(item.equipable) {
+    } else if (action == "equip") {
+        if (item.equipable) {
             player.equipItem(slot)
         } else {
             report(`Attempt to equip unequipable item: ${item.id}`)
@@ -192,8 +192,8 @@ function onUseItem(conn: Connection, data: any) {
 
         return
     }
-    
-    if(!item.data.actions.includes(action)) {
+
+    if (!item.data.actions.includes(action)) {
         report(`Invalid action, ${action} on item: ${item.id}`)
         return
     }
@@ -205,7 +205,7 @@ function onUseItem(conn: Connection, data: any) {
 TAKE_ITEM packet
 */
 function onTakeItem(conn: Connection, id: any) {
-    if(isNaN(id)) {
+    if (isNaN(id)) {
         report(`Invalid TAKE_ITEM ID: ${id}`)
         return
     }
@@ -220,7 +220,7 @@ function onTakeItem(conn: Connection, id: any) {
 TRANSFER packet
 */
 function onTransfer(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid TRANSFER data: ${data}`)
         return
     }
@@ -236,20 +236,20 @@ function onTransfer(conn: Connection, data: any) {
     fromContainer = conn.player.getContainer(from)
     toContainer = conn.player.getContainer(to)
 
-    if(!verifySlot(data.slot, fromContainer.size)) {
+    if (!verifySlot(data.slot, fromContainer.size)) {
         report(`Invalid TRANSFER slot: ${slot}`)
         return
     }
 
     const item = fromContainer.get(slot)
 
-    if(item == null || item.id != id) {
+    if (item == null || item.id != id) {
         return
     }
 
     const amount = data.amount
-    if(amount) {
-        if(!verifyAmount(amount)) {
+    if (amount) {
+        if (!verifyAmount(amount)) {
             report(`Invalid TRANSFER amount: ${amount}`)
             return
         }
@@ -264,7 +264,7 @@ function onTransfer(conn: Connection, data: any) {
 UNEQUIP_ITEM packet
 */
 function onUnequipItem(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid UNEQUIP_ITEM data: ${data}`)
         return
     }
@@ -272,7 +272,7 @@ function onUnequipItem(conn: Connection, data: any) {
     const id = data.id
     const slot = data.slot
 
-    if(!isEquipSlot(slot)) {
+    if (!isEquipSlot(slot)) {
         report(`Invalid UNEQUIP_ITEM slot: ${slot}`)
         return
     }
@@ -280,7 +280,7 @@ function onUnequipItem(conn: Connection, data: any) {
     const player = conn.player
     const item = player.equipment.get(slot)
 
-    if(item == null || item.id != id) {
+    if (item == null || item.id != id) {
         return
     }
 
@@ -291,20 +291,20 @@ function onUnequipItem(conn: Connection, data: any) {
 SPEND_POINTS packet
 */
 function onSpendPoints(conn: Connection, data: any) {
-    if(!Array.isArray(data)) {
+    if (!Array.isArray(data)) {
         report(`Invalid SPEND_POINTS data: ${data}`)
         return
     }
 
     const playerAttribs = conn.player.attributes
 
-    for(const attribute of data) {
+    for (const attribute of data) {
         const valid = Array.isArray(attribute)
             && attribute.length == 2
             && isAttribId(attribute[0])
             && attribute[1] <= playerAttribs.getPoints()
 
-        if(!valid) {
+        if (!valid) {
             report(`Invalid SPEND_POINTS row: ${attribute}`)
             continue
         }
@@ -319,7 +319,7 @@ function onSpendPoints(conn: Connection, data: any) {
 OBJECT_ACTION packet
 */
 function onObjectAction(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid OBJECT_ACTION data: ${data}`)
         return
     }
@@ -330,17 +330,17 @@ function onObjectAction(conn: Connection, data: any) {
     const y = data.y
 
     const obj = objDataHandler.get(objId);
-    if(obj == null) {
+    if (obj == null) {
         report(`Invalid OBJECT_ACTION id: ${objId}`)
         return
     }
 
-    if(obj.actions.find(a => a == action) == null) {
+    if (obj.actions.find(a => a == action) == null) {
         report(`Invalid OBJECT_ACTION action: ${action}`)
         return
     }
 
-    if(isNaN(x) || isNaN(y)) {
+    if (isNaN(x) || isNaN(y)) {
         report(`Invalid OBJECT_ACTION coords: ${x}, ${y}`)
         return
     }
@@ -355,14 +355,14 @@ function onObjectAction(conn: Connection, data: any) {
 PLAYER_ACTION packet
 */
 function onPlayerAction(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid PLAYER_ACTION data: ${data}`)
         return
     }
 
     const id = data.id as number
 
-    if(isNaN(id) || id < 0) {
+    if (isNaN(id) || id < 0) {
         report(`Invalid PLAYER_ACTION id: ${id}`)
         return
     }
@@ -370,13 +370,13 @@ function onPlayerAction(conn: Connection, data: any) {
     const other = playerHandler.get(id)
     const self = conn.player
 
-    if(other == null || other.map != self.map) {
+    if (other == null || other.map != self.map) {
         return
     }
 
     const action = data.action
 
-    switch(action) {
+    switch (action) {
         case "attack":
             self.attack(other)
             break
@@ -395,14 +395,14 @@ function onPlayerAction(conn: Connection, data: any) {
 NPC_ACTION packet
 */
 function onNpcAction(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid NPC_ACTION data: ${data}`)
         return
     }
 
     const id = data.id as number
 
-    if(isNaN(id)) {
+    if (isNaN(id)) {
         report(`Invalid NPC_ACTION id: ${id}`)
         return
     }
@@ -410,18 +410,18 @@ function onNpcAction(conn: Connection, data: any) {
     const other = npcHandler.get(id)
     const self = conn.player
 
-    if(other == null || other.map != self.map) {
+    if (other == null || other.map != self.map) {
         return
     }
 
     const action = data.action
 
-    if(action == "__attack" && other.attackable) {
+    if (action == "__attack" && other.attackable) {
         self.attack(other)
         return
     }
 
-    if(other.data.actions.find(a => a == action) == null) {
+    if (other.data.actions.find(a => a == action) == null) {
         report(`Invalid NPC_ACTION action: ${action}`)
         return
     }
@@ -436,7 +436,7 @@ function onNpcAction(conn: Connection, data: any) {
 DIALOGUE_OPTION packet
 */
 function onDialogueOption(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid DIALOGUE_OPTION data: ${data}`)
         return
     }
@@ -444,12 +444,12 @@ function onDialogueOption(conn: Connection, data: any) {
     const id = data.id
     const index = data.index
 
-    if(isNaN(id)) {
+    if (isNaN(id)) {
         report(`Invalid DIALOGUE_OPTION id: ${id}`)
         return
     }
 
-    if(isNaN(index)) {
+    if (isNaN(index)) {
         report(`Invalid DIALOGUE_OPTION index: ${index}`)
         return
     }
@@ -461,14 +461,14 @@ function onDialogueOption(conn: Connection, data: any) {
 SELECT_BUY packet
 */
 function onSelectBuy(conn: Connection, slot: any) {
-    if(isNaN(slot) || slot < 0 || slot >= 48) {
+    if (isNaN(slot) || slot < 0 || slot >= 48) {
         report(`Invalid SELECT_BUY slot: ${slot}`)
         return
     }
 
     const player = conn.player
     const shop = player.window
-    if(!(shop instanceof Shop)) {
+    if (!(shop instanceof Shop)) {
         return
     }
 
@@ -479,7 +479,7 @@ function onSelectBuy(conn: Connection, slot: any) {
 CONFIRM_BUY packet
 */
 function onConfirmBuy(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid CONFIRM_BUY data: ${data}`)
         return
     }
@@ -487,19 +487,19 @@ function onConfirmBuy(conn: Connection, data: any) {
     const slot = data.slot
     const amount = data.amount
 
-    if(isNaN(slot) || slot < 0 || slot >= 48) {
+    if (isNaN(slot) || slot < 0 || slot >= 48) {
         report(`Invalid CONFIRM_BUY slot: ${slot}`)
         return
     }
 
-    if(!verifyAmount(amount)) {
+    if (!verifyAmount(amount)) {
         report(`Invalid CONFIRM_BUY amount: ${amount}`)
         return
     }
 
     const player = conn.player
     const shop = player.window
-    if(!(shop instanceof Shop)) {
+    if (!(shop instanceof Shop)) {
         return
     }
 
@@ -510,14 +510,14 @@ function onConfirmBuy(conn: Connection, data: any) {
 SELECT_SELL packet
 */
 function onSelectSell(conn: Connection, slot: any) {
-    if(!verifySlot(slot, INVENTORY_SIZE)) {
+    if (!verifySlot(slot, INVENTORY_SIZE)) {
         report(`Invalid SELECT_SELL slot: ${slot}`)
         return
     }
 
     const player = conn.player
     const shop = player.window
-    if(!(shop instanceof Shop)) {
+    if (!(shop instanceof Shop)) {
         return
     }
 
@@ -525,7 +525,7 @@ function onSelectSell(conn: Connection, slot: any) {
 }
 
 function onConfirmSell(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid CONFIRM_SELL data: ${data}`)
         return
     }
@@ -533,19 +533,19 @@ function onConfirmSell(conn: Connection, data: any) {
     const item = itemDataHandler.get(data.item)
     const amount = data.amount
 
-    if(item == null || item.value == 0) {
+    if (item == null || item.value == 0) {
         report(`Invalid CONFIRM_SELL item: ${data.item}`)
         return
     }
 
-    if(!verifyAmount(amount)) {
+    if (!verifyAmount(amount)) {
         report(`Invalid CONFIRM_SELL amount: ${amount}`)
         return
     }
 
     const player = conn.player
     const shop = player.window
-    if(!(shop instanceof Shop)) {
+    if (!(shop instanceof Shop)) {
         return
     }
 
@@ -556,29 +556,29 @@ function onConfirmSell(conn: Connection, data: any) {
 TRADE_STATUS packet
 */
 function onTradeStatus(conn: Connection, status: "accept" | "decline") {
-    if(status != "accept" && status != "decline") {
+    if (status != "accept" && status != "decline") {
         report(`Invalid TRADE_STATUS: ${status}`)
         return
     }
 
     const player = conn.player
     const trade = player.window
-    if(!(trade instanceof TradeScreen)) {
+    if (!(trade instanceof TradeScreen)) {
         return
     }
 
-    switch(status) {
+    switch (status) {
         case "accept":
             trade.accept(player)
             break
         case "decline":
             player.closeWindow()
             break
-    }    
+    }
 }
 
 function onCraft(conn: Connection, data: any) {
-    if(typeof data != "object") {
+    if (typeof data != "object") {
         report(`Invalid CRAFT data: ${data}`)
         return
     }
@@ -586,23 +586,38 @@ function onCraft(conn: Connection, data: any) {
     const item = itemDataHandler.get(data.item)
     const amount = data.amount
 
-    if(item == null) {
+    if (item == null) {
         report(`Invalid CRAFT item: ${data.item}`)
         return
     }
 
-    if(!verifyAmount(amount)) {
+    if (!verifyAmount(amount)) {
         report(`Invalid CRAFT amount: ${amount}`)
         return
     }
 
     const player = conn.player
     const station = player.window
-    if(!(station instanceof CraftingStation)) {
+    if (!(station instanceof CraftingStation)) {
         return
     }
 
     station.craft(player, item, amount)
+}
+
+function onExamineRecipe(conn: Connection, itemId: any) {
+    const item = itemDataHandler.get(itemId);
+    if (itemId == null) {
+        report(`Invalid EXAMINE_RECIPE itemId: ${itemId}`);
+        return;
+    }
+
+    const player = conn.player;
+    const station = player.window;
+    if (!(station instanceof CraftingStation)) {
+        return;
+    }
+    station.examine(player, item);
 }
 
 export function bindIncomingPackets(ch: ConnectionHandler) {
@@ -630,4 +645,5 @@ export function bindIncomingPackets(ch: ConnectionHandler) {
     ch.on("CONFIRM_SELL", onConfirmSell)
     ch.on("TRADE_STATUS", onTradeStatus)
     ch.on("CRAFT", onCraft)
+    ch.on("EXAMINE_RECIPE", onExamineRecipe);
 }

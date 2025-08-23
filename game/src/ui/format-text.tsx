@@ -13,10 +13,10 @@ function lex(text: string[]) {
 
     const lexer = new Lexer()
 
-    lexer.addRule(/\/rgb\([^\(\)]*\)/, function(lexeme: string) {
+    lexer.addRule(/\/rgb\([^\(\)]*\)/, function (lexeme: string) {
         let text = lexeme.slice('/rgb('.length, -')'.length)
         const args = text.split(',', 3)
-        text = text.substring(args.join().length+1)
+        text = text.substring(args.join().length + 1)
 
         items.push({
             token: 'rgb',
@@ -27,16 +27,25 @@ function lex(text: string[]) {
         })
     })
 
-    lexer.addRule(/\/sprite\([^\(\)]*\)/, function(lexeme: string) {
+    lexer.addRule(/\/sprite\([^\(\)]*\)/, function (lexeme: string) {
         let text = lexeme.slice('/sprite('.length, -')'.length)
 
         items.push({
             token: 'sprite',
             path: parseText(text)
         })
-    }) 
+    })
 
-    lexer.addRule(/[^/]+/, function(lexeme: string) {
+    lexer.addRule(/\/strike\([^\(\)]*\)/, function (lexeme: string) {
+        let text = lexeme.slice('/strike('.length, -')'.length)
+
+        items.push({
+            token: 'strikethrough',
+            text: parseText(text)
+        })
+    })
+
+    lexer.addRule(/[^/]+/, function (lexeme: string) {
         items.push({
             token: 'none',
             text: parseText(lexeme)
@@ -56,10 +65,12 @@ export function FormatText(props: FormatTextProps) {
     const tokens = lex(text)
 
     return <>{tokens.map((value, idx) => {
-        switch(value.token) {
+        switch (value.token) {
             case "rgb":
                 const color = `rgb(${value.r},${value.g},${value.b})`
-                return <span key={idx} style={{color:color}}>{value.text}</span>
+                return <span key={idx} style={{ color: color }}>{value.text}</span>
+            case "strikethrough":
+                return <span key={idx} style={{ textDecoration: 'line-through' }}>{value.text}</span>;
             case "sprite":
                 const path = `${value.path}.png`
                 return <img key={idx} className="text-icon" src={path} />

@@ -1,6 +1,5 @@
 import { CraftingPacket } from "../connection/outgoing-packet";
 import { ItemData } from "../item/item-data";
-import { itemDataHandler } from "../world";
 import { Player } from "../player/player";
 import { PrimaryWindow } from "../player/window/p-window";
 import { Recipe } from "./recipe";
@@ -32,6 +31,15 @@ export class CraftingStation implements PrimaryWindow {
         p.closeWindow()
         const task = new CraftingTask(p, recipe, amount)
         task.start()
+    }
+
+    examine(p: Player, item: ItemData) {
+        const recipe = this.recipes.find(r => r.item == item);
+        if(recipe === undefined) {
+            return;
+        }
+
+        recipe.examine(p);
     }
 
 }

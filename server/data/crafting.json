@@ -41,6 +41,9 @@
                 "unlockable": false,
                 "delay": 2000,
                 "item": "fish_cooked",
+                "experienceRewards": [
+                    ["cooking", 15]
+                ],
                 "materials": [
                     ["fish", 1]
                 ]
@@ -101,6 +104,9 @@
                 "unlockable": true,
                 "delay": 2000,
                 "item": "helm_iron",
+                "skillRequirements": [
+                    ["smithing", 15]
+                ],
                 "materials": [
                     ["ingot_iron", 3]
                 ]
@@ -193,7 +199,8 @@
                 "item": "pickaxe_copper",
                 "materials": [
                     ["ingot_copper", 3],
-                    ["log_common", 2]
+                    ["log_common", 2],
+                    ["essence_miner", 1]
                 ]
             },
 
@@ -203,7 +210,8 @@
                 "item": "axe_copper",
                 "materials": [
                     ["ingot_copper", 2],
-                    ["log_common", 2]
+                    ["log_common", 2],
+                    ["essence_woodcutter", 1]
                 ]
             },
 
@@ -213,7 +221,8 @@
                 "item": "pickaxe_iron",
                 "materials": [
                     ["ingot_iron", 3],
-                    ["log_birch", 2]
+                    ["log_birch", 2],
+                    ["essence_miner", 5]
                 ]
             },
 
@@ -223,7 +232,8 @@
                 "item": "axe_iron",
                 "materials": [
                     ["ingot_iron", 2],
-                    ["log_birch", 2]
+                    ["log_birch", 2],
+                    ["essence_woodcutter", 5]
                 ]
             }
         ]

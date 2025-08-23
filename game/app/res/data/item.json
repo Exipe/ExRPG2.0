@@ -298,7 +298,23 @@
 	{
 		"id": "essence_gold",
 		"name": "Aurium essence",
-		"sprite": "gold/essence",
+		"sprite": "essence/gold",
+		"value": 1200,
+		"stack": 16
+	},
+	
+	{
+		"id": "essence_woodcutter",
+		"name": "Woodcutter's essence",
+		"sprite": "essence/woodcutter",
+		"value": 400,
+		"stack": 16
+	},
+	
+	{
+		"id": "essence_miner",
+		"name": "Miner's essence",
+		"sprite": "essence/miner",
 		"value": 1200,
 		"stack": 16
 	},

@@ -263,3 +263,12 @@ export class CraftPacket implements Packet {
         }
     }
 }
+
+export class ExamineRecipePacket implements Packet {
+    public readonly id = "EXAMINE_RECIPE";
+    public readonly data: any;
+
+    constructor(item: string) {
+        this.data = item;
+    }
+}
