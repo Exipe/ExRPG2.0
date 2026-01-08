@@ -63,7 +63,7 @@ async function initPlayers(game: Game) {
     };
 
     game.updatePlayerAppearance = (id: number, equipment: string[]) => {
-        const playerSprite = game.getPlayer(id).sprite;
+        const playerSprite = game.getPlayer(id).playerSprite;
         playerSprite.setAppearanceValues(
             getAppearanceValues(equipment));
     };

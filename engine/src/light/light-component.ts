@@ -12,7 +12,7 @@ export class LightComponent extends Component {
     private readonly lightHandler: LightHandler
 
     private lightData: LightData;
-    private light: Light
+    private light?: Light
 
     private pulsateTimer = 0;
 
@@ -44,8 +44,11 @@ export class LightComponent extends Component {
 
     public movePx() {
         const [x, y] = this.entity.centerCoords;
-        this.light.x = x + this.lightData.offsetX;
-        this.light.y = y + this.lightData.offsetY;
+
+        if (this.light !== undefined) {
+            this.light.y = y + this.lightData.offsetY;
+            this.light.x = x + this.lightData.offsetX;
+        }
     }
 
     public animate(dt: number) {

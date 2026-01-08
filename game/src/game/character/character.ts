@@ -12,7 +12,7 @@ export abstract class Character extends Entity {
     public healthBarComponent: HealthBarComponent
     public progressIndicatorComponent: ProgressIndicatorComponent
 
-    constructor(game: Game, tileX: number, tileY: number, width = 0, height = 0, tileSpan = 1) {
+    constructor(protected readonly game: Game, tileX: number, tileY: number, width = 0, height = 0, tileSpan = 1) {
         super(tileX, tileY, width, height, tileSpan)
         this.healthBarComponent = new HealthBarComponent(this, game.overlayArea)
         this.progressIndicatorComponent = new ProgressIndicatorComponent(this,

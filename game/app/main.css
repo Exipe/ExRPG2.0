@@ -333,16 +333,6 @@
     white-space: initial;
 }
 
-.closeButton {
-    background-image: url('ui/close.png');
-    image-rendering: initial !important;
-    width: 20px;
-    height: 20px;
-    border-radius: 2px;
-
-    background-color: var(--fg-color);
-}
-
 #closeChat {
     position: absolute;
     top: 4px;

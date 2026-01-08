@@ -58,11 +58,11 @@ export class Camera {
 
     public follow(entity: Entity) {
         if (this.followEntity != null) {
-            this.followEntity._onMove = null
+            this.followEntity._onMovePx = undefined;
         }
 
         this.followEntity = entity
-        entity._onMove = () => {
+        entity._onMovePx = () => {
             this.fixPosition()
         }
 

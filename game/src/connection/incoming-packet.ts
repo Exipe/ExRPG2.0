@@ -47,6 +47,15 @@ function onPlayerAppearance(game: Game, data: any) {
     game.updatePlayerAppearance(data.id, data.equipment);
 }
 
+function onPlayerTempSprite(game: Game, data: any) {
+    const player = game.getPlayer(data.id);
+    if(data.path !== undefined) {
+        player.setTempSprite(data.path);
+    } else {
+        player.unsetTempSprite();
+    }
+}
+
 function onRemovePlayer(game: Game, id: number) {
     game.removePlayer(id);
 }
@@ -385,6 +394,7 @@ export function bindIncomingPackets(game: Game) {
     bind("WELCOME", onWelcome)
     bind("ADD_PLAYER", onAddPlayer)
     bind("PLAYER_APPEARANCE", onPlayerAppearance)
+    bind("PLAYER_TEMP_SPRITE", onPlayerTempSprite)
     bind("REMOVE_PLAYER", onRemovePlayer)
     bind("MOVE_PLAYER", onMovePlayer)
 

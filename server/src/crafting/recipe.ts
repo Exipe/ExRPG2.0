@@ -53,6 +53,12 @@ export class Recipe {
     }
 
     public examine(player: Player) {
+        if(!this.unlockable && this.skillRequirements.length === 1) {
+            const [[skill, level]] = this.skillRequirements;
+            player.sendMessage(`You need to reach level ${level} ${skillNames[skill]} to craft this item`);
+            return;
+        }
+
         const requirements: [string, boolean][] = [];
         if (this.unlockable) {
             requirements.push([
@@ -68,7 +74,7 @@ export class Recipe {
             ]);
         });
 
-        player.sendMessage(`To craft the ${Colors.yellow} you must:`, this.item.name);
+        player.sendMessage(`To craft this item you must:`);
         requirements.forEach(([message, requirementMet]) => {
             const format = requirementMet
                 ? '* /strike({})'

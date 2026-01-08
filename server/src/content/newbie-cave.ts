@@ -89,7 +89,6 @@ const openChest = (player: Player) => {
         }
 
         player.sendNotification("The lid slams shut on your fingers", red)
-        player.sendChatBubble("Ouch!!", "quiet")
         player.combatHandler.applyDamage(2, "hit")
         player.stop()
     }

@@ -1,6 +1,6 @@
 
 import { Connection } from "../connection/connection"
-import { Packet, MovePlayerPacket, MessagePacket, OutgoingPlayer, UpdatePlayerAppearancePacket, WelcomePacket, DialoguePacket, CloseWindowPacket, WeatherPacket } from "../connection/outgoing-packet"
+import { Packet, MovePlayerPacket, MessagePacket, OutgoingPlayer, UpdatePlayerAppearancePacket, WelcomePacket, DialoguePacket, CloseWindowPacket, WeatherPacket, SetPlayerTempSpritePacket } from "../connection/outgoing-packet"
 import { Character } from "../character/character"
 import { playerHandler, actionHandler, npcHandler, weatherHandler } from "../world"
 import { Equipment, EquipSlot } from "../item/equipment"
@@ -80,6 +80,8 @@ export class Player extends Character {
     public mute = false
 
     private vars: Map<string, any> = new Map<string, any>();
+
+    private _tempSprite?: string;
 
     constructor(connection: Connection, persistentId: string, id: number, name: string, progress = null as Progress) {
         super("player", id)
@@ -225,7 +227,8 @@ export class Player extends Character {
             rank: this.title,
             x: this.x,
             y: this.y,
-            equipment: this.equipment.appearanceValues
+            equipment: this.equipment.appearanceValues,
+            tempSprite: this._tempSprite
         }
     }
 
@@ -364,7 +367,7 @@ export class Player extends Character {
         this.attributes.setArmor(item)
         this.combatHandler.updateStrategy()
 
-        playerHandler.broadcast(this.updateAppearancePacket)
+        this.map.broadcast(this.updateAppearancePacket)
     }
 
     public unequipItem(slot: EquipSlot) {
@@ -377,7 +380,12 @@ export class Player extends Character {
         this.attributes.unsetArmor(unequipped)
         this.combatHandler.updateStrategy()
 
-        playerHandler.broadcast(this.updateAppearancePacket)
+        this.map.broadcast(this.updateAppearancePacket)
+    }
+
+    public set tempSprite(path: string | undefined) {
+        this._tempSprite = path;
+        this.map.broadcast(new SetPlayerTempSpritePacket(this.id, path));
     }
 
     public dropItem(slot: number) {

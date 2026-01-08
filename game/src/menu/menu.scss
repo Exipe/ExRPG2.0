@@ -61,7 +61,7 @@
     box-sizing: border-box;
 
     ::-webkit-scrollbar-thumb {
-        background-color: var(--fg-color);
+        background-color: $accent-color;
     }
 
     ::-webkit-scrollbar {
@@ -92,6 +92,10 @@
     >* {
         box-sizing: border-box;
         width: 100%;
+    }
+
+    input:focus {
+        outline: 2px solid $accent-bright;
     }
 }
 

@@ -5,27 +5,39 @@
 
         "recipes": [
             {
-                "unlockable": false,
                 "delay": 1000,
                 "item": "ingot_copper",
+                "experienceRewards": [
+                    ["smithing", 15]
+                ],
                 "materials": [
                     ["ore_copper", 1]
                 ]
             },
 
             {
-                "unlockable": false,
                 "delay": 2000,
                 "item": "ingot_iron",
+                "skillRequirements": [
+                    ["smithing", 10]
+                ],
+                "experienceRewards": [
+                    ["smithing", 35]
+                ],
                 "materials": [
                     ["ore_iron", 1]
                 ]
             },
 
             {
-                "unlockable": false,
                 "delay": 3000,
                 "item": "ingot_gold",
+                "skillRequirements": [
+                    ["smithing", 25]
+                ],
+                "experienceRewards": [
+                    ["smithing", 80]
+                ],
                 "materials": [
                     ["ore_gold", 1]
                 ]
@@ -38,11 +50,10 @@
 
         "recipes": [
             {
-                "unlockable": false,
                 "delay": 2000,
                 "item": "fish_cooked",
                 "experienceRewards": [
-                    ["cooking", 15]
+                    ["cooking", 10]
                 ],
                 "materials": [
                     ["fish", 1]
@@ -56,56 +67,83 @@
 
         "recipes": [
             {
-                "unlockable": false,
                 "delay": 1000,
                 "item": "helm_copper",
+                "skillRequirements": [
+                    ["smithing", 2]
+                ],
+                "experienceRewards": [
+                    ["smithing", 45]
+                ],
                 "materials": [
                     ["ingot_copper", 3]
                 ]
             },
 
             {
-                "unlockable": false,
                 "delay": 2000,
                 "item": "plate_copper",
+                "skillRequirements": [
+                    ["smithing", 8]
+                ],
+                "experienceRewards": [
+                    ["smithing", 75]
+                ],
                 "materials": [
                     ["ingot_copper", 5]
                 ]
             },
 
             {
-                "unlockable": false,
                 "delay": 1500,
                 "item": "legs_copper",
+                "skillRequirements": [
+                    ["smithing", 6]
+                ],
+                "experienceRewards": [
+                    ["smithing", 60]
+                ],
                 "materials": [
                     ["ingot_copper", 4]
                 ]
             },
 
             {
-                "unlockable": false,
                 "delay": 1000,
                 "item": "shield_copper",
+                "skillRequirements": [
+                    ["smithing", 3]
+                ],
+                "experienceRewards": [
+                    ["smithing", 45]
+                ],
                 "materials": [
                     ["ingot_copper", 3]
                 ]
             },
 
             {
-                "unlockable": false,
                 "delay": 1000,
                 "item": "sword_copper",
+                "skillRequirements": [
+                    ["smithing", 4]
+                ],
+                "experienceRewards": [
+                    ["smithing", 45]
+                ],
                 "materials": [
                     ["ingot_copper", 3]
                 ]
             },
 
             {
-                "unlockable": true,
                 "delay": 2000,
                 "item": "helm_iron",
                 "skillRequirements": [
-                    ["smithing", 15]
+                    ["smithing", 12]
+                ],
+                "experienceRewards": [
+                    ["smithing", 90]
                 ],
                 "materials": [
                     ["ingot_iron", 3]
@@ -113,90 +151,144 @@
             },
 
             {
-                "unlockable": true,
                 "delay": 4000,
                 "item": "plate_iron",
+                "skillRequirements": [
+                    ["smithing", 22]
+                ],
+                "experienceRewards": [
+                    ["smithing", 150]
+                ],
                 "materials": [
                     ["ingot_iron", 5]
                 ]
             },
 
             {
-                "unlockable": true,
                 "delay": 3000,
                 "item": "legs_iron",
+                "skillRequirements": [
+                    ["smithing", 19]
+                ],
+                "experienceRewards": [
+                    ["smithing", 120]
+                ],
                 "materials": [
                     ["ingot_iron", 4]
                 ]
             },
 
             {
-                "unlockable": true,
                 "delay": 2000,
                 "item": "shield_iron",
+                "skillRequirements": [
+                    ["smithing", 14]
+                ],
+                "experienceRewards": [
+                    ["smithing", 90]
+                ],
                 "materials": [
                     ["ingot_iron", 3]
                 ]
             },
 
             {
-                "unlockable": true,
                 "delay": 2000,
                 "item": "sword_iron",
+                "skillRequirements": [
+                    ["smithing", 16]
+                ],
+                "experienceRewards": [
+                    ["smithing", 90]
+                ],
                 "materials": [
                     ["ingot_iron", 3]
                 ]
             },
 
             {
-                "unlockable": true,
                 "delay": 3000,
                 "item": "helm_gold",
+                "skillRequirements": [
+                    ["smithing", 28]
+                ],
+                "experienceRewards": [
+                    ["smithing", 210]
+                ],
                 "materials": [
-                    ["ingot_gold", 3]
+                    ["ingot_gold", 3],
+                    ["essence_gold", 1]
                 ]
             },
 
             {
-                "unlockable": true,
                 "delay": 6000,
                 "item": "plate_gold",
+                "skillRequirements": [
+                    ["smithing", 42]
+                ],
+                "experienceRewards": [
+                    ["smithing", 350]
+                ],
                 "materials": [
-                    ["ingot_gold", 5]
+                    ["ingot_gold", 5],
+                    ["essence_gold", 3]
                 ]
             },
 
             {
-                "unlockable": true,
                 "delay": 4500,
                 "item": "legs_gold",
+                "skillRequirements": [
+                    ["smithing", 38]
+                ],
+                "experienceRewards": [
+                    ["smithing", 280]
+                ],
                 "materials": [
-                    ["ingot_gold", 4]
+                    ["ingot_gold", 4],
+                    ["essence_gold", 2]
                 ]
             },
 
             {
-                "unlockable": true,
                 "delay": 3000,
                 "item": "shield_gold",
+                "skillRequirements": [
+                    ["smithing", 31]
+                ],
+                "experienceRewards": [
+                    ["smithing", 210]
+                ],
                 "materials": [
                     ["ingot_gold", 3]
                 ]
             },
 
             {
-                "unlockable": true,
                 "delay": 3000,
                 "item": "sword_gold",
+                "skillRequirements": [
+                    ["smithing", 34]
+                ],
+                "experienceRewards": [
+                    ["smithing", 210]
+                ],
                 "materials": [
                     ["ingot_gold", 3]
                 ]
             },
             
             {
-                "unlockable": false,
                 "delay": 2000,
                 "item": "pickaxe_copper",
+                "skillRequirements": [
+                    ["smithing", 10]
+                ],
+                "experienceRewards": [
+                    ["smithing", 45],
+                    ["mining", 100]
+                ],
                 "materials": [
                     ["ingot_copper", 3],
                     ["log_common", 2],
@@ -205,9 +297,15 @@
             },
 
             {
-                "unlockable": false,
                 "delay": 1500,
                 "item": "axe_copper",
+                "skillRequirements": [
+                    ["smithing", 10]
+                ],
+                "experienceRewards": [
+                    ["smithing", 45],
+                    ["woodcutting", 100]
+                ],
                 "materials": [
                     ["ingot_copper", 2],
                     ["log_common", 2],
@@ -216,9 +314,15 @@
             },
 
             {
-                "unlockable": false,
                 "delay": 3000,
                 "item": "pickaxe_iron",
+                "skillRequirements": [
+                    ["smithing", 25]
+                ],
+                "experienceRewards": [
+                    ["smithing", 90],
+                    ["mining", 500]
+                ],
                 "materials": [
                     ["ingot_iron", 3],
                     ["log_birch", 2],
@@ -230,6 +334,13 @@
                 "unlockable": false,
                 "delay": 2500,
                 "item": "axe_iron",
+                "skillRequirements": [
+                    ["smithing", 25]
+                ],
+                "experienceRewards": [
+                    ["smithing", 60],
+                    ["woodcutting", 500]
+                ],
                 "materials": [
                     ["ingot_iron", 2],
                     ["log_birch", 2],

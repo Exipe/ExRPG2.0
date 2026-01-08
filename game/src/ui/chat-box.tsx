@@ -50,7 +50,7 @@ function ChatBox(props: ChatProps) {
     }
 
     return <div className="box-standard" id="chatBox">
-        <div className="closeButton" id="closeChat" onClick={props.onCloseChat}></div>
+        <div id="closeChat" className="minimizeButton" onClick={props.onCloseChat}></div>
 
         <div id="chatBoxMessageArea">
             {messages.map((m, i) => <p key={i}><FormatText>{m}</FormatText></p>)}

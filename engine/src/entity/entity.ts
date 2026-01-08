@@ -23,7 +23,7 @@ export abstract class Entity implements Hoverable {
     public readonly offsetX: number
     public readonly offsetY: number
 
-    public _onMove: () => any = null
+    public _onMovePx: () => any
 
     //position of feet
     private _feetX: number
@@ -155,6 +155,9 @@ export abstract class Entity implements Hoverable {
         this.drawY = this._feetY + TILE_SIZE - this._height
 
         this.componentHandler.forEach(c => c.movePx())
+        if(this._onMovePx !== undefined) {
+            this._onMovePx()
+        }
     }
 
     protected setDimensions(width: number, height: number) {
@@ -236,9 +239,6 @@ export abstract class Entity implements Hoverable {
         this._feetY = y
 
         this.updateDrawCoords()
-        if(this._onMove != null) {
-            this._onMove()
-        }
 
         if(y > oldY) {
             this.moveDown()

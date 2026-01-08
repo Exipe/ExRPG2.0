@@ -61,7 +61,8 @@ export interface OutgoingPlayer {
     rank: string,
     x: number,
     y: number,
-    equipment: string[]
+    equipment: string[],
+    tempSprite: string
 }
 
 export class AddPlayerPacket implements Packet {
@@ -107,6 +108,18 @@ export class UpdatePlayerAppearancePacket implements Packet {
         this.data = {
             id: id,
             equipment: equipment
+        }
+    }
+}
+
+export class SetPlayerTempSpritePacket implements Packet {
+    public readonly id = "PLAYER_TEMP_SPRITE";
+    public readonly data: any
+
+    constructor(id: number, path?: string) {
+        this.data = {
+            id,
+            path
         }
     }
 }

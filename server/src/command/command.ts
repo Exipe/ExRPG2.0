@@ -340,6 +340,36 @@ function onMute(player: Player, args: string[]) {
     other.mute = true
 }
 
+function onSprite(player: Player, args: string[]) {
+    if(args.length < 2) {
+        player.sendNotification("Correct usage: /sprite [player_name] folder sprite");
+        return;
+    }
+
+    let target = player;
+    let folderArg = args[0];
+    let spriteArg = args[1];
+
+    if(args.length > 2) {
+        target = playerHandler.getName(args[0]);
+        if(target == null) {
+            player.sendNotification(`Could not find player: ${args[0]}`);
+            return;
+        }
+        folderArg = args[1];
+        spriteArg = args[2];
+    }
+
+    const folders = ["char", "item", "obj" ];
+    if(!folders.some(x => x === folderArg)) {
+        player.sendNotification(`folder '${folderArg}' is invalid`);
+        player.sendNotification(`folders: ${formatStrings(folders, "[", ", ", "]")}`);
+        return;
+    }
+
+    target.tempSprite = `${folderArg}/${spriteArg}.png`;
+}
+
 export function initCommands() {
     const ch = commandHandler
     const playerCommand = (command: string, callback: CommandCallback) => {
@@ -379,4 +409,5 @@ export function initCommands() {
     devCommand("kick", onKick)
     devCommand("ban", onBan)
     devCommand("mute", onMute)
+    devCommand("sprite", onSprite);
 }

@@ -49,3 +49,20 @@
         border-radius: 4px;
     }
 }
+
+.closeButton, .minimizeButton {
+    image-rendering: initial !important;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    
+    background-color: var(--fg-color);
+}
+
+.closeButton {
+    background-image: url('/app/ui/close.png');
+}
+
+.minimizeButton {
+    background-image: url('/app/ui/minimize.png');
+}

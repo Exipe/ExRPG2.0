@@ -1,5 +1,5 @@
 
-import { LightComponent, OutlineComponent, PlayerSprite } from "exrpg"
+import { LightComponent, OutlineComponent, PlayerSprite, Sprite } from "exrpg"
 import { Game } from "../game"
 import { Character } from "./character"
 import { NameTagComponent } from "./component/name-tag"
@@ -11,18 +11,22 @@ export interface PlayerInfo {
     name: string,
     x: number,
     y: number,
-    rank: PlayerRank
+    rank: PlayerRank,
+    tempSprite?: string
 }
 
 export class Player extends Character {
 
     public readonly id: number
     public readonly name: string
-    public readonly sprite: PlayerSprite
+    public readonly playerSprite: PlayerSprite
 
     public readonly rank: PlayerRank
 
     private _onContext: (player: Player) => void
+
+    private tempSpritePath?: string;
+    private tempSprite?: Sprite;
 
     constructor(game: Game, playerSprite: PlayerSprite, onContext: (player: Player) => void, info: PlayerInfo) {
         super(game, info.x, info.y, playerSprite.width, playerSprite.height)
@@ -35,12 +39,34 @@ export class Player extends Character {
         }
         this.id = info.id
         this.name = info.name
-        this.sprite = playerSprite
+        this.playerSprite = playerSprite
         this._onContext = onContext
+
+        if(info.tempSprite !== undefined) {
+            this.setTempSprite(info.tempSprite);
+        }
+    }
+
+    public async setTempSprite(path: string) {
+        this.tempSpritePath = path;
+
+        const texture = await this.game.engine.loadTexture(path);
+        if(this.tempSpritePath !== path) {
+            return;
+        }
+
+        this.tempSprite = new Sprite(this.game.engine, texture);
+        this.setDimensions(this.tempSprite.width, this.tempSprite.height);
+    }
+
+    public unsetTempSprite() {
+        this.tempSprite = undefined;
     }
 
     public getSprite() {
-        return this.sprite.sprite
+        return this.tempSprite !== undefined
+            ? this.tempSprite
+            : this.playerSprite.sprite
     }
 
     public getDepth() {
@@ -53,7 +79,13 @@ export class Player extends Character {
 
     public draw() {
         super.draw()
-        this.sprite.draw(this.drawX, this.drawY)
+
+        if(this.tempSprite !== undefined) {
+            this.tempSprite.draw(this.drawX, this.drawY);
+            return;
+        }
+
+        this.playerSprite.draw(this.drawX, this.drawY)
     }
 
 }

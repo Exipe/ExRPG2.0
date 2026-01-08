@@ -9,7 +9,6 @@ import { initMining } from "./gathering/mining"
 import { initDialogue } from "./dialogue"
 import { initDesertMaze } from "./maze/desert-maze"
 import { initFishing } from "./fishing"
-import { initCraftingUnlocks } from "./crafting-unlock"
 import { initWoodcutting } from "./gathering/woodcutting"
 import { SequenceBuilder } from "../character/sequence-task"
 import { Player } from "../player/player"
@@ -18,7 +17,6 @@ import { initNewbieCave } from "./newbie-cave"
 export function initContent() {
     initFood()
     initDrops()
-    initCraftingUnlocks()
     initMining()
     initWoodcutting()
     initFishing()
@@ -68,9 +66,9 @@ export function initContent() {
     });
 
     actionHandler.onObject("cactus", (player) => {
-        player.sendChatBubble("Ow! >.<")
         player.combatHandler.applyDamage(1, "hit")
-        player.sendMessage("You sting yourself on the cactus. Why did you think that was a good idea..?")
+        player.sendNotification("You sting yourself on the cactus.", red)
+        player.sendMessage("(Why did you think that was a good idea?)");
     })
 
     actionHandler.onObject("ladder_dungeon", (player) => {
