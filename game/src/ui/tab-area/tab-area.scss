@@ -155,6 +155,10 @@ $tab-container-height: calc(7 * var(--standard-icon));
     align-items: center;
 }
 
+#signOutButton {
+    margin-top: auto;
+}
+
 #skills {
     padding: 12px;
     overflow: auto;

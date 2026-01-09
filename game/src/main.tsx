@@ -64,6 +64,13 @@ export function Main(_: any) {
         () => () => connection?.close(),
         [])
 
+    React.useEffect(() => {
+        connection.onConnectionLost = () => game?.connectionLost();
+        return () => {
+            connection.onConnectionLost = () => { };
+        }
+    }, [game, connection]);
+
     return <>
         <canvas ref={canvas}></canvas>
 

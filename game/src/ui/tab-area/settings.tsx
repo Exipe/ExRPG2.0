@@ -2,6 +2,7 @@
 import React = require("react");
 import { ContextMenuModel } from "../../game/model/context-menu-model";
 import { SettingsModel } from "../../game/model/tab/settings-model";
+import { useNavigate } from "react-router-dom";
 
 export interface SettingsProps {
     ctxMenu: ContextMenuModel
@@ -11,6 +12,7 @@ export interface SettingsProps {
 export function Settings(props: SettingsProps) {
     const [zoom, setZoom] = React.useState(props.settings.zoom)
     const [camera, setCamera] = React.useState(props.settings.cameraMode)
+    const navigate = useNavigate();
 
     const settings = props.settings
     const ctxMenu = props.ctxMenu
@@ -46,10 +48,15 @@ export function Settings(props: SettingsProps) {
         container.requestFullscreen()
     }
 
+    function onSignOut() {
+        navigate("/", { replace: true });
+    }
+
     return <div id="settings" className="box-standard tab-content">
         <div className="uiButton thick" onClick={e => { onZoom(e.nativeEvent) }}>Zoom: {zoom}x</div>
         <div className="uiButton thick" onClick={e => { onCamera(e.nativeEvent) }}>Camera: {camera}</div>
 
-        <div id="fullscreenButton" className="uiButton thick" onClick={onFullscreen}>Enable fullscreen</div>
+        <div className="uiButton thick" onClick={onFullscreen}>Enable fullscreen</div>
+        <div id="signOutButton" className="uiButton thick" onClick={onSignOut}>Sign out</div>
     </div>
 }

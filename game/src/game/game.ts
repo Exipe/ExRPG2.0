@@ -8,7 +8,7 @@ import { InventoryModel } from "./model/tab/inventory-model";
 import { GroundItem } from "./ground-item";
 import { ContextMenuModel } from "./model/context-menu-model";
 import { EquipmentModel } from "./model/tab/equipment/equipment-model";
-import { DialogueModel } from "./model/window/dialogue-model";
+import { Dialogue, DialogueModel } from "./model/window/dialogue-model";
 import { ChatModel } from "./model/chat-model";
 import { OverlayAreaModel } from "./model/overlay-model";
 import { StatusModel } from "./model/status-model";
@@ -115,6 +115,10 @@ export class Game {
         }
 
         this.walkTo(tileX, tileY)
+    }
+
+    public connectionLost() {
+        this.chat.addMessage("/rgb(255,115,115,Lost connection to game server)");
     }
 
     public update() {
