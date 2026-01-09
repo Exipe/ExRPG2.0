@@ -1,0 +1,101 @@
+@import "../../../variables.scss";
+
+.item-container {
+    display: grid;
+    column-gap: 4px;
+    row-gap: 4px;
+
+    grid-auto-rows: var(--standard-icon);
+
+    >* {
+        position: relative;
+    }
+}
+
+.scale-icon,
+.item-container>* {
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: pixelated;
+    background-position: center;
+}
+
+.item-amount {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+
+    border-radius: 4px;
+    background-color: rgb(0, 0, 0, 0.75);
+
+    color: white;
+    font-size: 14px;
+}
+
+.select-dialog {
+    min-width: 200px;
+    position: absolute;
+    z-index: 1;
+    color: white;
+    padding: 4px;
+
+    &:hover {
+        cursor: initial;
+    }
+}
+
+.select-dialog-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+
+    >*:nth-child(2) {
+        margin: auto;
+    }
+}
+
+.select-dialog-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background-color: $accent-color;
+}
+
+.select-dialog-amount {
+    background-color: $accent-color;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    color: white;
+    width: 48px;
+
+    appearance: textfield;
+}
+
+.select-dialog-button {
+    background-color: $accent-color;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+}
+
+.select-dialog-amount-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.select-dialog-button-group {
+    display: flex;
+    gap: 4px;
+}
+
+.select-dialog-amount-button {
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    font-size: initial;
+    line-height: initial;
+    background-color: $accent-color;
+    border-radius: 50%;
+}

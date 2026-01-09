@@ -1,0 +1,15 @@
+@import "../../../variables.scss";
+
+.window {
+    pointer-events: initial;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.window-name {
+    text-align: center;
+    color: yellow;
+    font-family: serif;
+}

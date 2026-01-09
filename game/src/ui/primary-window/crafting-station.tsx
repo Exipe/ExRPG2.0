@@ -44,10 +44,10 @@ export function CraftSelectDialog(props: CraftSelectProps) {
     const materials = recipe.materials.map((value, index) => {
         const count = props.inventory.count(value[0])
         const cost = value[1] * amount
-        const textClass = count >= cost ? "hasMaterial" : "lacksMaterial"
+        const textClass = count >= cost ? "has-material" : "lacks-material"
 
-        return <div key={index} className="selectDialogRow">
-            <DisplayItem item={[value[0], 1]} className='selectDialogIcon' />
+        return <div key={index} className="select-dialog-row">
+            <DisplayItem item={[value[0], 1]} className='select-dialog-icon' />
             <div className={textClass}>{count} / {cost}</div>
         </div>
     })
@@ -67,7 +67,7 @@ export function CraftSelectDialog(props: CraftSelectProps) {
         item={[recipe.item, 1]}>
         
         <>{materials}</>
-        <div className="selectDialogButton" onClick={confirm}>
+        <div className="select-dialog-button" onClick={confirm}>
             Confirm
         </div>
     </SelectDialog>
@@ -116,7 +116,7 @@ export function CraftingStation() {
 
         return <DisplayItem key={idx} 
             item={[recipe.item, 1]}
-            className={recipe.unlocked ? "recipeUnlocked" : "recipeLocked"}
+            className={recipe.unlocked ? "recipe-unlocked" : "recipe-locked"}
             onClick={() => selectCraft(recipe)}>
             {selectDialog}
         </DisplayItem>
@@ -125,15 +125,15 @@ export function CraftingStation() {
         setSelect(null)
     }
 
-    return <div id="craftingWindow" className="window box-gradient">
+    return <div id="crafting-window" className="window box-gradient">
         <div style={{display: "flex"}} className="top-right">
-            <div onClick={changeFilter} id="craftingFilter">
+            <div onClick={changeFilter} id="crafting-filter">
                 Filter: {filter}</div>
-            <div className="closeButton"
+            <div className="close-button"
                 onClick={close}></div>
         </div>
 
-        <p className="windowName">{station.name}</p>
+        <p className="window-name">{station.name}</p>
         
         <ItemContainer>{displayItems}</ItemContainer>
     </div>

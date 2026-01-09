@@ -8,9 +8,9 @@ const MainState: React.FC<{}> = () => {
     const navigate = useNavigate()
 
     return <>
-        <div className="menuButton"
+        <div className="menu-button"
             onClick={ () => navigate("register") }>New user</div>
-        <div className="menuButton"
+        <div className="menu-button"
             onClick={ () => navigate("login") }>Existing user</div>
     </>
 }
@@ -43,23 +43,23 @@ const LoginState: React.FC<{}> = () => {
 
     return <>
         <input ref={userRef} 
-            className="menuInput" 
+            className="menu-input" 
             placeholder="Username"
             value={username} 
             onChange={ e => setUsername(e.target.value) } 
             onKeyDown={(e) => { if(e.key == "Enter" && username.length > 0) passRef.current.focus() }} />
         <input ref={passRef} 
-            className="menuInput" 
+            className="menu-input" 
             type="password" 
             placeholder="Password" 
             autoComplete="off" 
             value={password} onChange={ e => setPassword(e.target.value) }
             onKeyDown={(e) => { if(e.key == "Enter" && password.length > 0) login() }} />
 
-        <div className="menuRow">
-            <div className="menuButton"
+        <div className="menu-row">
+            <div className="menu-button"
                 onClick={login}>Continue</div>
-            <div className="menuButton"
+            <div className="menu-button"
                 onClick={ () => navigate(-1) }>Cancel</div>
         </div>
     </>
@@ -94,34 +94,34 @@ const RegisterState: React.FC<{}> = () => {
     }
 
     return <>
-        <input className="menuInput" 
+        <input className="menu-input" 
             placeholder="Username"
             value={username} 
             onChange={ e => setUsername(e.target.value) } />
-        <input className="menuInput" 
+        <input className="menu-input" 
             type="password" 
             placeholder="Password" 
             autoComplete="off" 
             value={password} 
             onChange={ e => setPassword(e.target.value) } />
-        <input className="menuInput" 
+        <input className="menu-input" 
             type="password" 
             placeholder="Repeat password" 
             autoComplete="off"  
             value={repeatPassword} 
             onChange={ e => setRepeatPassword(e.target.value) } />
 
-        <div className="menuRow">
-            <div className="menuButton"
+        <div className="menu-row">
+            <div className="menu-button"
                 onClick={register}>Register</div>
-            <div className="menuButton"
+            <div className="menu-button"
                 onClick={ () => navigate(-1) }>Cancel</div>
         </div>
     </>
 }
 
 export const FormContainer: React.FC<{}> = () => {
-    return <form id="inputContainer">
+    return <form id="input-container">
         <Routes>
             <Route index
                 element={<MainState />} />

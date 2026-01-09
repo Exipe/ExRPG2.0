@@ -1,16 +1,16 @@
 
-.playerName, .npcName {
+.player-name, .npc-name {
     transform: translate(-50%, -100%);
     border-radius: 4px;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 0px 4px;
 }
 
-.playerName {
+.player-name {
     color: white;
 }
 
-.npcName {
+.npc-name {
     color: yellow;
 }
 
@@ -48,7 +48,7 @@
 	margin-bottom: -8px;
 }
 
-.progressIndicator {
+.progress-indicator {
     transform: translate(-50%, 0);
     border-radius: 4px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -90,7 +90,7 @@
     }
 }
 
-.hitSplat, .missSplat, .healSplat {
+.hit-splat, .miss-splat, .heal-splat {
     font-size: 18px !important;
     color: white;
     font-family: sans-serif;
@@ -100,15 +100,15 @@
     animation: fadeOutHitSplat linear forwards 2s;
 }
 
-.hitSplat {
+.hit-splat {
     color: red;
 }
 
-.missSplat {
+.miss-splat {
     color: skyblue;
 }
 
-.healSplat {
+.heal-splat {
     color: magenta;
 }
 

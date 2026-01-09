@@ -1,0 +1,10 @@
+@import "../../../variables.scss";
+
+#shop-window .item-container {
+    grid-template-columns: repeat(8, var(--standard-icon));
+    grid-template-rows: repeat(6, var(--standard-icon));
+}
+
+.shop-item:hover {
+    cursor: pointer;
+}

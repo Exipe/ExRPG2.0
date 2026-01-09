@@ -1,0 +1,47 @@
+@import "../../../variables.scss";
+
+#trade-window {
+    color: white;
+    font-family: serif;
+
+    .item-container {
+        grid-template-columns: repeat(8, var(--standard-icon));
+        grid-template-rows: repeat(2, var(--standard-icon));
+    }
+}
+
+.trade-header {
+    border: 1px solid $accent-color;
+    border-left: none;
+    border-right: none;
+    text-align: center;
+}
+
+#trade-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    * {
+        margin: 1rem;
+    }
+}
+
+.trade-button {
+    border: 1px solid $accent-color;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+}
+
+#trade-accept {
+    color: yellowgreen;
+}
+
+#trade-accepted {
+    color: gray;
+}
+
+#trade-decline {
+    color: coral;
+}

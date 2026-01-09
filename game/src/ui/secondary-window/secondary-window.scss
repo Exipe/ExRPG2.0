@@ -1,0 +1,10 @@
+.secondary-window {
+    pointer-events: initial;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+
+    .select-dialog {
+        right: 0;
+    }
+}

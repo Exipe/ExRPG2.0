@@ -77,13 +77,13 @@ function NameTag(props: NameTagProps) {
 
     switch (model.style) {
         case "player":
-            className = "playerName"
+            className = "player-name"
             break
         case "npc":
-            className = "npcName"
+            className = "npc-name"
             break
         case "dev":
-            className = "playerName"
+            className = "player-name"
             content = <><img className="text-icon" src="ui/crown.png" /> {model.name}</>
             break
     }
@@ -105,15 +105,15 @@ function HitSplat(props: HitSplatProps) {
     switch (model.style) {
         case "hit":
             text = `-${model.hit}`
-            className = "hitSplat"
+            className = "hit-splat"
             break
         case "miss":
             text = `-${model.hit}`
-            className = "missSplat"
+            className = "miss-splat"
             break
         case "heal":
             text = `+${model.hit}`
-            className = "healSplat"
+            className = "heal-splat"
     }
 
     return <Overlay overlayModel={model} className={className}>
@@ -152,7 +152,7 @@ function ProgressIndicator(props: ProgressIndicatorProps) {
         }
     }, [progress, resetCounter])
 
-    return <Overlay overlayModel={model} className="progressIndicator">
+    return <Overlay overlayModel={model} className="progress-indicator">
         <img src={model.sprite}></img>
 
         {Array(TIMER_TICKS).fill(undefined).map((_, i) => (

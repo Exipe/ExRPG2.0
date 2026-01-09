@@ -1,5 +1,6 @@
 import React = require("react");
 import { ItemModel, StorageId } from "../game/model/container-model";
+import "./held-item.scss";
 
 export interface HeldItem {
     mouseX: number,
@@ -32,7 +33,7 @@ export function HeldItemPointer(_: any) {
         }
     }, [])
 
-    return <div className="scaleIcon" id="heldItem"
+    return <div className="scale-icon" id="held-item"
         ref={pointerRef}
         style={ {
             backgroundImage: `url('${ item.item[0].spritePath }')`,

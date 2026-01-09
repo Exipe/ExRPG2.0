@@ -1,0 +1,80 @@
+@import "../../variables.scss";
+
+#chat-area {
+    /*
+    Needed to allow scrolling in chat-box
+    See: https://stackoverflow.com/a/29699728
+    */
+    pointer-events: initial;
+
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+}
+
+#open-chat-button {
+    background-image: url('/app/ui/chat.png');
+    width: var(--standard-icon);
+    height: var(--standard-icon);
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    image-rendering: pixelated;
+}
+
+#chat-box {
+    width: fit-content;
+    height: fit-content;
+
+    color: white;
+    white-space: initial;
+}
+
+#close-chat {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+}
+
+#chat-box-message-area {
+    display: flex;
+    flex-direction: column-reverse;
+
+    overflow-y: scroll;
+    width: 30rem;
+    height: 12rem;
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $accent-color;
+    }
+
+    &::-webkit-scrollbar {
+        background-color: transparent;
+    }
+
+    > p {
+        margin: 6px;
+    }
+}
+
+#chat-box-input {
+    width: 100%;
+    box-sizing: border-box;
+
+    background-color: transparent;
+    border: none;
+    border-top: 3px solid $accent-color;
+
+    color: white;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+@media (max-width: $breakpoint-md) {
+    #chat-box-message-area {
+        width: 20rem;
+        height: 6rem;
+    }
+}

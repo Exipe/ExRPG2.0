@@ -2,6 +2,7 @@
 import { ItemData } from "exrpg";
 import React = require("react");
 import { ItemModel } from "../../game/model/container-model";
+import "./container.scss";
 
 export interface SelectDialogProps {
     item: ItemModel,
@@ -21,18 +22,34 @@ export function SelectDialog(props: SelectDialogProps) {
         props.setAmount(isNaN(numValue) ? 0 : numValue)
     }
 
-    return <div className="selectDialog" onClick={e => {e.stopPropagation()}}>
-        <div className="closeButton top-right"
+    function increment() {
+        props.setAmount(amount + 1)
+    }
+
+    function decrement() {
+        if (amount > 0) {
+            props.setAmount(amount - 1)
+        }
+    }
+
+    return <div className="select-dialog box-gradient" onClick={e => {e.stopPropagation()}}>
+        <div className="close-button top-right"
             onClick={props.onClose}></div>
 
-        <div className="selectDialogRow">
-            <DisplayItem item={props.item} className="selectDialogIcon" />
+        <div className="select-dialog-row">
+            <DisplayItem item={props.item} className="select-dialog-icon" />
             <div>{props.item[0].name}</div>
         </div>
 
-        <div className="selectDialogRow">
+        <div className="select-dialog-row">
             <div>Amount:</div>
-            <input onChange={updateInput} value={amount.toString()} type="number" min="0" max="" className="selectDialogAmount"></input>
+            <div className="select-dialog-amount-container">
+                <input onChange={updateInput} value={amount.toString()} type="number" min="0" max="" className="select-dialog-amount"></input>
+                <div className="select-dialog-button-group">
+                    <div onClick={increment} className="select-dialog-amount-button">+</div>
+                    <div onClick={decrement} className="select-dialog-amount-button">-</div>
+                </div>
+            </div>
         </div>
 
         {props.children}
@@ -63,7 +80,7 @@ export function ContainerSelectDialog(props: ContainerSelectProps) {
         onClose={props.onClose}
         item={[props.item, 1]}>
         
-        <div className="selectDialogButton" onClick={transfer}>
+        <div className="select-dialog-button" onClick={transfer}>
             {props.button}
         </div>
     </SelectDialog>
@@ -78,7 +95,7 @@ export interface DisplayItemProps {
 }
 
 export function DisplayItem(props: DisplayItemProps) {
-    const className = 'scaleIcon' + (props.className ? ` ${props.className}` : '')
+    const className = 'scale-icon' + (props.className ? ` ${props.className}` : '')
     const item = props.item
 
     const style = {} as React.CSSProperties
@@ -89,7 +106,7 @@ export function DisplayItem(props: DisplayItemProps) {
     return <div className={className} style={style} 
         onClick={props.onClick} onContextMenu={props.onContext}>
         {item != null && item[1] > 1 &&
-            <div className="itemAmount">{item[1]}</div>}
+            <div className="item-amount">{item[1]}</div>}
         {props.children}
     </div>
 }
@@ -102,7 +119,7 @@ export interface ItemContainerProps {
 }
 
 export function ItemContainer(props: ItemContainerProps) {
-    const className = 'itemContainer' + (props.className ? ` ${props.className}` : '')
+    const className = 'item-container' + (props.className ? ` ${props.className}` : '')
     return <div onClick={props.onClick} id={props.id} className={className}>
         {props.children}
     </div>

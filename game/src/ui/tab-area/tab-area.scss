@@ -3,7 +3,7 @@
 $tab-container-width: calc(6 * var(--standard-icon));
 $tab-container-height: calc(7 * var(--standard-icon));
 
-#tabArea {
+#tab-area {
     position: absolute;
     top: 2px;
     right: 2px;
@@ -15,7 +15,7 @@ $tab-container-height: calc(7 * var(--standard-icon));
     align-items: flex-end;
 }
 
-#tabArea>* {
+#tab-area>* {
     pointer-events: initial;
     margin: 2px;
 }
@@ -70,10 +70,11 @@ $tab-container-height: calc(7 * var(--standard-icon));
     padding: 4px;
 }
 
-#equipmentAttribs {
+#equipment-attribs {
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 #attribs {
@@ -91,30 +92,30 @@ $tab-container-height: calc(7 * var(--standard-icon));
     margin-bottom: 2px;
 }
 
-.positiveBonus {
+.positive-bonus {
     color: greenyellow
 }
 
-.negativeBonus {
+.negative-bonus {
     color: coral
 }
 
-#openPointSpend {
+#open-point-spend {
     text-align: center;
 }
 
-#equipmentGrid {
+#equipment-grid {
     display: grid;
     grid-template-columns: repeat(3, var(--standard-icon));
     grid-template-rows: repeat(3, var(--standard-icon));
 }
 
-#pointSpendContainer {
+#point-spend-container {
     width: 100%;
     color: white;
 }
 
-#pointSpendHeader {
+#point-spend-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -136,6 +137,8 @@ $tab-container-height: calc(7 * var(--standard-icon));
 
 .point-spend-button {
     text-align: center;
+    font-size: initial;
+    line-height: initial;
     width: 24px;
     height: 24px;
     background-color: $base-opaque;
@@ -155,7 +158,7 @@ $tab-container-height: calc(7 * var(--standard-icon));
     align-items: center;
 }
 
-#signOutButton {
+#sign-out-button {
     margin-top: auto;
 }
 
@@ -184,8 +187,8 @@ $tab-container-height: calc(7 * var(--standard-icon));
 }
 
 .skill-item-icon {
-    width: 32px;
-    height: 32px;
+    width: var(--standard-icon);
+    height: var(--standard-icon);
 }
 
 .skill-experience-bar {

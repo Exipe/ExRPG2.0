@@ -28,7 +28,7 @@ function EquipmentSlot(props: EquipmentSlotProps) {
         onClick = () => { }
     }
 
-    return <div className="scaleIcon"
+    return <div className="scale-icon"
         style={style}
         onClick={onClick}
     />
@@ -98,10 +98,10 @@ function PointSpendContainer(props: PointSpendProps) {
         }))
     }
 
-    return <div id="pointSpendContainer">
-        <div id="pointSpendHeader">
+    return <div id="point-spend-container">
+        <div id="point-spend-header">
             <div>Remaining points: {points}</div>
-            <div onClick={props.onClose} className="closeButton" />
+            <div onClick={props.onClose} className="close-button" />
         </div>
 
         <div id="point-spend-grid">
@@ -114,7 +114,7 @@ function PointSpendContainer(props: PointSpendProps) {
             )}
 
         </div>
-        <div onClick={() => confirm()} id="point-spend-confirm" className="uiButton">Confirm</div>
+        <div onClick={() => confirm()} id="point-spend-confirm" className="ui-button">Confirm</div>
     </div>
 }
 
@@ -154,7 +154,7 @@ export function Equipment(props: EquipmentProps) {
 
         return {
             name: attribType[1],
-            className: attrib.armor >= 0 ? "positiveBonus" : "negativeBonus",
+            className: attrib.armor >= 0 ? "positive-bonus" : "negative-bonus",
             title: title,
             value: (attrib.total) + suffix
         }
@@ -165,7 +165,7 @@ export function Equipment(props: EquipmentProps) {
     )
 
     return <div id="equipment" className="box-standard tab-content">
-        <div id="equipmentGrid">
+        <div id="equipment-grid">
             <div />
             {createSlot("helm")}
             <div />
@@ -180,7 +180,7 @@ export function Equipment(props: EquipmentProps) {
         </div>
 
         {!showSpendPoints &&
-            <div id="equipmentAttribs">
+            <div id="equipment-attribs">
                 <ul id="attribs">
                     {attribValues.map(attrib =>
                         <li key={attrib.name} title={attrib.title}>
@@ -192,7 +192,7 @@ export function Equipment(props: EquipmentProps) {
             </div>
         }
         {!showSpendPoints &&
-            <div onClick={() => setShowSpendPoints(true)} id="openPointSpend" className="uiButton">Assign points ({attributes.points})</div>
+            <div onClick={() => setShowSpendPoints(true)} id="open-point-spend" className="ui-button thick">Assign points ({attributes.points})</div>
         }
         {showSpendPoints &&
             <PointSpendContainer equipment={props.equipment} onClose={() => setShowSpendPoints(false)} attributes={attributes} />

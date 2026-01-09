@@ -53,10 +53,10 @@ export function Settings(props: SettingsProps) {
     }
 
     return <div id="settings" className="box-standard tab-content">
-        <div className="uiButton thick" onClick={e => { onZoom(e.nativeEvent) }}>Zoom: {zoom}x</div>
-        <div className="uiButton thick" onClick={e => { onCamera(e.nativeEvent) }}>Camera: {camera}</div>
+        <div className="ui-button thick" onClick={e => { onZoom(e.nativeEvent) }}>Zoom: {zoom}x</div>
+        <div className="ui-button thick" onClick={e => { onCamera(e.nativeEvent) }}>Camera: {camera}</div>
 
-        <div className="uiButton thick" onClick={onFullscreen}>Enable fullscreen</div>
-        <div id="signOutButton" className="uiButton thick" onClick={onSignOut}>Sign out</div>
+        <div className="ui-button thick" onClick={onFullscreen}>Enable fullscreen</div>
+        <div id="sign-out-button" className="ui-button thick" onClick={onSignOut}>Sign out</div>
     </div>
 }

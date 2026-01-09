@@ -8,7 +8,7 @@ import { StatusArea } from "./status-area"
 import { PrimaryWindow } from "./primary-window"
 import { SecondaryWindow } from "./secondary-window"
 import { HeldItem, HeldItemContext, HeldItemPointer } from "./held-item"
-import "./ui.scss";
+import "./ui.scss"
 
 export function UiContainer() {
     const [heldItem, setHeldItem] = useState(null as HeldItem)

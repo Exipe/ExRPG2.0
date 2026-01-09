@@ -26,7 +26,7 @@ function SkillItem(props: SkillItemProps) {
 
     return <div className="skill-item box-gradient">
         <div className="skill-item-details">
-            <div className="scaleIcon skill-item-icon" style={iconStyle}></div>
+            <div className="scale-icon skill-item-icon" style={iconStyle}></div>
             <div>{props.skillName}</div>
             <div>Lv.{props.level}</div>
         </div>

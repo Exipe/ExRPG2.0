@@ -14,12 +14,12 @@ export function DialogueBox() {
     const options = dialogue.options.map((option, idx) =>
         <p key={idx} onClick={ _ => { clickOption(idx) } }>{option}</p>)
 
-    return <div className="window box-gradient" id="dialogueBox">
-        <p id="dialogueName"><FormatText>{dialogue.name}</FormatText></p>
+    return <div className="window box-gradient" id="dialogue-box">
+        <p id="dialogue-name"><FormatText>{dialogue.name}</FormatText></p>
 
         {dialogue.lines.map((line, idx) => <p key={idx}><FormatText>{line}</FormatText></p>)}
 
-        <div id="dialogueOptions">
+        <div id="dialogue-options">
             {options}
         </div>
     </div>

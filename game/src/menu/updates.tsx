@@ -10,7 +10,7 @@ export function UpdateContainer(props: any) {
         .then(text => setText(text))
     }, [])
 
-    return <div id="updateContainer">
+    return <div id="update-container">
         <h2>Updates</h2>
         <br />
         {text}

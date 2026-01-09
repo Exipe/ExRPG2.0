@@ -1,0 +1,74 @@
+@import "../../variables.scss";
+
+#status-area {
+    position: absolute;
+    width: 20em;
+    top: 4px;
+    left: 4px;
+
+    > * {
+        margin: 8px;
+    }
+}
+
+#name-and-level {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+
+    > * {
+        color: white;
+        margin: 0;
+    }
+}
+
+.status-bar {
+    border: 2px solid $accent-color;
+    background-color: $accent-color;
+    border-radius: 16px;
+    position: relative;
+
+    p {
+        color: white;
+        margin: 0;
+        position: relative;
+        text-align: center;
+    }
+}
+
+.bar-fill {
+    border-radius: 16px;
+    position: absolute;
+    height: 100%;
+}
+
+#health-fill {
+    background: rgb(255, 0, 0);
+    background: linear-gradient(180deg, rgb(255, 0, 0) 0%, rgb(100, 0, 0) 100%);
+}
+
+#experience-fill {
+    width: 50%;
+    background: rgb(255, 0, 255);
+    background: linear-gradient(180deg, rgb(255, 0, 255) 0%, rgb(100, 0, 100) 100%);
+}
+
+@media (max-width: $breakpoint-md) {
+    #status-area {
+        background-color: initial;
+        border: initial;
+        width: 14em;
+    }
+
+    #name-and-level {
+        padding-left: 8px;
+        display: inline-flex;
+        justify-content: left;
+        background-color: $accent-color;
+        border-radius: 16px;
+
+        p {
+            margin-right: 8px;
+        }
+    }
+}

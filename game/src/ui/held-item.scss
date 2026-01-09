@@ -1,0 +1,10 @@
+@import "../../variables.scss";
+
+#held-item {
+    z-index: 2;
+
+    width: var(--standard-icon);
+    height: var(--standard-icon);
+
+    position: absolute;
+}

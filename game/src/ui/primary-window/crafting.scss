@@ -1,0 +1,31 @@
+@import "../../../variables.scss";
+
+#crafting-filter {
+    margin-right: 4px;
+    background-color: $accent-color;
+    color: white;
+    font-size: 12px;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+#crafting-window .item-container {
+    grid-template-columns: repeat(8, var(--standard-icon));
+    grid-template-rows: repeat(6, var(--standard-icon))
+}
+
+.has-material {
+    color: yellowgreen;
+}
+
+.lacks-material {
+    color: coral;
+}
+
+.recipe-locked {
+    filter: opacity(0.5) brightness(0.5)
+}
+
+.recipe-unlocked:hover {
+    cursor: pointer;
+}

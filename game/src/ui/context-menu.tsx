@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import React = require("react");
 import { OpenContextMenu } from "../game/model/context-menu-model";
 import { FormatText } from "./format-text";
+import "./context-menu.scss";
 import { useContextMenu } from "./hooks";
 
 export function ContextMenu() {
@@ -65,7 +66,7 @@ export function ContextMenu() {
             left: position[0],
             top: position[1]
         }} 
-        id="ctxMenu">
+        id="ctx-menu">
             {displayEntries}
             <li onClick={close}>Cancel</li>
     </ul>

@@ -2,6 +2,7 @@
 import React = require("react");
 import { Observable } from "../util/observable";
 import { useObservable, useStatus } from "./hooks";
+import "./status-area.scss";
 
 interface HealthProps {
     health: Observable<number>,
@@ -28,8 +29,8 @@ function HealthBar(props: HealthProps) {
         width: `${percentage}%`
     } as React.CSSProperties
 
-    return <div className="statusBar" id="healthBar">
-        <div className="barFill" style={style} id="healthFill" />
+    return <div className="status-bar" id="health-bar">
+        <div className="bar-fill" style={style} id="health-fill" />
         <p>(HP) {health} / {totalHealth}</p>
     </div>
 }
@@ -49,8 +50,8 @@ function ExperienceBar(props: ExperienceProps) {
         width: `${percentage}%`
     } as React.CSSProperties
 
-    return <div className="statusBar" id="experienceBar">
-        <div className="barFill" style={style} id="experienceFill" />
+    return <div className="status-bar" id="experience-bar">
+        <div className="bar-fill" style={style} id="experience-fill" />
         <p>(XP) {experience} / {requiredExperience}</p>
     </div>
 }
@@ -63,8 +64,8 @@ export function StatusArea() {
     const xp = useObservable(model.experience);
     const reqXp = useObservable(model.requiredExperience);
 
-    return <div id="statusArea" className="box-standard">
-        <div id="nameAndLevel">
+    return <div id="status-area" className="box-standard">
+        <div id="name-and-level">
             <p>{name}</p>
             <p>Level {level}</p>
         </div>

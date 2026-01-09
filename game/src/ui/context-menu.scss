@@ -1,0 +1,28 @@
+@import "../../variables.scss";
+
+#ctx-menu {
+    cursor: default;
+
+    pointer-events: initial;
+    z-index: 2;
+    position: absolute;
+
+    background-color: $accent-color;
+    color: white;
+    border-radius: 4px;
+    box-shadow: 2px 2px rgb(0, 0, 0, 0.5);
+
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    > * {
+        padding: 8px;
+        font-size: 15px;
+        text-shadow: -1px -1px black, 1px -1px black, -1px 1px black, 1px 1px black;
+
+        &:hover {
+            color: lightgray;
+        }
+    }
+}

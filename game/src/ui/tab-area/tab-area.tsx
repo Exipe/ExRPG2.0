@@ -55,7 +55,7 @@ export function TabArea() {
         />
     }
 
-    return <div id="tabArea">
+    return <div id="tab-area">
         <div className="box-standard" id="tabs">
             <Tab id="inventory" tab={tab} setTab={openTab} />
             <Tab id="skills" tab={tab} setTab={openTab} />

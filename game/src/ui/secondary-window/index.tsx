@@ -3,6 +3,7 @@ import React = require("react");
 import { TabArea } from "../tab-area/tab-area";
 import { BankInventory } from "./bank-inventory";
 import { ShopInventory } from "./shop-inventory";
+import "./secondary-window.scss";
 import { TradeInventory } from "./trade-inventory";
 import { useObservable, usePrimaryWindow } from "../hooks";
 

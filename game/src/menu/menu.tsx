@@ -13,7 +13,7 @@ const VERSION_MAJOR = 0
 const VERSION_MINOR = 0
 
 function LogoContainer(_: any) {
-    return <div id="logoContainer">
+    return <div id="logo-container">
         <img id="logo" src="ui/logo.png" />
         <p>(Alpha 1.{VERSION_MAJOR}.{VERSION_MINOR})</p>
     </div>
@@ -73,7 +73,7 @@ export function MenuContainer() {
             onClick={() => connect()}>Refresh</a>
     }
 
-    return <div id="menuContainer">
+    return <div id="menu-container">
         <p>Server status: {serverStatus}</p>
 
         {displayForm}

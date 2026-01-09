@@ -106,19 +106,19 @@ export function TradeWindow() {
     } else {
         let acceptButton: JSX.Element
         if (accepted) {
-            acceptButton = <div className="tradeButton" id="tradeAccepted" onClick={accept}>Accepted</div>
+            acceptButton = <div className="trade-button" id="trade-accepted" onClick={accept}>Accepted</div>
         } else {
-            acceptButton = <div className="tradeButton" id="tradeAccept" onClick={accept}>Accept</div>
+            acceptButton = <div className="trade-button" id="trade-accept" onClick={accept}>Accept</div>
         }
 
         buttons = <>
             {acceptButton}
-            <div className="tradeButton" id="tradeDecline" onClick={decline}>Decline</div></>
+            <div className="trade-button" id="trade-decline" onClick={decline}>Decline</div></>
     }
 
-    return <div className="window box-gradient" id="tradeWindow">
-        <p className="windowName">Trading with {otherPlayer}</p>
-        <p className="tradeHeader">Your offer:</p>
+    return <div className="window box-gradient" id="trade-window">
+        <p className="window-name">Trading with {otherPlayer}</p>
+        <p className="trade-header">Your offer:</p>
         <StorageContainer
             overlay={itemOverlay}
             onContext={onContext}
@@ -126,12 +126,12 @@ export function TradeWindow() {
             onDrag={onDrag}
             model={model.tradeOffer} />
 
-        <p className="tradeHeader">Their offer:</p>
+        <p className="trade-header">Their offer:</p>
         <ItemContainer>
             {otherOffer.items.map((i, idx) => <DisplayItem key={idx} item={i} />)}
         </ItemContainer>
 
-        <div id="tradeButtons">
+        <div id="trade-buttons">
             {buttons}
         </div>
     </div>

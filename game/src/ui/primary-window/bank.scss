@@ -1,0 +1,6 @@
+@import "../../../variables.scss";
+
+#bank-window .item-container {
+    grid-template-columns: repeat(8, var(--standard-icon));
+    grid-template-rows: repeat(6, var(--standard-icon));
+}

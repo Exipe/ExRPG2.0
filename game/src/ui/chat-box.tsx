@@ -3,13 +3,14 @@ import React = require("react")
 import { ChatModel } from "../game/model/chat-model"
 import { FormatText } from "./format-text"
 import { useChat } from "./hooks"
+import "./chat-box.scss"
 
 interface ChatButtonProps {
     onOpenChat: () => void
 }
 
 function OpenChatButton(props: ChatButtonProps) {
-    return <div id="openChatButton" onClick={props.onOpenChat} />
+    return <div id="open-chat-button" onClick={props.onOpenChat} />
 }
 
 interface ChatProps {
@@ -49,14 +50,14 @@ function ChatBox(props: ChatProps) {
         setInput("")
     }
 
-    return <div className="box-standard" id="chatBox">
-        <div id="closeChat" className="minimizeButton" onClick={props.onCloseChat}></div>
+    return <div className="box-standard" id="chat-box">
+        <div id="close-chat" className="minimize-button" onClick={props.onCloseChat}></div>
 
-        <div id="chatBoxMessageArea">
+        <div id="chat-box-message-area">
             {messages.map((m, i) => <p key={i}><FormatText>{m}</FormatText></p>)}
         </div>
 
-        <input id="chatBoxInput" 
+        <input id="chat-box-input" 
                value={input} 
                autoComplete="off"
                ref={inputRef}
@@ -76,7 +77,7 @@ export function ChatArea() {
         content = <ChatBox chat={chat} onCloseChat={() => { setViewChat(false) }} />
     }
 
-    return <div id="chatArea">
+    return <div id="chat-area">
         {content}
     </div>
 }

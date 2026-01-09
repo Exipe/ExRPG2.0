@@ -30,7 +30,7 @@ export function ShopSelectDialog(props: ShopSelectProps) {
         selectAmount={amount}
         setAmount={setAmount}
         onClose={props.onClose}>
-        <div className="selectDialogButton" onClick={confirm}>
+        <div className="select-dialog-button" onClick={confirm}>
             Confirm (<img className="text-icon" src={select.currency.spritePath}/> <span>{price.toLocaleString()}</span>)
         </div>
     </SelectDialog>
@@ -63,17 +63,17 @@ export function ShopWindow() {
 
         return <DisplayItem 
             item={[item, 1]}
-            className="shopItem"
+            className="shop-item"
             key={idx}
             onClick={() => selectBuy(idx)}>
             {selectDialog}
         </DisplayItem>
     })
 
-    return <div className="window box-gradient" id="shopWindow">
-        <div className="closeButton top-right"
+    return <div className="window box-gradient" id="shop-window">
+        <div className="close-button top-right"
             onClick={close}></div>
-        <p className="windowName">{shop.name}</p>
+        <p className="window-name">{shop.name}</p>
         <ItemContainer>{displayItems}</ItemContainer>
     </div>
 }

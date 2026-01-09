@@ -74,10 +74,10 @@ export function BankWindow() {
         }
     }
 
-    return <div className="window box-gradient" id="bankWindow">
-        <div className="closeButton top-right"
+    return <div className="window box-gradient" id="bank-window">
+        <div className="close-button top-right"
             onClick={close} />
-        <p className="windowName">Bank</p>
+        <p className="window-name">Bank</p>
         <StorageContainer
             model={model}
             overlay={itemOverlay}
